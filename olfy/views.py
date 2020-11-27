@@ -114,31 +114,38 @@ def about(request):
 		'team': [
 			{
 				'name': 'Dr. Gaurav Ahuja',
-				'post': 'Principal Investigator'
+				'post': 'Principal Investigator',
+				'email': 'gaurav.ahuja@iiitd.ac.in'
 			},
 			{
 				'name': 'Vishesh Agarwal',
-				'post': 'Deep Learning & Interpretability'
+				'post': 'Deep Learning & Interpretability',
+				'email': 'vishesh18420@iiitd.ac.in'
 			},
 			{
 				'name': 'Ria Gupta',
-				'post': 'Deep Learning & Interpretability'
+				'post': 'Deep Learning & Interpretability',
+				'email': 'ria18405@iiitd.ac.in'
 			},
 			{
 				'name': 'Aayushi Mittal',
-				'post': 'Data Collection'
+				'post': 'Data Collection',
+				'email': 'aayushim@iiitd.ac.in'
 			},
 			{
 				'name': 'Sushant Gupta',
-				'post': 'Back-End Development'
+				'post': 'Back-End Development',
+				'email': 'sushant19450@iiitd.ac.in'
 			},
 			{
 				'name': 'Rishi Raj Jain',
-				'post': 'Front-End Development'
+				'post': 'Front-End Development',
+				'email': 'rishi18304@iiitd.ac.in'
 			},
 			{
 				'name': 'Riya Sogani',
-				'post': 'Web Development'
+				'post': 'Web Development',
+				'email': 'riya19442@iiitd.ac.in'
 			}
 		]
 	}
