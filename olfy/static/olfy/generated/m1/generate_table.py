@@ -1,0 +1,13 @@
+import pandas as pd
+# import sys
+# sys.argv[1]
+# sys.argv2[2]
+test_pred = pd.read_csv('results.csv')
+input_smile = pd.read_csv('input.csv')
+test_pred["prob"] = test_pred["property"].apply(lambda x: x if x> 0.5 else (1-x)) 
+input_smile["prob"]=test_pred["prob"]
+input_smile["pred_odor"]=test_pred["property"].round(0)
+# test_true=test_true.drop(columns=['odor'])
+predicted_output = input_smile
+predicted_output.to_csv("predicted_output.csv")
+

@@ -1,0 +1,149 @@
+{% extends "olfy/Ahuja labs website/base.html" %}
+{% load static %}
+{% block loadhead %}
+<style></style>
+{% endblock %}
+{% block content %}
+	<div style="background: #00000050; left: 0; top: 77px; z-index: 10;" id="loadContent" class="d-none text-center position-absolute h-100 w-100">
+		<svg onclick="closeitem();" style="position: absolute; right: 0; top: 0;" width="20" height="20" viewBox="0 0 16 16" class="bi bi-x-square" fill="#C1C1C1" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" d="M14 1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+			<path fill-rule="evenodd" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+		</svg>
+		<img style="max-height: 100%; max-width: 100%;" src="" id="imageContent" />
+		<iframe id="pdflink" src="" style="height: calc(100vh - 77px); width: 90vw;" type="application/pdf"></iframe> <br />
+		<a id="imageDownload" href="" download>
+			<button class="mt-3 btn btn-lg rounded-lg border-0 shadow-lg bg-white text-dark">
+				Download
+			</button>
+		</a>
+	</div>
+	<div class="px-md-5 container-fluid text-white">
+		<div class="mt-5 row">
+			{% if z == False %}
+				<h1 class="d-none d-md-block display-3">
+					No Result :/
+				</h1>
+				<h1 class="d-block d-md-none">
+					No Result :/
+				</h1>
+			{% else %}
+				<div class="col-12 h-md-100 d-flex flex-column align-items-center text-left text-white">
+					<div class="w-100 d-flex flex-row align-items-center justify-content-between">
+						<h1 class="d-none d-md-block">
+							{{result.job_name}}
+						</h1>
+						<h2 class="d-block d-md-none">
+							{{result.job_name}}
+						</h2>
+						<a href="{% url 'download' result.job_name result.model result.count %}" target="_blank">
+							<button class="mt-3 btn btn-lg rounded-lg border-0 shadow-lg bg-white text-dark">Download Zip</button>
+						</a>
+					</div>
+					{% for i in display %}
+						<div class="mt-5 text-left table-responsive">
+							{% if result.model == 2 %}
+								<h4>{{i.smiles}}</h4>
+							{% elif result.model == 3 %}
+								<h4 data-toggle="tooltip" data-placement="top" title="{{i.seq}}">{{i.seq | truncatechars:10 }}</h4>
+							{% endif %}
+							<table class="mt-2 table text-white">
+								<thead>
+									<tr>
+										<th scope="col">S.No</th>
+										{% if result.model == 1 %}
+											<th scope="col">Smile</th>
+											<th scope="col">Odor</th>
+										{% elif result.model == 2 %}
+											<th scope="col">Receptor Name</th>							
+											<th scope="col">Sequence</th>
+										{% elif result.model == 3 %}
+											<th scope="col">Odor Ligand(Smile)</th>
+										{% elif result.model == 4 %}
+											<th scope="col">Smile</th>
+											<th scope="col">Sequence</th>
+											<th scope="col">Activation status</th>
+										{% endif %}
+										<th scope="col">Probability of Prediction</th>
+										{% if result.model == 4 %}
+											<th scope="col">Protein Sequence Interpretabiilty</th>
+										{% endif %}
+										{% if result.model == 3 %}
+											<th scope="col">Protein Sequence Interpretabiilty</th>
+										{% endif %}
+										{% if result.model == 2 %}
+											<th scope="col">Protein Sequence Interpretabiilty</th>
+										{% endif %}										
+										<th scope="col">Interpretability - Bar Graph</th>
+										<th scope="col">Interpretability - Structure</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for j in i.row %}
+										<tr>
+											<th scope="row">{{j.sno}}</th>
+											{% if result.model == 2 %}
+												<td>{{j.receptorname}}</td>
+												<td data-toggle="tooltip" data-placement="top" title="{{j.seq}}">{{ j.seq|truncatechars:10 }}</td>
+												<td>{{j.prob}}</td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m2/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SmileInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m2/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SequenceInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m2/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_mol.svg")>Molecule &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+											{% elif result.model == 3 %}
+												<td>{{j.smiles}}</td>
+												<td>{{j.prob}}</td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m3/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SmileInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m3/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SequenceInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m3/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_mol.svg")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+											{% elif result.model == 1 %}
+												<td>{{j.smiles}}</td>
+												<td>{{j.odor}}</td>
+												<td>{{j.prob}}</td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m1/{{result.job_name}}/{{j.smile_id}}/lrp.pdf")>
+													Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg>
+												</a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m1/{{result.job_name}}/{{j.smile_id}}/mol.svg")>
+													Molecule &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg>
+												</a></td>
+											{% elif result.model == 4 %}
+												<td>{{j.smiles}}</td>
+												<td data-toggle="tooltip" data-placement="top" title="{{j.seq}}">{{ j.seq|truncatechars:10 }}</td>
+												<td>{{j.status}}</td>
+												<td>{{j.prob}}</td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m4/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SmileInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m4/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_SequenceInterpretability.png")>Graph &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+												<td><a onclick=openitem("{{baseurl}}/{{result.ipaddr}}/m4/{{result.job_name}}/{{j.tableno}}/{{j.sno}}_mol.svg")>Molecule &nbsp; <svg aria-hidden="true" focusable="false" data-prefix="fal" data-icon="external-link" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" style="height: 15px;" class="svg-inline--fa fa-external-link fa-w-16 fa-2x"><path fill="currentColor" d="M440,256H424a8,8,0,0,0-8,8V464a16,16,0,0,1-16,16H48a16,16,0,0,1-16-16V112A16,16,0,0,1,48,96H248a8,8,0,0,0,8-8V72a8,8,0,0,0-8-8H48A48,48,0,0,0,0,112V464a48,48,0,0,0,48,48H400a48,48,0,0,0,48-48V264A8,8,0,0,0,440,256ZM500,0,364,.34a12,12,0,0,0-12,12v10a12,12,0,0,0,12,12L454,34l.7.71L131.51,357.86a12,12,0,0,0,0,17l5.66,5.66a12,12,0,0,0,17,0L477.29,57.34l.71.7-.34,90a12,12,0,0,0,12,12h10a12,12,0,0,0,12-12L512,12A12,12,0,0,0,500,0Z" class=""></path></svg></a></td>
+											{% endif %}
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+	<script>
+		function openitem(URL){
+			if(URL.endsWith('.pdf')){
+				$('#loadContent').removeClass('d-none');
+				$('#pdflink').attr('src', URL);
+				$('#imageContent').addClass('d-none');
+				$('#imageDownload').addClass('d-none');
+			}
+			else{
+				$('#loadContent').removeClass('d-none');
+				$('#imageContent').attr('src', URL);
+				$('#imageDownload').attr('href', URL);
+				$('#pdflink').addClass('d-none');
+				$('#imageDownload').removeClass('d-none');
+			}
+		}
+		function closeitem(){
+			$('#loadContent').addClass('d-none');
+			$('#pdflink').removeClass('d-none');
+			$('#imageContent').removeClass('d-none');
+			$('#imageDownload').removeClass('d-none');
+		}
+	</script>
+{% endblock %}
