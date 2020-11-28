@@ -810,7 +810,7 @@ def send_attachment(a,email,request):
 	encoders.encode_base64(p) 
 	p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
 	msg.attach(p) 
-	message = "Dear User,\n Here are your results"
+	message = "Dear User,\nHere are your results"
 	msg.attach(MIMEText(message, 'plain'))	
 	text = msg.as_string() 
 	s = smtplib.SMTP('smtp.gmail.com', 587)
