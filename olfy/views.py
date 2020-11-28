@@ -143,13 +143,8 @@ def about(request):
 				'email': 'ria18405@iiitd.ac.in'
 			},
 			{
-				'name': 'Aayushi Mittal',
-				'post': 'Data Collection',
-				'email': 'aayushim@iiitd.ac.in'
-			},
-			{
 				'name': 'Sushant Gupta',
-				'post': 'Back-End Development',
+				'post': 'Back-End Development ',
 				'email': 'sushant19450@iiitd.ac.in'
 			},
 			{
@@ -158,8 +153,13 @@ def about(request):
 				'email': 'rishi18304@iiitd.ac.in'
 			},
 			{
+				'name': 'Aayushi Mittal',
+				'post': 'Data Collection',
+				'email': 'aayushim@iiitd.ac.in'
+			},
+			{
 				'name': 'Riya Sogani',
-				'post': 'Web Development',
+				'post': 'General web development',
 				'email': 'riya19442@iiitd.ac.in'
 			}
 		]
