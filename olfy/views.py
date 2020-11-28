@@ -78,8 +78,6 @@ def check_user(request):
 	os.chdir(root)
 	ipaddr = get_client_ip(request)
 	generated = "olfy/static/olfy/generated"
-	data = pd.read_csv("olfy/static/olfy/generated/userdb.csv")
-	user = data["user"]
 	if not os.path.isdir(f"{generated}/{ipaddr}"): 
 		os.makedirs(f"{generated}/{ipaddr}/m1")
 		os.makedirs(f"{generated}/{ipaddr}/m2")
@@ -87,8 +85,6 @@ def check_user(request):
 		os.makedirs(f"{generated}/{ipaddr}/m4")	
 		f = open(f"{generated}/{ipaddr}/result.txt", 'w')
 		f.close()
-		data = data.append({"user":ipaddr}, ignore_index = True)
-		data.to_csv("olfy/static/olfy/generated/userdb.csv",index=False)
 	return ipaddr
 
 def m3_file(job_name,k):
