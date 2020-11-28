@@ -14,7 +14,7 @@ from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 import traceback
-
+root = os.path.abspath('./')
 def get_client_ip(request):
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
@@ -23,6 +23,17 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
+def fastaformat(s):
+	t = []
+	temp = ""
+	for i in s[1:]:	
+		if i.startswith(">"):
+			t.append(temp)
+			temp = ""
+			continue	
+		temp = temp+i
+	t.append(temp)
+	return t
 def writeresult(a,job_name):
 	temp = f'{job_name}/temp.txt'
 	result = f"{job_name}/result.txt"
@@ -64,6 +75,7 @@ def m2_file(job_name,k):
 	os.remove("temp.csv")
 
 def check_user(request):
+	os.chdir(root)
 	ipaddr = get_client_ip(request)
 	generated = "olfy/static/olfy/generated"
 	data = pd.read_csv("olfy/static/olfy/generated/userdb.csv")
@@ -97,10 +109,12 @@ def move_files(job_name):
 	os.remove("map.txt")
 
 def loadingpage(request):
+	os.chdir(root)
 	return render(request, "olfy/Ahuja labs website/loading.html", {'hide': 'd-none'})
 
 def home(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		context= {
 			'hide': 'd-none'
 		}
@@ -110,6 +124,7 @@ def displaymodels(request):
 	return render(request, "olfy/Ahuja labs website/modelsList.html")
 
 def about(request):
+	os.chdir(root)
 	context= {
 		'team': [
 			{
@@ -153,6 +168,7 @@ def about(request):
 
 
 def help(request):
+	os.chdir(root)
 	context={
 		'tabledata': [
 			{
@@ -187,6 +203,7 @@ def help(request):
 
 def results(request):
 	if request.method == "GET":
+		os.chdir(root)
 		ipaddr = check_user(request)
 		user = f"olfy/static/olfy/generated/{ipaddr}"
 		a = readresult(user)
@@ -233,7 +250,6 @@ def results(request):
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			print(display)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
 		elif a.model == 3:
 			display = []
@@ -274,6 +290,7 @@ def results(request):
 
 def result_queue(request,job_name,model,count):
 	if request.method == "GET":
+		os.chdir(root)
 		ipaddr = check_user(request)
 		user = f"olfy/static/olfy/generated/{ipaddr}"
 		a = result()
@@ -281,9 +298,6 @@ def result_queue(request,job_name,model,count):
 		a.model = int(model)
 		a.count = int(count)
 		a.ipaddr = ipaddr
-		print(a.job_name)
-		print(a.model)
-		print(a.count)
 		if a is None: 
 			return render(request, "olfy/Ahuja labs website/results.html",{"z": False})
 		elif a.model == 1:
@@ -328,7 +342,6 @@ def result_queue(request,job_name,model,count):
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			print(display)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
 		elif a.model == 3:
 			display = []
@@ -370,9 +383,11 @@ def result_queue(request,job_name,model,count):
 
 def odor(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		return render(request, "olfy/Ahuja labs website/odor.html")
 	else:
 		try:
+			os.chdir(root)
 			a = result()
 			ipaddr = check_user(request)
 			a.ipaddr = ipaddr
@@ -421,18 +436,22 @@ def odor(request):
 			return JsonResponse({'code': 1})
 		except Exception as e:
 			traceback.print_exc()
+			os.chdir(root)
 			return JsonResponse({'code': 0})
 
 def getEmail(request):
 	if "POST" == request.method:
+		os.chdir(root)
 		return JsonResponse({'code': 1})
 		# registerEmail(request.POST['email'])
 
 def odor_Or(request):
 	if "GET" == request.method:
+		os.chdir(root)		
 		return render(request, "olfy/Ahuja labs website/odorOR.html")
 	else:
 		try:
+			os.chdir(root)			
 			a = result()
 			job_name = request.POST["job_name"]
 			if len(job_name) == 0:
@@ -480,14 +499,17 @@ def odor_Or(request):
 				send_attachment(a,email,request)			
 			return JsonResponse({'code': 1})
 		except Exception as e:
+			os.chdir(root)
 			traceback.print_exc()
 			return JsonResponse({'code': 0})	
 
 def Or(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		return render(request, "olfy/Ahuja labs website/or.html")		
 	else:
 		try:
+			os.chdir(root)
 			a = result()
 			ipaddr = check_user(request)
 			a.ipaddr = ipaddr
@@ -502,6 +524,7 @@ def Or(request):
 			t = fasta.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
+			t = fastaformat(t)
 			temp = {"seq":t}
 			data = pd.DataFrame(temp)
 			data.to_csv("input.csv",index=False)
@@ -535,13 +558,16 @@ def Or(request):
 			return JsonResponse({'code': 1})
 		except Exception as e:
 			traceback.print_exc()
+			os.chdir(root)
 			return JsonResponse({'code': 0})	
 		
 def odor2(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		return render(request, "olfy/Ahuja labs website/odor2.html")
 	else:
 		try:
+			os.chdir(root)
 			a = result()
 			ipaddr = check_user(request)
 			a.ipaddr = ipaddr
@@ -603,13 +629,16 @@ def odor2(request):
 			return JsonResponse({'code': 1})
 		except Exception as e:
 			traceback.print_exc()
+			os.chdir(root)
 			return JsonResponse({'code': 0})
 
 
 def contactus(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		return render(request, "olfy/Ahuja labs website/contact.html")
 	else:
+		os.chdir(root)
 		email = request.POST["email"]
 		subject = request.POST["title"]
 		message = request.POST["message"]
@@ -637,10 +666,10 @@ def contactus(request):
 
 def queue(request):
 	if "GET" == request.method:
+		os.chdir(root)
 		ipaddr = check_user(request)
 		f = open(f"olfy/static/olfy/generated/{ipaddr}/result.txt")
 		data = f.read().splitlines()
-		print(data)
 		length = len(data)
 		queue = []
 		for i in range(0,length,4):
@@ -661,6 +690,7 @@ def queue(request):
 		return render(request, "olfy/Ahuja labs website/queue.html",{"queue":queue})
 
 def makezip(a,request):
+	os.chdir(root)
 	ipaddr = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{ipaddr}/m1")
@@ -680,12 +710,11 @@ def makezip(a,request):
 	return zip
 
 def makezip2(a,request):
+	os.chdir(root)
 	ipaddr = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{ipaddr}/m2")
-	print(os.getcwd())
 	for i in range(a.count):
-		print(os.getcwd())
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
 		count = len(f["smiles"])
 		for j in range(count):
@@ -703,11 +732,11 @@ def makezip2(a,request):
 	return zip
 
 def makezip3(a,request):
+	os.chdir(root)
 	ipaddr = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{ipaddr}/m3")
 	for i in range(a.count):
-		print(os.getcwd())
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
 		count = len(f["smiles"])
 		for j in range(count):
@@ -725,6 +754,7 @@ def makezip3(a,request):
 	return zip
 
 def makezip4(a,request):
+	os.chdir(root)
 	ipaddr = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{ipaddr}/m4")
@@ -743,6 +773,7 @@ def makezip4(a,request):
 	return zip
 
 def download(request,job_name,model,count):
+	os.chdir(root)
 	a = result()
 	a.job_name = job_name
 	a.model = int(model)
@@ -761,8 +792,9 @@ def download(request,job_name,model,count):
 	return response
 
 def send_attachment(a,email,request):
+	os.chdir(root)
 	attachment = ""
-	sender = "theahujalabsodorify@gmail.com"
+	sender = "odorify.ahujalab@iiitd.ac.in"
 	if a.model==1:
 		attachment = makezip(a,request)
 	if a.model==2:
@@ -787,6 +819,6 @@ def send_attachment(a,email,request):
 	text = msg.as_string() 
 	s = smtplib.SMTP('smtp.gmail.com', 587)
 	s.starttls()
-	s.login(sender, "odorifypass")
+	s.login(sender, "odorify123")
 	s.sendmail(sender, email, text)
 	s.quit()
