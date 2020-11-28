@@ -230,8 +230,10 @@ def results(request):
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv')
 				number_of_rows = len(data["smiles"])
+				print(data)
+				print(number_of_rows)
 				temp = {}
-				temp["smiles"] = (data["smiles"][0])
+				temp["smiles"] = data["smiles"][0]
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp2()

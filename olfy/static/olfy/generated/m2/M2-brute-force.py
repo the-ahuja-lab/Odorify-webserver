@@ -355,7 +355,8 @@ print(df_top_seqs.head())
 
 df_top_seqs=pd.merge(df_top_seqs, databasedf, on='Final_Sequence')
 # print(df_top_seqs.head())
-df_top_seqs=df_top_seqs.head(value_k)
+min_k = min(value_k,len(df_top_seqs))
+df_top_seqs=df_top_seqs.head(min_k)
 print(df_top_seqs)
 
 
@@ -368,7 +369,7 @@ df_top_seqs.to_csv("output.csv", index=False)
 # In[57]:
 
 
-for i in range(value_k):
+for i in range(min_k):
     filename=str(i+1)
     combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename)
 
