@@ -30,40 +30,7 @@
 </style>
 {% endblock %}
 {% block content %}
-<div style="background: #000000; left: 0; top: 0px; z-index: 10000000;" id="loadingContent" class="d-none text-center position-absolute h-100 w-100">
-	
-	<div class="container">
-		<div class="vh-100 row">
-			<div class="p-3 order-1 order-md-0 col-md-6 loadFade h-md-100 d-flex flex-column align-items-center align-items-md-start justify-content-center text-center text-md-left text-white">
-				<h1 id="loadingHeading" class="d-none d-md-block display-3">
-					Loading...
-				</h1>
-				<h1 id="loadingHeading" class="d-block d-md-none">
-					Loading...
-				</h1>
-				<h2 id="loadingText" class="d-none d-md-block mt-2">
-					Please wait while we the results are being generated
-				</h2>
-				<h3 id="loadingText" class="d-block d-md-none mt-2">
-					Please wait while we the results are being generated
-				</h3>
-				<h5 id="donotclose" class="text-gra mt-2 border-bottom border-dark">
-					Please do not close this tab!
-				</h5> <br />
-				<a id='getTry' class="d-none" onclick="window.location.reload();">
-					<button class="mt-3 btn btn-md btn-light">
-						Try again
-					</button>
-				</a>
-				<!-- <input enter="regEmail();" class="form-control" id="email-user" type="email" /> -->
-			</div>
-
-			<div class="p-3 order-0 order-md-1 col-md-6 loadFade h-md-100 d-flex flex-column justify-content-center text-left text-white">
-				<img class="w-100" src="/static/olfy/images/running.gif" />
-			</div>
-		</div>
-	</div>
-</div>
+{% include "./loader.html" %}
 <div class="entireDoc container loadFade">
 	<div class="mt-2 d-flex flex-column flex-md-row justify-content-between">
 		<div class="d-flex mt-3 text-white">
@@ -87,12 +54,12 @@
 			<form method="POST" id="upload-form" onsubmit="event.preventDefault(); getResult(this);" class="needs-validation" novalidate enctype="multipart/form-data">
 				{% csrf_token %}
 				<div class="form-group border-bottom border-dark">
-					<input required style="font-size: 25px;" type="text" id="jobtitle" name="job_name" class="border-0 bg-dark text-white form-control" placeholder="Job title *">
+					<input required style="font-size: 20px;" type="text" id="jobtitle" name="job_name" class="border-0 bg-dark text-white form-control" placeholder="Job title *">
 				</div>
 				<div class="row">
 					<div class="col-md-6 border-right border-dark">
 						<div class="border-bottom border-dark mt-4 form-group">
-							<textarea required style="min-height: 200px; font-size: 25px;" name="fasta" id="job-desc" class="border-0 bg-dark text-white form-control" placeholder="Enter maximum of 25 enter-separated FASTA entries *"></textarea>
+							<textarea required style="min-height: 200px; font-size: 20px;" name="fasta" id="job-desc" class="border-0 bg-dark text-white form-control" placeholder="Enter maximum of 25 enter-separated FASTA entries *"></textarea>
 						</div>
 						<small class="text-gra">
 							Don't have fasta?
@@ -119,7 +86,7 @@
 					<input required class="loadFade mt-4" type="number" id="normal_counter" name="normal_counter" value="5" min="1" max="10" step="1"> 
 				</div>
 				<div class="mt-3 form-group border-bottom border-dark">
-					<input style="font-size: 25px;" name="email" id="email" type="email" class="border-0 bg-dark text-white form-control" placeholder="Enter email to get results(optional)" aria-describedby="emailHelp">
+					<input style="font-size: 20px;" name="email" id="email" type="email" class="border-0 bg-dark text-white form-control" placeholder="Enter email to get results(optional)" aria-describedby="emailHelp">
 				</div>
 				<div class="mt-5 d-flex flex-row justify-content-center">
 					<input type="submit" class="btn btn-lg rounded-lg border-0 shadow-lg bg-white text-dark" value="Submit" />
@@ -182,11 +149,30 @@ QASGPERTIPITREEKPAVTAAPKK`;
 				}
 			});
 		});
+		function sendResults(){
+			let valueEmail= document.getElementById('email2');
+			if(valueEmail.checkValidity()){
+				$.post('/olfy/sendResults', valueEmail.value, function(result){
+					let response= JSON.parse(JSON.stringify(result));
+					if(response['code']==1){
+						console.log('Recorded succesfully!');
+						$('#emailNotif').text('Recorded succesfully!');
+					}
+					else{
+						console.log('Error recording!');
+						$('#emailNotif').text("We've encountered an unexpected error!");
+					}
+				});
+			}
+			else{
+				$('#emailNotif').text("Please enter a valid email.");
+			}
+		}
 		function showError(){
-			$('#loadingHeading').text('Oops!!');
-			$('#loadingText').text('Error! You have given input in wrong format or input is incorrect. Please check our documenation for help');
-			$('#getTry').removeClass('d-none');
-			$('#donotclose').addClass('d-none');
+			$('#errorWindow').removeClass('d-none');
+			$('#errorWindow').addClass('d-flex');
+			$('#loadingWindow').removeClass('d-flex d-none');
+			$('#loadingWindow').addClass('d-none');
 		}
 		function getResult(a){
 			if (document.getElementById('upload-form').checkValidity() === false) {
@@ -195,9 +181,10 @@ QASGPERTIPITREEKPAVTAAPKK`;
 				$('#upload-form').addClass('was-validated');
 				return;
 			}
-			$("#loadingContent").removeClass('d-none');
 			$(".entireDoc").addClass('d-none');
-			//showError();
+			$("#loadingContent").removeClass('d-none');
+			$('#errorWindow').removeClass('d-flex d-none');
+			$('#errorWindow').addClass('d-none');
 			$.post('/olfy/OR', $('#upload-form').serialize(), function(result){
 				let response= JSON.parse(JSON.stringify(result));
 				if(response['code']==1){
@@ -209,20 +196,5 @@ QASGPERTIPITREEKPAVTAAPKK`;
 				}
 			});
 		}
-		// function regEmail(){
-		// 	let val= $('#email-user').val();
-		// 	$.post('/getEmail', {
-		// 		email: val
-		// 	}, function(result){
-		// 		let response= JSON.parse(JSON.stringify(result));
-		// 		console.log(response);
-		// 		// if(response['code']==1){
-		// 		// 	$('#')
-		// 		// }
-		// 		// else{
-		// 		// 	$('#')
-		// 		// }
-		// 	});
-		// }
 	</script>
 {% endblock %}

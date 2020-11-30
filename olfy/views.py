@@ -660,7 +660,7 @@ def contactus(request):
 		text = msg.as_string() 
 		s.sendmail(sender, email, text)
 		s.quit()
-		return render(request, "olfy/Ahuja labs website/contact.html")
+		return render(request, "olfy/Ahuja labs website/contact.html", {'messages': ['✓ Mail sent successfully']})
 
 def queue(request):
 	if "GET" == request.method:
