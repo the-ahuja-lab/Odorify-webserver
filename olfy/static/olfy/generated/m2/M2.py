@@ -327,6 +327,8 @@ f = pd.read_csv("temp.csv")
 threshold=f["threshhold"][0]
 input_smile=f["smiles"][0]
 
+# threshold=0.75
+# input_smile='COC1=C(C=CC(=C1)CC=C)OC=O'
 # Calculating similar smiles (tanimoto similarity)
 
 # In[10]:
@@ -354,7 +356,7 @@ print(similar_smiles)
 similar_seqs={}
 for i in range(len(similar_smiles)):
     for j in range(len(df)):
-        if( df['SMILES'][j]==similar_smiles[i] and df['Activation_Status'][j]==1 ):
+        if( df['SMILES'][j]==similar_smiles[i] and df['Activation_Status'][j]==1 and str(df['Mutations'][j])=='nan'):
             similar_seqs[ df['Final_Sequence'][j] ]=1
 
 
