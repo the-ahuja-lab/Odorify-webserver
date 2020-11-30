@@ -307,7 +307,8 @@ print(len(unique_sequences))
 
 
 # In[35]:
-
+df=df.loc[ df['Mutations'].isnull() ]
+unique_wild_type=df['Final_Sequence'].unique().tolist()
 
 # meta-dataframe to match receptors and Receptor Sequence
 databasedf=df[['Receptor','Final_Sequence']]
@@ -328,7 +329,8 @@ loaded_model = pickle.load(open(filename, 'rb'))
 f = pd.read_csv("temp.csv")
 value_k=f["k"][0]
 input_smile=f["smiles"][0]
-
+# value_k=5
+# input_smile='C[C@]12CC[C@H]3[C@H]([C@@H]1CC=C2)CC[C@@H]4[C@@]3(CCC(=O)C4)C'
 # Run M4 on these smile, seq pair (find top-k sequences, and interpretability of those top-k)
 
 # In[38]:
@@ -336,7 +338,7 @@ input_smile=f["smiles"][0]
 
 k=0
 df_top_seqs=pd.DataFrame(columns=['Final_Sequence', 'Probability'])
-for seq in unique_sequences:
+for seq in unique_wild_type:
     prob,pred=prediction(loaded_model, input_smile, seq )
     if(pred==1):
         df_top_seqs.loc[k]=[seq,prob]
