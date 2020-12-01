@@ -812,7 +812,7 @@ def send_attachment(a,email,request):
 	encoders.encode_base64(p) 
 	p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
 	msg.attach(p) 
-	message = "Dear User,\nHere are your results"
+	message = "Dear User,\n Thank you for using Odorify. Please find attached your combined results in a zip file. In case of any queries, please contact us through the help page of our webserver."
 	msg.attach(MIMEText(message, 'plain'))	
 	text = msg.as_string() 
 	s = smtplib.SMTP('smtp.gmail.com', 587)
