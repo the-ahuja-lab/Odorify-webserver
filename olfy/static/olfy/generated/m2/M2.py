@@ -150,6 +150,10 @@ def prediction(model, x_input_smile, x_input_seq):
 
 def combined_user_predict(model, x_input_smile, x_input_seq, filename):
     ax=plt.figure()
+    mol = Chem.MolFromSmiles(x_input_smile)
+    Chem.Kekulize(mol)
+    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
+
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
     x_user_smile=torch.stack(x_user_smile)
@@ -326,7 +330,8 @@ unique_smiles=df["SMILES"].unique().tolist()
 f = pd.read_csv("temp.csv")
 threshold=f["threshhold"][0]
 input_smile=f["smiles"][0]
-
+# threshold=0.50
+# input_smile='CC(C)C(=O)OC(C)(C)Cc1ccccc1'
 # threshold=0.75
 # input_smile='COC1=C(C=CC(=C1)CC=C)OC=O'
 # Calculating similar smiles (tanimoto similarity)
