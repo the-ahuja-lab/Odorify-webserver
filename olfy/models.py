@@ -4,7 +4,7 @@ class result:
 	model:int
 	job_name:str
 	count:int
-	ipaddr:str
+	id:str
 	
 class disp:
 	sno:int
