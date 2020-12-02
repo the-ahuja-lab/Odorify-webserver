@@ -128,8 +128,8 @@ def user_predict(model, x_input_smile, x_input_seq,count):
 
     prob=torch.exp(scores)
     prob=prob.tolist()
-    print("Probability is",  round(prob[0][predictions.item()],3) )
-    z = [predictions.item(),round(prob[0][predictions.item()],3)]
+    print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
+    z = [predictions.item(), float(str(prob[0][predictions.item()])[:5])]
 
     ig = IntegratedGradients(model)
     x_user_smile.requires_grad_()
