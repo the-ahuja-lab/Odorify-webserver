@@ -353,13 +353,9 @@ for smile in unique_smiles:
 df_topk=df_topk.sort_values("Probability", ascending=False)
 # value_k = min(input_k,len(df_topk))
 df_topk=df_topk.head(input_k)
-print(df_topk)
 
 
 # In[24]:
-
-
-df_topk.to_csv("output.csv", index=False)
 
 
 # In[20]:
@@ -367,7 +363,10 @@ df_topk.to_csv("output.csv", index=False)
 for just in range(input_k):
     combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1))
 
+if(len(df_topk)==0):
+    df_topk.loc[0]=['NA','NA']
 
+df_topk.to_csv("output.csv", index=False)
 # In[ ]:
 
 

@@ -66,9 +66,11 @@ def readresult(user):
 def m2_file(job_name,k):
 	data = pd.read_csv("output.csv")
 	index = data.index
-	number_of_rows = len(index)
+	number_of_rows = len(data)
 	os.mkdir(f"{job_name}/{k}")
 	for i in range(number_of_rows):
+		if pd.isna(data["Probability"][i]):
+			break
 		shutil.move(f"{i+1}_SmileInterpretability.png", f"{job_name}/{k}")
 		shutil.move(f"{i+1}_SequenceInterpretability.png", f"{job_name}/{k}")
 		shutil.move(f"{i+1}_mol.svg", f"{job_name}/{k}")
@@ -91,9 +93,11 @@ def check_user(request):
 def m3_file(job_name,k):
 	data = pd.read_csv("output.csv")
 	index = data.index
-	number_of_rows = len(index)
+	number_of_rows = len(data)
 	os.mkdir(f"{job_name}/{k}")
 	for i in range(number_of_rows):
+		if pd.isna(data["Probability"][i]):
+			break
 		shutil.move(f"{i+1}_SmileInterpretability.png", f"{job_name}/{k}")
 		shutil.move(f"{i+1}_SequenceInterpretability.png", f"{job_name}/{k}")
 		shutil.move(f"{i+1}_mol.svg", f"{job_name}/{k}")
@@ -220,7 +224,6 @@ def results(request):
 				b.smiles = data["smiles"][i]
 				b.prob = data["prob"][i]
 				b.sno = i+1
-				b.smile_id = i
 				temp = data["pred_odor"][i]
 				if temp == 1:
 					odor = "odorant"
@@ -240,12 +243,15 @@ def results(request):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					b.seq = data["Final_Sequence"][j]
-					b.receptorname = data["Receptor"][j]
-					b.prob = data["Probability"][i]
-					if "threshhold" in data.columns:
-						b.threshhold = data["threshhold"][0]
-						b.rapid = True
+					if pd.isna(data["Final_Sequence"][j]):
+						b.seq = "NA"
+						b.receptorname = "NA"
+						b.prob = "NA"
+						b.noresult = True
+					else:						
+						b.seq = data["Final_Sequence"][j]
+						b.receptorname = data["Receptor"][j]
+						b.prob = data["Probability"][i]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -262,8 +268,13 @@ def results(request):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					b.smiles = data["Smiles"][j]
-					b.prob = data["Probability"][i]
+					if pd.isna(data["Probability"][j]):
+						b.smiles = "NA"
+						b.prob = "NA"
+						b.noresult = True
+					else:						
+						b.smiles = data["Smiles"][j]
+						b.prob = data["Probability"][i]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -408,9 +419,9 @@ def odor(request):
 			temp = {"smiles":s}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
-			data.to_csv("input.csv")
+			data.to_csv("input.csv",index=False)
 			os.system("python transformer-cnn.py config.cfg")
-			count = 0
+			count = 1
 			while os.path.isdir(f"{userm1}/{job_name}"):
 				job_name = f"{job_name}1"
 			os.mkdir(f"{userm1}/{job_name}")
@@ -477,7 +488,7 @@ def odor_Or(request):
 			temp = {"smiles":s,"seq":t}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
-			data.to_csv("input.csv")
+			data.to_csv("input.csv",index=False)
 			userm4 = f"../{id}/m4"
 			os.system("python M4_final.py")
 			while os.path.isdir(f"{userm4}/{job_name}"):
@@ -622,7 +633,6 @@ def odor2(request):
 					df.to_csv("temp.csv",index=False)
 					os.system("python M2.py")
 				df = pd.read_csv("output.csv")
-				# data = pd.read_csv("ensemble.csv")
 				j = []
 				for k in range(len(df["Probability"])):
 					j.append(f["smiles"][i])

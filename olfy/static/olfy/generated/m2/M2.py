@@ -409,10 +409,6 @@ print(df_top_seqs)
 
 # In[20]:
 
-
-df_top_seqs.to_csv("output.csv", index=False)
-
-
 # In[19]:
 
 
@@ -420,7 +416,10 @@ for i in range(len(df_top_seqs)):
     filename=str(i+1)
     combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename)
 
+if(len(df_top_seqs)==0):
+    df_top_seqs.loc[0]=['NA','NA','NA']
 
+df_top_seqs.to_csv("output.csv", index=False)
 # In[ ]:
 
 
