@@ -27,15 +27,15 @@ import pickle
 
 
 def one_hot_smile(smile):
-    key="()+–./-0123456789=#@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^$"
+    key="()+–./-0123456789=#@$ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^"
     test_list=list(key)
     res = {val : idx  for idx, val in enumerate(test_list)}
     #smile="^"+smile
-    smile=smile+("$"*(300-len(smile)))
+    smile=smile+("^"*(300-len(smile)))
     array=[[0 for j in range(len(key))] for i in range(300)]
     for i in range(len(smile)):
         array[i][res[smile[i]]]=1
-    array=torch.Tensor(array)
+        array=torch.Tensor(array)
     return array
 
 
@@ -43,16 +43,16 @@ def one_hot_smile(smile):
 
 
 def one_hot_seq(seq):
-    key="^ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
+    key="ABCDEFGHIJKLMNOPQRSTUVWXYZ^"
     seq=seq.upper()
     test_list=list(key)
     res = {val : idx  for idx, val in enumerate(test_list)}
     #seq="^"+seq+"$"
-    seq=seq+("$"*(400-len(seq)))
+    seq=seq+("^"*(400-len(seq)))
     array=[[0 for j in range(len(key))] for i in range(400)]
     for i in range(len(seq)):
         array[i][res[seq[i]]]=1
-    array=torch.Tensor(array)
+        array=torch.Tensor(array)
     return array
 
 
@@ -107,10 +107,6 @@ class BLSTM(nn.Module):
 
 
 def user_predict(model, x_input_smile, x_input_seq,count):
-    mol = Chem.MolFromSmiles(x_input_smile)
-    Chem.Kekulize(mol)
-    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
-    
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
     x_user_smile=torch.stack(x_user_smile)
@@ -119,7 +115,7 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
     x_user_seq=torch.stack(x_user_seq)
-    x_user_seq=x_user_seq.view(1,400,28)
+    x_user_seq=x_user_seq.view(1,400,27)
     
     scores = model(x_user_smile,x_user_seq)
     _, predictions = scores.max(1)
@@ -137,8 +133,8 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     for i in baseline[0]:
         i[-1]=1
 
-    attr,delta= ig.attribute(x_user_smile,baselines=baseline, target=1,additional_forward_args =x_user_seq,return_convergence_delta=True)
-    attr=attr.view(300,77)
+    attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
+    attr=attr[0].view(300,77)
     maxattr,_=torch.max(attr,dim=1)
     minattr,_=torch.min(attr,dim=1)
     relevance=maxattr+minattr
@@ -238,13 +234,13 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     
 #     Sequence Interpretability
     ax=plt.figure()
-    baseline = torch.zeros(2, 400, 28)
+    baseline = torch.zeros(2, 400, 27)
     ig = IntegratedGradients(model)
     x_user_seq.requires_grad_()
     x_user_smile.requires_grad_()
     attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
     smile_attr=attr[0].view(300,77)
-    seq_attr=attr[1].view(400,28)
+    seq_attr=attr[1].view(400,27)
     maxattr,_=torch.max(seq_attr,dim=1)
     minattr,_=torch.min(seq_attr,dim=1)
     relevance=maxattr+minattr
