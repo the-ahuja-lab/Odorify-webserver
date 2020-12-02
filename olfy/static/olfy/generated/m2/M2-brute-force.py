@@ -134,6 +134,10 @@ def prediction(model, x_input_smile, x_input_seq):
 
 def combined_user_predict(model, x_input_smile, x_input_seq, filename):
     ax=plt.figure()
+    mol = Chem.MolFromSmiles(x_input_smile)
+    Chem.Kekulize(mol)
+    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
+
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
     x_user_smile=torch.stack(x_user_smile)
@@ -329,8 +333,8 @@ loaded_model = pickle.load(open(filename, 'rb'))
 f = pd.read_csv("temp.csv")
 value_k=f["k"][0]
 input_smile=f["smiles"][0]
-# value_k=5
-# input_smile='C[C@]12CC[C@H]3[C@H]([C@@H]1CC=C2)CC[C@@H]4[C@@]3(CCC(=O)C4)C'
+# value_k=2
+# input_smile='CC(C)C(=O)OC(C)(C)Cc1ccccc1'
 # Run M4 on these smile, seq pair (find top-k sequences, and interpretability of those top-k)
 
 # In[38]:
