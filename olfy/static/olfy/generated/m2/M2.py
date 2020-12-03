@@ -141,7 +141,7 @@ def prediction(model, x_input_smile, x_input_seq):
     prob=prob.tolist()
 
     
-    return round(prob[0][predictions.item()],2), predictions.item()
+    return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
 
 # In[18]:
