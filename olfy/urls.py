@@ -4,7 +4,6 @@ from . import views
 
 urlpatterns = [
 	path('', views.home, name = "olfy-home"),
-	# path('registerEmail', views.getEmail, name='olfy-email'),
 	path('loading', views.loadingpage, name = "olfy-loading"),
 	path('models', views.displaymodels, name = "olfy-models"),
 	path('about', views.about, name = "olfy-about"),

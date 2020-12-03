@@ -125,7 +125,3 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-
-CRONJOBS=[
-    ('*1 * * * * ' , 'olfy/cron.multi' )
-]

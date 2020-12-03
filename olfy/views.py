@@ -15,7 +15,9 @@ from email.mime.base import MIMEBase
 from email import encoders
 import traceback
 import uuid
+
 root = os.path.abspath('./')
+
 def get_id(request):
 	if 'id' in request.session:
 		return str(request.session['id'])
