@@ -128,8 +128,8 @@ def user_predict(model, x_input_smile, x_input_seq,count):
 
     prob=torch.exp(scores)
     prob=prob.tolist()
-    print("Probability is",  round(prob[0][predictions.item()],3) )
-    z = [predictions.item(),round(prob[0][predictions.item()],3)]
+    print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
+    z = [predictions.item(), float(str(prob[0][predictions.item()])[:5])]
 
     ig = IntegratedGradients(model)
     x_user_smile.requires_grad_()
@@ -282,11 +282,11 @@ def user_predict(model, x_input_smile, x_input_seq,count):
      
     print(cropped_seq_relevance)
 
-    ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(35, 15) )
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'])
-    ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
-    ax.set_xlabel("Receptor Sequence",fontsize=15)
-    ax.set_ylabel("Relevance",fontsize=15,rotation=0)
+    ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
+    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.set_yticklabels(cropped_seq_relevance['seq_char'],fontsize=12,rotation=0)
+    ax.set_ylabel("Receptor Sequence",fontsize=15)
+    ax.set_xlabel("Relevance",fontsize=15,rotation=0)
     ax.figure.savefig(f'{count}_SequenceInterpretability.png')
     return z
 
