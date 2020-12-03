@@ -135,42 +135,54 @@ def about(request):
 			{
 				'name': 'Dr. Gaurav Ahuja',
 				'post': 'Principal Investigator',
-				'email': 'gaurav.ahuja@iiitd.ac.in'
+				'email': 'gaurav.ahuja@iiitd.ac.in',
+				'image': 'Gaurav.jpg'
 			},
 			{
 				'name': 'Vishesh Agarwal',
 				'post': 'Deep Learning & Interpretability',
-				'email': 'vishesh18420@iiitd.ac.in'
+				'email': 'vishesh18420@iiitd.ac.in',
+				'image': 'Vishesh.png'
 			},
 			{
 				'name': 'Ria Gupta',
 				'post': 'Deep Learning & Interpretability',
-				'email': 'ria18405@iiitd.ac.in'
+				'email': 'ria18405@iiitd.ac.in',
+				'image': 'Ria.png'
 			},
 			{
 				'name': 'Sushant Gupta',
 				'post': 'Back-End Development ',
-				'email': 'sushant19450@iiitd.ac.in'
+				'email': 'sushant19450@iiitd.ac.in',
+				'image': 'Sushant.jpg'
 			},
 			{
 				'name': 'Rishi Raj Jain',
-				'post': 'Front-End Development',
-				'email': 'rishi18304@iiitd.ac.in'
+				'post': 'Lead Front-End Development',
+				'email': 'rishi18304@iiitd.ac.in',
+				'image': 'Rishi.jpg'
 			},
 			{
 				'name': 'Aayushi Mittal',
 				'post': 'Data Collection',
-				'email': 'aayushim@iiitd.ac.in'
+				'email': 'aayushim@iiitd.ac.in',
+				'image': 'Aayushi.jpg'
+			},
+			{
+				'name': 'Prakriti',
+				'post': 'Web Development',
+				'email': 'riya19442@iiitd.ac.in',
+				'image': 'Prakriti.jpg'
 			},
 			{
 				'name': 'Riya Sogani',
-				'post': 'General web development',
-				'email': 'riya19442@iiitd.ac.in'
+				'post': 'Web Development',
+				'email': 'riya19442@iiitd.ac.in',
+				'image': 'Riya.jpg'
 			}
 		]
 	}
 	return render(request, "olfy/Ahuja labs website/about.html", context)
-
 
 def help(request):
 	os.chdir(root)
@@ -179,22 +191,22 @@ def help(request):
 		'tabledata': [
 			{
 				'name': 'Odorant Predictor',
-				'columnames': 'smiles (required in lowercase)',
+				'columnames': 'SMILES',
 				'extension': '*.csv'
 			},
 			{
 				'name': 'OR Finder',
-				'columnames': 'smiles (required in lowercase)',
+				'columnames': 'SMILES',
 				'extension': '*.csv'
 			},
 			{
 				'name': 'Odor Finder',
-				'columnames': 'seq (required in lowercase)',
+				'columnames': 'Receptor Sequence (FASTA format)',
 				'extension': '*.csv'
 			},
 			{
 				'name': 'Odorant-OR Pair Analysis',
-				'columnames': 'smiles (required in lowercase), seq (required in lowercase)',
+				'columnames': 'SMILES, Receptor Sequence (FASTA format)',
 				'extension': '*.csv'
 			}
 		],
