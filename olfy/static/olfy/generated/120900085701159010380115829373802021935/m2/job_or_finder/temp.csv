@@ -1,0 +1,2 @@
+smiles,threshhold
+CC(=C)[C@H]1CCC(=CC1)C,0.75

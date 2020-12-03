@@ -1,0 +1,2 @@
+smiles,threshhold
+COC1=C(C=CC(=C1)CC=C)OC=O,0.75

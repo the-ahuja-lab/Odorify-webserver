@@ -19,12 +19,11 @@
 
 # In[2]:
 
-
 import io
 import pandas as pd
 import numpy as np
-import io
 import torch
+import sys
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
@@ -148,7 +147,7 @@ def prediction(model, x_input_smile, x_input_seq):
 # In[18]:
 
 
-def combined_user_predict(model, x_input_smile, x_input_seq, filename):
+def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     ax=plt.figure()
     mol = Chem.MolFromSmiles(x_input_smile)
     Chem.Kekulize(mol)
@@ -212,7 +211,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename):
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Smiles", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(filename+"_SmileInterpretability.png")
+    ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.png")
     
 #     Structure Interpretability
     
@@ -263,7 +262,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename):
     drawer.FinishDrawing()
     svg = drawer.GetDrawingText().replace('svg:','')
 
-    fp = open(filename+"_mol.svg", "w")
+    fp = open(f"{path}/{filename}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
     
@@ -309,7 +308,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename):
     ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Receptor Sequence", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(filename+"_SequenceInterpretability.png")
+    ax.figure.savefig(f"{path}/{filename}_SequenceInterpretability.png")
     
     
     
@@ -327,7 +326,8 @@ unique_smiles=df["SMILES"].unique().tolist()
 # In[9]:
 
 
-f = pd.read_csv("temp.csv")
+path = sys.argv[1]
+f = pd.read_csv(f"{path}/temp.csv")
 threshold=f["threshhold"][0]
 input_smile=f["smiles"][0]
 # threshold=0.50
@@ -414,12 +414,12 @@ print(df_top_seqs)
 
 for i in range(len(df_top_seqs)):
     filename=str(i+1)
-    combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename)
+    combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
 
 if(len(df_top_seqs)==0):
     df_top_seqs.loc[0]=['NA','NA','NA']
 
-df_top_seqs.to_csv("output.csv", index=False)
+df_top_seqs.to_csv(f"{path}/output.csv", index=False)
 # In[ ]:
 
 

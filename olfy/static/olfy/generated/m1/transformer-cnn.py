@@ -21,15 +21,9 @@ from layers import PositionLayer, MaskLayerLeft, \
 version = 4;
 print("Version: ", version);
 
-if(len (sys.argv) != 2):
-    print("Usage: ", sys.argv[0], "config.cfg");
-    sys.exit(0);
-
-print("Load config file: ", sys.argv[1]);
-
 config = configparser.ConfigParser();
 config.read(sys.argv[1]);
-
+path = sys.argv[2]
 def getConfig(section, attribute, default=""):
     try:
         return config[section][attribute];
@@ -40,7 +34,7 @@ TRAIN = getConfig("Task","train_mode");
 MODEL_FILE = getConfig("Task","model_file");
 TRAIN_FILE = getConfig("Task","train_data_file");
 APPLY_FILE = getConfig("Task","apply_data_file", "train.csv");
-RESULT_FILE = getConfig("Task","result_file", "results.csv");
+RESULT_FILE = getConfig("Task","result_file", f"{path}/results.csv");
 NUM_EPOCHS = int(getConfig("Details","n_epochs", "100"));
 BATCH_SIZE = int(getConfig("Details","batch_size", "32"));
 SEED = int(getConfig("Details","seed", "657488"));

@@ -3,4 +3,3 @@ gnuplot
 torchvision -c pytorch
 captum -c pytorch
 django
-django_crontab

@@ -65,20 +65,6 @@ def readresult(user):
 			s.id = (f.readline().replace("\n",""))
 			return s		
 
-def m2_file(job_name,k):
-	data = pd.read_csv("output.csv")
-	index = data.index
-	number_of_rows = len(data)
-	os.mkdir(f"{job_name}/{k}")
-	for i in range(number_of_rows):
-		if pd.isna(data["Probability"][i]):
-			break
-		shutil.move(f"{i+1}_SmileInterpretability.png", f"{job_name}/{k}")
-		shutil.move(f"{i+1}_SequenceInterpretability.png", f"{job_name}/{k}")
-		shutil.move(f"{i+1}_mol.svg", f"{job_name}/{k}")
-	shutil.move("output.csv",f"{job_name}/{k}")
-	os.remove("temp.csv")
-
 def check_user(request):
 	os.chdir(root)
 	id = get_id(request)
@@ -91,25 +77,6 @@ def check_user(request):
 		f = open(f"{generated}/{id}/result.txt", 'w')
 		f.close()
 	return id
-
-def m3_file(job_name,k):
-	data = pd.read_csv("output.csv")
-	index = data.index
-	number_of_rows = len(data)
-	os.mkdir(f"{job_name}/{k}")
-	for i in range(number_of_rows):
-		if pd.isna(data["Probability"][i]):
-			break
-		shutil.move(f"{i+1}_SmileInterpretability.png", f"{job_name}/{k}")
-		shutil.move(f"{i+1}_SequenceInterpretability.png", f"{job_name}/{k}")
-		shutil.move(f"{i+1}_mol.svg", f"{job_name}/{k}")
-	shutil.move("output.csv",f"{job_name}/{k}")
-	os.remove("temp.csv")
-
-def move_files(job_name):
-	shutil.move("mol.svg", job_name)
-	shutil.move("lrp.pdf", job_name)
-	os.remove("map.txt")
 
 def loadingpage(request):
 	os.chdir(root)
@@ -336,7 +303,6 @@ def result_queue(request,job_name,model,count):
 				b.smiles = data["smiles"][i]
 				b.prob = data["prob"][i]
 				b.sno = i+1
-				b.smile_id = i
 				temp = data["pred_odor"][i]
 				if temp == 1:
 					odor = "odorant"
@@ -349,22 +315,22 @@ def result_queue(request,job_name,model,count):
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv')
-
 				number_of_rows = len(data["smiles"])
 				temp = {}
-				temp["smiles"] = (data["smiles"][0])
+				temp["smiles"] = data["smiles"][0]
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					b.seq = data["Final_Sequence"][j]
-					b.receptorname = data["Receptor"][j]
-					b.link = data["ensemble_link"]
-					b.gene = data["Gene stable ID"]
-					b.prob = data["Probability"][i]
-					if "threshhold" in data.columns:
-						b.threshhold = data["threshhold"][0]
-						b.rapid = True
+					if pd.isna(data["Final_Sequence"][j]):
+						b.seq = "NA"
+						b.receptorname = "NA"
+						b.prob = "NA"
+						b.noresult = True
+					else:						
+						b.seq = data["Final_Sequence"][j]
+						b.receptorname = data["Receptor"][j]
+						b.prob = data["Probability"][i]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -381,8 +347,13 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					b.smiles = data["Smiles"][j]
-					b.prob = data["Probability"][i]
+					if pd.isna(data["Probability"][j]):
+						b.smiles = "NA"
+						b.prob = "NA"
+						b.noresult = True
+					else:						
+						b.smiles = data["Smiles"][j]
+						b.prob = data["Probability"][i]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -406,7 +377,6 @@ def result_queue(request,job_name,model,count):
 					b.status = "binding"
 				display.append(b)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}], "singleT": True})
-		return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":False})
 
 def odor(request):
 	if "GET" == request.method:
@@ -419,43 +389,39 @@ def odor(request):
 			a = result()
 			id = check_user(request)
 			a.id = id
-			userm1 = f"../{id}/m1"
+			userm1 = f"olfy/static/olfy/generated/{id}/m1"
 			job_name = request.POST["job_name"]
 			if len(job_name) == 0:
 				job_name = "untitled"
 			smiles = request.POST["smiles"]
 			email = request.POST["email"]
-			m1 = f"olfy/static/olfy/generated/m1"
-			os.chdir(m1)
 			s = smiles.replace('\r',"").split('\n')
 			if "" in s:
 				s.remove("")
 			temp = {"smiles":s}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
-			data.to_csv("input.csv",index=False)
-			os.system("python transformer-cnn.py config.cfg")
 			count = 1
 			while os.path.isdir(f"{userm1}/{job_name}"):
 				job_name = f"{job_name}1"
 			os.mkdir(f"{userm1}/{job_name}")
 			a.job_name = job_name
 			job_name = f"{userm1}/{job_name}"
+			path = os.path.abspath(job_name)
+			data.to_csv(f"{path}/input.csv",index=False)
 			a.model = 1
-			f = pd.read_csv("input.csv")
+			os.chdir("olfy/static/olfy/generated/m1")
+			os.system(f"python transformer-cnn.py config.cfg {path}")
+			f = pd.read_csv(f"{path}/input.csv")
 			smiles = f["smiles"]
-			a.count = len(smiles)
 			for i in smiles:
-				s = "python ochem.py detectodor.pickle "+ f'"{i}"'
-				os.system(s)
-				os.system("gnuplot map.txt && python generate_table.py")
-				smile_path = f"{job_name}/{count}"
+				smile_path = f"{path}/{count}"
 				os.makedirs(smile_path)			
-				move_files(smile_path)
+				os.system(f"python ochem.py detectodor.pickle {i} {smile_path}")
+				os.system(f"gnuplot map.txt {smile_path} && python generate_table.py {smile_path}")
 				count+=1
-			os.remove("results.csv")
-			shutil.move("predicted_output.csv", job_name)
-			os.remove("input.csv")
+			os.remove(f"{path}/results.csv")
+			os.remove(f"{path}/input.csv")
 			a.count = count
 			os.chdir("../")
 			writeresult(a,id)
@@ -491,36 +457,30 @@ def odor_Or(request):
 			email = request.POST["email"]
 			id = check_user(request)
 			a.id = id
-			m4 = "olfy/static/olfy/generated/m4"
-			os.chdir(m4)
 			s = smiles.replace('\r',"").split('\n')
 			if "" in s:
 				s.remove("")
 			t = fasta.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
+			t = fastaformat(t)
+			userm4 = f"olfy/static/olfy/generated/{id}/m4"
 			temp = {"smiles":s,"seq":t}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
-			data.to_csv("input.csv",index=False)
-			userm4 = f"../{id}/m4"
-			os.system("python M4_final.py")
 			while os.path.isdir(f"{userm4}/{job_name}"):
 				job_name = f"{job_name}1"
 			a.job_name = job_name
 			job_name = f"{userm4}/{job_name}"
 			os.mkdir(job_name)
+			path = os.path.abspath(job_name)
+			data.to_csv(f"{path}/input.csv",index=False)
+			os.chdir("olfy/static/olfy/generated/m4")
+			os.system(f"python M4_final.py {path}")
 			a.model = 4
-			data = pd.read_csv("output.csv")
-			output = []
-			index = data.index
-			number_of_rows = len(index)
-			for i in range(number_of_rows):
-				shutil.move(f"{i+1}_SmileInterpretability.png", job_name)
-				shutil.move(f"{i+1}_SequenceInterpretability.png", job_name)
-				shutil.move(f"{i+1}_mol.svg", job_name)
-			shutil.move("output.csv",job_name)
-			os.remove("input.csv")
+			data = pd.read_csv(f"{path}/output.csv")
+			number_of_rows = len(data)
+			os.remove(f"{path}/input.csv")
 			a.count = number_of_rows
 			os.chdir("../")
 			writeresult(a,id)
@@ -551,37 +511,38 @@ def Or(request):
 			fasta = request.POST["fasta"]
 			email = request.POST["email"]
 			counter = request.POST["normal_counter"]
-			m3 = "olfy/static/olfy/generated/m3"
-			os.chdir(m3)
 			t = fasta.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
 			t = fastaformat(t)
 			temp = {"seq":t}
 			data = pd.DataFrame(temp)
-			data = data.head(25)
-			data.to_csv("input.csv",index=False)
-			a.model = 3
-			while os.path.isdir(f"../{id}/m3/{job_name}"):
+			while os.path.isdir(f"olfy/static/olfy/generated/{id}/m3/{job_name}"):
 				job_name = f"{job_name}1"
 			a.job_name = job_name
-			job_name = f"../{id}/m3/{job_name}"
+			job_name = f"olfy/static/olfy/generated/{id}/m3/{job_name}"
 			os.mkdir(job_name)
-			f = pd.read_csv("input.csv")
+			path = os.path.abspath(job_name)
+			data = data.head(25)
+			data.to_csv(f"{path}/input.csv",index=False)
+			a.model = 3
+			f = pd.read_csv(f"{path}/input.csv")
+			os.chdir('olfy/static/olfy/generated/m3')
 			a.count = len(f["seq"])
 			for i in range(len(f["seq"])):
 				dic = {"seq":[f["seq"][i]],"k":int(counter)}
 				df = pd.DataFrame(dic)
-				df.to_csv("temp.csv",index=False)
-				os.system("python M3.py")
-				df = pd.read_csv("output.csv")
+				os.makedirs(f"{path}/{i+1}")
+				df.to_csv(f"{path}/{i+1}/temp.csv",index=False)
+				os.system(f"python M3.py {path}/{i+1}")
+				os.remove(f"{path}/{i+1}/temp.csv")
+				df = pd.read_csv(f"{path}/{i+1}/output.csv")
 				j = []
 				for k in range(len(df["Probability"])):
 					j.append(f["seq"][i])
 				df["seq"] = j
-				df.to_csv("output.csv",index=False)
-				m3_file(job_name,i+1);
-			os.remove("input.csv")
+				df.to_csv(f"{path}/{i+1}/output.csv",index=False)
+			os.remove(f"{path}/input.csv")
 			os.chdir("../")
 			writeresult(a,id)
 			for i in range(4):
@@ -612,49 +573,53 @@ def odor2(request):
 			email = request.POST["email"]
 			slider = request.POST["slider_value"]
 			counter = request.POST["normal_counter"]
-			m2 = "olfy/static/olfy/generated/m2"
-			os.chdir(m2)
 			t = smiles.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
 			temp = {"smiles":t}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
-			data.to_csv("input.csv",index=False)
 			a.model = 2
-			userm2 = f"../{id}/m2"
+			userm2 = f"olfy/static/olfy/generated/{id}/m2"
 			while os.path.isdir(f"{userm2}/{job_name}"):
 				job_name = f"{job_name}1"
 			a.job_name = job_name
 			job_name = f"{userm2}/{job_name}"
+			path = os.path.abspath(job_name)
 			os.mkdir(job_name)
-			f = pd.read_csv("input.csv")
+			data.to_csv(f"{path}/input.csv",index=False)
+			os.chdir("olfy/static/olfy/generated/m2")
+			f = pd.read_csv(f"{path}/input.csv")
 			a.count = len(f["smiles"])
 			for i in range(len(f["smiles"])):
 				if counter == "10" and slider != "1":
 					dic = {"smiles":[f["smiles"][i]],"threshhold":float(slider)}
 					df = pd.DataFrame(dic)
-					df.to_csv("temp.csv",index=False)
-					os.system("python M2.py")
+					os.makedirs(f"{path}/{i+1}")
+					df.to_csv(f"{path}/{i+1}/temp.csv",index=False)
+					os.system(f"python M2.py {path}/{i+1}")
+					os.remove(f"{path}/{i+1}/temp.csv")
 				elif slider == "1" and counter != "10":
 					dic = {"smiles":[f["smiles"][i]],"k":int(counter)}
 					df = pd.DataFrame(dic)
-					df.to_csv("temp.csv",index=False)
-					os.system("python M2-brute-force.py")
+					os.makedirs(f"{path}/{i+1}")
+					df.to_csv(f"{path}/{i+1}/temp.csv",index=False)
+					os.system(f"python M2-brute-force.py {path}/{i+1}")
+					os.remove(f"{path}/{i+1}/temp.csv")					
 				else:
 					dic = {"smiles":[f["smiles"][i]],"threshhold":float(slider)}
 					df = pd.DataFrame(dic)
-					df.to_csv("temp.csv",index=False)
-					os.system("python M2.py")
-				df = pd.read_csv("output.csv")
+					os.makedirs(f"{path}/{i+1}")
+					df.to_csv(f"{path}/{i+1}/temp.csv",index=False)
+					os.system(f"python M2.py {path}/{i+1}")
+					os.remove(f"{path}/{i+1}/temp.csv")
+				df = pd.read_csv(f"{path}/{i+1}/output.csv")
 				j = []
 				for k in range(len(df["Probability"])):
 					j.append(f["smiles"][i])
 				df["smiles"] = j
-				# df=pd.merge(df, data, on='Receptor')
-				df.to_csv("output.csv",index=False)
-				m2_file(job_name,i+1);
-			os.remove("input.csv")
+				df.to_csv(f"{path}/{i+1}/output.csv",index=False)
+			os.remove(f"{path}/input.csv")
 			os.chdir("../")
 			writeresult(a,id)
 			for i in range(4):

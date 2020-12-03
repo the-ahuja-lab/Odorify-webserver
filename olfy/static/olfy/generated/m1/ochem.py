@@ -600,7 +600,7 @@ def calcQSAR(ch, atom, MolWt, doLrp = True):
 
 
 mol =  sys.argv[2];
-
+path = sys.argv[3];
 m = Chem.MolFromSmiles(mol);
 MolWt = Descriptors.ExactMolWt(m);
 
@@ -623,7 +623,7 @@ std = np.std(vals);
 print("{} = {:.7f} +/- {:7f} {}".format(info[0], res, 1.96*std / math.sqrt(len(vals)), info[3]));
 
 #save relevance
-fp = open("map.txt", "w");
+fp = open(f"{path}/map.txt", "w");
 
 y_max = np.max(impacts);
 y_min = np.min(impacts);

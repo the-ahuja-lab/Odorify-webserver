@@ -21,7 +21,7 @@ import math
 import random
 from captum.attr import IntegratedGradients
 import pickle
-
+import sys
 
 # In[4]:
 
@@ -106,7 +106,7 @@ class BLSTM(nn.Module):
 # In[38]:
 
 
-def user_predict(model, x_input_smile, x_input_seq,count):
+def user_predict(model, x_input_smile, x_input_seq,count,path):
     mol = Chem.MolFromSmiles(x_input_smile)
     Chem.Kekulize(mol)
     x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
@@ -179,7 +179,7 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Smiles",fontsize=15)
     ax.set_ylabel("Relevance",fontsize=15,rotation=0)
-    ax.figure.savefig(f'{count}_SmileInterpretability.png')
+    ax.figure.savefig(f'{path}/{count}_SmileInterpretability.png')
     impacts=np.array(impacts)
     print(impacts)
 
@@ -231,7 +231,7 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     drawer.FinishDrawing()
     svg = drawer.GetDrawingText().replace('svg:','')
 
-    fp = open(f"{count}_mol.svg", "w")
+    fp = open(f"{path}/{count}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
     
@@ -287,7 +287,7 @@ def user_predict(model, x_input_smile, x_input_seq,count):
     ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Receptor Sequence",fontsize=15)
     ax.set_ylabel("Relevance",fontsize=15,rotation=0)
-    ax.figure.savefig(f'{count}_SequenceInterpretability.png')
+    ax.figure.savefig(f'{path}/{count}_SequenceInterpretability.png')
     return z
 
 
@@ -296,8 +296,8 @@ def user_predict(model, x_input_smile, x_input_seq,count):
 
 filename = 'M4_final.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-
-data = pd.read_csv("input.csv")
+path = sys.argv[1]
+data = pd.read_csv(f"{path}/input.csv")
 output = []
 index = data.index
 number_of_rows = len(index)
@@ -305,7 +305,7 @@ for i in range(number_of_rows):
 	temp = []
 	user_smile = str(data["smiles"][i])
 	user_seq = str(data["seq"][i])
-	z = user_predict(loaded_model, user_smile,user_seq,i+1)
+	z = user_predict(loaded_model, user_smile,user_seq,i+1,path)
 	temp.append(user_smile)
 	temp.append(user_seq)
 	temp.append(z[0])
@@ -313,7 +313,7 @@ for i in range(number_of_rows):
 	output.append(temp)
 
 df = pd.DataFrame(output, columns = ['smiles','seq','status','prob'])
-df.to_csv("output.csv")
+df.to_csv(f"{path}/output.csv",index=False)
 
 
 # In[ ]:
