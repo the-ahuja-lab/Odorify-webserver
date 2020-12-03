@@ -114,16 +114,16 @@ def about(request):
 				'image': 'Ria.png'
 			},
 			{
-				'name': 'Sushant Gupta',
-				'post': 'Back-End Development ',
-				'email': 'sushant19450@iiitd.ac.in',
-				'image': 'Sushant.jpg'
-			},
-			{
 				'name': 'Rishi Raj Jain',
 				'post': 'Lead Design & Development',
 				'email': 'rishi18304@iiitd.ac.in',
 				'image': 'Rishi.jpg'
+			},
+			{
+				'name': 'Sushant Gupta',
+				'post': 'Back-End Development ',
+				'email': 'sushant19450@iiitd.ac.in',
+				'image': 'Sushant.jpg'
 			},
 			{
 				'name': 'Aayushi Mittal',
