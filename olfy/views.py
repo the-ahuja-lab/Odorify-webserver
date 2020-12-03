@@ -3,18 +3,13 @@ from django.http import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.http import JsonResponse
-import pandas as pd
-import os
-import shutil
+import pandas as pd, os, shutil, smtplib, traceback, uuid
 from .models import queuedisp,result,disp,disp4,disp2,disp3
 from zipfile import ZipFile 
-import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-import traceback
-import uuid
 
 root = os.path.abspath('./')
 
@@ -37,6 +32,7 @@ def fastaformat(s):
 		temp = temp+i
 	t.append(temp)
 	return t
+
 def writeresult(a,job_name):
 	temp = f'{job_name}/temp.txt'
 	result = f"{job_name}/result.txt"
@@ -125,7 +121,7 @@ def about(request):
 			},
 			{
 				'name': 'Rishi Raj Jain',
-				'post': 'Lead Front-End Development',
+				'post': 'Lead Design & Development',
 				'email': 'rishi18304@iiitd.ac.in',
 				'image': 'Rishi.jpg'
 			},
@@ -433,12 +429,6 @@ def odor(request):
 			traceback.print_exc()
 			os.chdir(root)
 			return JsonResponse({'code': 0})
-
-# def getEmail(request):
-# 	if "POST" == request.method:
-# 		os.chdir(root)
-# 		return JsonResponse({'code': 1})
-# 		# registerEmail(request.POST['email'])
 
 def odor_Or(request):
 	if "GET" == request.method:

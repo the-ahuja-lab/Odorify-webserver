@@ -1,0 +1,6 @@
+db.*
+*__pycache__*
+*.pyc
+.idea/
+Pipfile.lock
+result.txt

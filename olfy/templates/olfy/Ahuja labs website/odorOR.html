@@ -1,34 +1,5 @@
 {% extends "olfy/Ahuja labs website/base.html" %}
 {% load static %}
-{% block loadhead %}
-<style>
-	.form-control::-webkit-input-placeholder { color: white; }  /* WebKit, Blink, Edge */
-	.form-control:-moz-placeholder { color: white; }  /* Mozilla Firefox 4 to 18 */
-	.form-control::-moz-placeholder { color: white; }  /* Mozilla Firefox 19+ */
-	.form-control:-ms-input-placeholder { color: white; }  /* Internet Explorer 10-11 */
-	.form-control::-ms-input-placeholder { color: white; }  /* Microsoft Edge */
-	textarea:focus,
-	input[type="text"]:focus,
-	input[type="password"]:focus,
-	input[type="datetime"]:focus,
-	input[type="datetime-local"]:focus,
-	input[type="date"]:focus,
-	input[type="month"]:focus,
-	input[type="time"]:focus,
-	input[type="week"]:focus,
-	input[type="number"]:focus,
-	input[type="email"]:focus,
-	input[type="url"]:focus,
-	input[type="search"]:focus,
-	input[type="tel"]:focus,
-	input[type="color"]:focus,
-	.uneditable-input:focus {   
-		border-color: #00000000;
-		box-shadow: 0 1px 1px #00000000 inset, 0 0 8px #00000000;
-		outline: 0 none;
-	}
-</style>
-{% endblock %}
 {% block content %}
 {% include "./loader.html" %}
 <div class="entireDoc container loadFade">
@@ -68,7 +39,7 @@
 							</a>
 						</small>
 						<div class="border-bottom border-dark mt-4 form-group">
-							<textarea required style="min-height: 200px; font-size: 20px;" name="fasta" id="job-desc-2" class="border-0 bg-dark text-white form-control" placeholder="Enter maximum of 25 enter-separated FASTA entries *"></textarea>
+							<textarea required style="min-height: 200px; font-size: 20px;" name="fasta" id="job-desc-2" class="border-0 bg-dark text-white form-control" placeholder="Enter maximum of 25 FASTA entries (Enter-Separated) *"></textarea>
 						</div>
 						<small class="text-gra">
 							Don't have FASTA?
@@ -79,7 +50,7 @@
 					</div>
 					<div class="col-md-6 d-flex flex-column align-items-center text-center justify-content-center">
 						<h4 class="text-white">
-							or <br /> upload a csv (comma-seperated values)
+							or <br /> Upload a CSV (comma-seperated values)
 						</h4>
 						<input style="width: 270px;" class="btn btn-lg rounded-lg border-0 shadow-lg text-white" type="file" id="upload-photo" name="myfile"></input>
 					</div>
