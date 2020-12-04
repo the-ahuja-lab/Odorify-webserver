@@ -25,7 +25,7 @@ def get_id(request):
 	else:
 		id = uuid.uuid4()
 		request.session['id'] = id.int
-		return str(id.int)
+		return str(id.int)[:10]
 
 def fastaformat(s):
 	t = []
@@ -208,13 +208,13 @@ def results(request):
 		elif a.model == 1:
 			s = f'{user}/m1/{a.job_name}/predicted_output.csv'
 			data = pd.read_csv(s)
-			index = data.index
-			number_of_rows = len(index)
+			print(data)
+			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp()
 				b.smiles = data["smiles"][i]
-				b.prob = data["prob"][i]
+				b.prob = str(data["prob"][i])[0:5]
 				b.sno = i+1
 				temp = data["pred_odor"][i]
 				if temp == 1:
@@ -243,7 +243,7 @@ def results(request):
 					else:						
 						b.seq = data["Final_Sequence"][j]
 						b.receptorname = data["Receptor"][j]
-						b.prob = data["Probability"][i]
+						b.prob = str(data["Probability"][i])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -266,7 +266,7 @@ def results(request):
 						b.noresult = True
 					else:						
 						b.smiles = data["Smiles"][j]
-						b.prob = data["Probability"][i]
+						b.prob = str(data["Probability"][i])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -281,7 +281,7 @@ def results(request):
 			for i in range(number_of_rows):
 				b = disp4()
 				b.smiles = data["smiles"][i]
-				b.prob = data["prob"][i]
+				b.prob = str(data["prob"][i])[:5]
 				b.sno = i+1
 				b.seq = data["seq"][i]
 				if data["status"][i] == 0:
@@ -306,13 +306,13 @@ def result_queue(request,job_name,model,count):
 		elif a.model == 1:
 			s = f'{user}/m1/{a.job_name}/predicted_output.csv'
 			data = pd.read_csv(s)
-			index = data.index
-			number_of_rows = len(index)
+			print(data)
+			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp()
 				b.smiles = data["smiles"][i]
-				b.prob = data["prob"][i]
+				b.prob = str(data["prob"][i])[0:5]
 				b.sno = i+1
 				temp = data["pred_odor"][i]
 				if temp == 1:
@@ -341,7 +341,7 @@ def result_queue(request,job_name,model,count):
 					else:						
 						b.seq = data["Final_Sequence"][j]
 						b.receptorname = data["Receptor"][j]
-						b.prob = data["Probability"][i]
+						b.prob = str(data["Probability"][i])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -364,7 +364,7 @@ def result_queue(request,job_name,model,count):
 						b.noresult = True
 					else:						
 						b.smiles = data["Smiles"][j]
-						b.prob = data["Probability"][i]
+						b.prob = str(data["Probability"][i])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
@@ -379,7 +379,7 @@ def result_queue(request,job_name,model,count):
 			for i in range(number_of_rows):
 				b = disp4()
 				b.smiles = data["smiles"][i]
-				b.prob = data["prob"][i]
+				b.prob = str(data["prob"][i])[:5]
 				b.sno = i+1
 				b.seq = data["seq"][i]
 				if data["status"][i] == 0:
@@ -422,18 +422,26 @@ def odor(request):
 			data.to_csv(f"{path}/input.csv",index=False)
 			a.model = 1
 			os.chdir("olfy/static/olfy/generated/m1")
+			shutil.copyfile("olfy_model_v1.tar",f'{path}/olfy_model_v1.tar')
 			os.system(f"python transformer-cnn.py {path}")
 			f = pd.read_csv(f"{path}/input.csv")
 			smiles = f["smiles"]
 			for i in smiles:
 				smile_path = f"{path}/{count}"
 				os.makedirs(smile_path)			
-				os.system(f"python ochem.py detectodor.pickle {i} {smile_path}")
-				os.system(f"gnuplot map.txt {smile_path} && python generate_table.py {smile_path}")
+				cmd = f"python ochem.py detectodor.pickle "+ f'"{i}" ' f"{smile_path}"
+				print(cmd)
+				os.system(cmd)
+				print("done")
+				os.system(f"gnuplot " + f'"{path}/map.txt"')
 				count+=1
+			print("relax pdf")
+			os.system(f"python generate_table.py {path}")
+			os.remove(f"{path}/map.txt")
+			os.remove(f"{path}/olfy_model_v1.tar")
 			os.remove(f"{path}/results.csv")
 			os.remove(f"{path}/input.csv")
-			a.count = count
+			a.count = count-1
 			os.chdir("../")
 			writeresult(a,id)
 			os.chdir("../../../../")
@@ -713,16 +721,15 @@ def makezip(a,request):
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m1")
 	for i in range(a.count):
-		file_path.append(f"{a.job_name}/{i}/lrp.pdf")
-		file_path.append(f"{a.job_name}/{i}/mol.svg") 
+		print(f"{a.job_name}/{i+1}/lrp.pdf")
+		file_path.append(f"{a.job_name}/{i+1}/lrp.pdf")
+		file_path.append(f"{a.job_name}/{i+1}/mol.svg") 
 	file_path.append(f"{a.job_name}/predicted_output.csv")
 	zip = ZipFile(f"{a.job_name}/data.zip",'w') 
 	for file in file_path: 
 		zip.write(file)
 	zip.close()
 	zip = open(f"{a.job_name}/data.zip","rb")
-	for i in range(5):
-		os.chdir("../")
 	for i in range(6):
 		os.chdir("../")
 	return zip
@@ -832,7 +839,7 @@ def send_attachment(a,email,request):
 	encoders.encode_base64(p) 
 	p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
 	msg.attach(p) 
-	message = "Dear User,\n Thank you for using Odorify. Please find attached your combined results in a zip file. In case of any queries, please contact us through the help page of our webserver."
+	message = "Dear User,\n Thank you for using OdoriFy.\n Please find attached your combined results in a zip file. In case of any queries, please contact us <a href='www.odorify.iiitd.edu.in/contact'>here</a>."
 	msg.attach(MIMEText(message, 'plain'))	
 	text = msg.as_string() 
 	s = smtplib.SMTP('smtp.gmail.com', 587)

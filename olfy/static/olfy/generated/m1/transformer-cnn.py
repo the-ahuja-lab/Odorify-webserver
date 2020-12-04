@@ -51,12 +51,13 @@ print("Version: ", version)
 #    FIRST_LINE = True
 # else:
 #    FIRST_LINE = False
-path = "/home/sushant/Desktop"
+path = sys.argv[1]
 TRAIN = "False"
 MODEL_FILE = f'{path}/olfy_model_v1.tar'
 # TRAIN_FILE = getConfig("Task","train_data_file")
 APPLY_FILE = f'{path}/input.csv'
 RESULT_FILE = f"{path}/results.csv"
+print(f"this is result.csv {RESULT_FILE}")
 NUM_EPOCHS =  100
 BATCH_SIZE = 32
 SEED = 657488
@@ -660,10 +661,10 @@ if __name__ == "__main__":
 
            for i in epochs_to_save[1:]:
               os.remove(f"{path}/tr-" + str(i) + ".h5")
-           os.rename(f"{path}/tr-" + str(epochs_to_save[0]) + ".h5", "final.h5")
+           os.rename(f"{path}/tr-" + str(epochs_to_save[0]) + ".h5", f"{path}/final.h5")
 
            #extract embeddings
-           smi2smi.load_weights("final.h5")
+           smi2smi.load_weights(f"{path}/final.h5")
            w = smi_encoder.get_weights()
            np.save(f"{path}/embeddings.npy", w)
            os.remove(f"{path}/final.h5")
@@ -838,7 +839,7 @@ if __name__ == "__main__":
 
            for i in range(NUM_EPOCHS - AVERAGING, NUM_EPOCHS):
               os.remove(f"{path}/e-" + str(i) + ".h5")
-           os.rename(f"{path}/e-" + str(NUM_EPOCHS - AVERAGING-1) + ".h5", "model.h5")
+           os.rename(f"{path}/e-" + str(NUM_EPOCHS - AVERAGING-1) + ".h5", f"{path}/model.h5")
 
         with open(f'{path}/model.pkl', 'wb') as f:
            pickle.dump(props, f)
@@ -858,13 +859,13 @@ if __name__ == "__main__":
     elif TRAIN == "False":
 
        tar = tarfile.open(MODEL_FILE)
-       tar.extractall()
+       tar.extractall(path=path)
        tar.close()
 
        props = pickle.load( open( f"{path}/model.pkl", "rb" ))
 
        mdl, encoder = buildNetwork()
-       mdl.load_weights("model.h5")
+       mdl.load_weights(f"{path}/model.h5")
 
        first_row = FIRST_LINE
        DS = []
@@ -1028,11 +1029,15 @@ if __name__ == "__main__":
                       res = (res - 0.9) / 0.8 * (props[prop][4] - props[prop][3]) + props[prop][4]
                    print(res, end=",", file=fp)
                 print("", file=fp)
-
+      
        fp.close()
 
        os.remove(f"{path}/model.pkl")
        os.remove(f"{path}/model.h5")
        os.remove(f"{path}/embeddings.npy")
-
+       import pandas as pd
+       df = pd.read_csv(RESULT_FILE)
+       df = pd.DataFrame(df["property"])
+       df.to_csv(f"{path}/results.csv",index=False)
+       print(df)
     print("Relax!")
