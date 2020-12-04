@@ -1,4 +1,5 @@
 from uuid import uuid4
+from htmlmin.decorators import minified_response
 from django.http import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -83,19 +84,21 @@ def loadingpage(request):
 	os.chdir(root)
 	return render(request, "olfy/Ahuja labs website/loading.html", {'hide': 'd-none'})
 
+@minified_response
 def home(request):
-	if "GET" == request.method:
-		check_user(request)	
-		os.chdir(root)
-		context= {
-			'hide': 'd-none'
-		}
-		return render(request, "olfy/Ahuja labs website/index.html", context)
+	check_user(request)	
+	os.chdir(root)
+	context= {
+		'hide': 'd-none'
+	}
+	return render(request, "olfy/Ahuja labs website/index.html", context)
 
+@minified_response
 def displaymodels(request):
 	check_user(request)	
 	return render(request, "olfy/Ahuja labs website/modelsList.html")
 
+@minified_response
 def about(request):
 	os.chdir(root)
 	context= {
@@ -158,6 +161,7 @@ def about(request):
 	}
 	return render(request, "olfy/Ahuja labs website/about.html", context)
 
+@minified_response
 def help(request):
 	os.chdir(root)
 	check_user(request)	
@@ -639,6 +643,7 @@ def odor2(request):
 			os.chdir(root)
 			return JsonResponse({'code': 0})
 
+@minified_response
 def contactus(request):
 	if "GET" == request.method:
 		os.chdir(root)
