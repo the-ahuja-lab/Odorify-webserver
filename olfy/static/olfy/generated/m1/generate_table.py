@@ -13,5 +13,5 @@ for i in range (len(input_smile)):
 	input_smile["prob"][i]=str(input_smile["prob"][i])[:5]
 # test_true=test_true.drop(columns=['odor'])
 predicted_output = input_smile
-predicted_output.to_csv(f"{path}/predicted_output.csv")
+predicted_output.to_csv(f"{path}/predicted_output.csv", index=False)
 
