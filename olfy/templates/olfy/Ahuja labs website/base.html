@@ -70,6 +70,9 @@
 		<title>OdoriFy</title>
 	</head>
 	<body class="bg-dark">
+		<button id="notification-loading" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%); z-index: 10000;" class="animate__animated animate__fadeIn d-none btn btn-sm btn-warning">
+			Loading...
+		</button>
 		{% block body %} {% endblock %}
 		<nav class="{{hide}} navbar navbar-expand-lg bg-dark sticky-top border-dark border-bottom">
 			<div class="container">
@@ -110,6 +113,16 @@
 		<script>
 			function tbl(csv){
 				return csv.split('\n').map(function(tr,i){return tr.replace(/\t/g,'</td><td>');}).join('\n');
+			}
+			function openNotif(){
+				$('#notification-loading').removeClass('d-none');
+			}
+			function closeNotif(){
+				$('#notification-loading').addClass('d-none');
+				$('#notification-loading').attr("class", "animate__animated animate__fadeIn d-none btn btn-sm btn-warning");
+			}
+			function textNotif(a){
+				$('#notification-loading').text(a);
 			}
 			$(document).ready(function(){
 				setTimeout(()=>{

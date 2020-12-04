@@ -37,6 +37,7 @@ def fastaformat(s):
 		temp = temp+i
 	t.append(temp)
 	return t
+	
 def writeresult(a,job_name):
 	temp = f'{job_name}/temp.txt'
 	result = f"{job_name}/result.txt"
@@ -106,6 +107,18 @@ def about(request):
 				'image': 'Gaurav.jpg'
 			},
 			{
+				'name': 'Aayushi Mittal',
+				'post': 'Data Collection',
+				'email': 'aayushim@iiitd.ac.in',
+				'image': 'Aayushi.jpg'
+			},
+			{
+				'name': 'Krishan Gupta',
+				'post': 'Developing DL',
+				'email': 'krishang@iiitd.ac.in',
+				'image': 'Krishan.jpg'
+			},
+			{
 				'name': 'Vishesh Agarwal',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'vishesh18420@iiitd.ac.in',
@@ -118,22 +131,16 @@ def about(request):
 				'image': 'Ria.png'
 			},
 			{
-				'name': 'Sushant Gupta',
-				'post': 'Back-End Development ',
-				'email': 'sushant19450@iiitd.ac.in',
-				'image': 'Sushant.jpg'
-			},
-			{
 				'name': 'Rishi Raj Jain',
-				'post': 'Lead Front-End Development',
+				'post': 'Lead Design & Development',
 				'email': 'rishi18304@iiitd.ac.in',
 				'image': 'Rishi.jpg'
 			},
 			{
-				'name': 'Aayushi Mittal',
-				'post': 'Data Collection',
-				'email': 'aayushim@iiitd.ac.in',
-				'image': 'Aayushi.jpg'
+				'name': 'Sushant Gupta',
+				'post': 'Back-End Development ',
+				'email': 'sushant19450@iiitd.ac.in',
+				'image': 'Sushant.jpg'
 			},
 			{
 				'name': 'Prakriti',
@@ -632,38 +639,42 @@ def odor2(request):
 			os.chdir(root)
 			return JsonResponse({'code': 0})
 
-
 def contactus(request):
 	if "GET" == request.method:
 		os.chdir(root)
 		check_user(request)	
 		return render(request, "olfy/Ahuja labs website/contact.html")
 	else:
-		os.chdir(root)
-		email = request.POST["email"]
-		subject = request.POST["title"]
-		message = request.POST["message"]
-		sender = "odorify.ahujalab@iiitd.ac.in"
-		msg = MIMEMultipart()
-		msg['From'] = sender
-		msg['To'] = sender
-		msg['Subject'] = subject
-		msg.attach(MIMEText(message, 'plain'))
-		text = msg.as_string() 
-		s = smtplib.SMTP('smtp.gmail.com', 587)
-		s.starttls()
-		s.login(sender, "odorify123")
-		s.sendmail(sender, sender, text)
-		msg = MIMEMultipart()
-		msg['From'] = sender
-		msg['To'] = email
-		msg['Subject'] = "Thank You for your response"
-		message = "Dear User,\nThank you for your response. We will try to contact you as soon as possible"
-		msg.attach(MIMEText(message, 'plain'))
-		text = msg.as_string() 
-		s.sendmail(sender, email, text)
-		s.quit()
-		return render(request, "olfy/Ahuja labs website/contact.html", {'messages': ['✓ Mail sent successfully']})
+		try:
+			os.chdir(root)
+			email= request.POST["email"]
+			subject= request.POST["title"]
+			message= request.POST["message"]
+			nameUser= request.POST["name"]
+			print(email, subject, message, nameUser)
+			sender= "odorify.ahujalab@iiitd.ac.in"
+			msg= MIMEMultipart()
+			msg['From']= sender
+			msg['To']= sender
+			msg['Subject']= subject
+			msg.attach(MIMEText(message, 'plain'))
+			text= msg.as_string()
+			s= smtplib.SMTP('smtp.gmail.com', 587)
+			s.starttls()
+			s.login(sender, "odorify123")
+			s.sendmail(sender, sender, text)
+			msg = MIMEMultipart()
+			msg['From']= sender
+			msg['To']= email
+			msg['Subject']= f"Odorify Query: {subject}"
+			message= f"Hi {nameUser},\nWe appreciate your interest in our product. We've received your query and we'll get back to you with a (human) response as soon as possible.\n\nCheers,\nOdoriFy Bot"
+			msg.attach(MIMEText(message, 'plain'))
+			text= msg.as_string() 
+			s.sendmail(sender, email, text)
+			s.quit()
+			return JsonResponse({'code': 1})
+		except:
+			return JsonResponse({'code': 0})
 
 def queue(request):
 	if "GET" == request.method:

@@ -3,24 +3,26 @@
 {% block content %}
 	<div class="container-fluid px-md-5">
 		<div class="vh-100 row">
-			<div class="px-md-5 order-1 order-md-0 col-md-6 loadFade h-md-100 d-flex flex-column align-items-center align-items-md-start justify-content-center text-center text-md-left text-white">
-				<h1 class="d-none d-md-block display-3">
-					OdoriFy
-				</h1>
-				<h1 class="d-block d-md-none">
-					OdoriFy
-				</h1>
-				<h2 class="d-none d-md-block mt-2">
-					A comprehensive AI-driven <br />web-based solution for <br />Human Olfaction
-				</h2>
-				<h4 class="d-block d-md-none mt-2">
-					A comprehensive AI-driven <br />web-based solution for <br />Human Olfaction
-				</h4>
-				<a href="{% url 'olfy-models' %}">
-					<button style="width: 280px;" class="mt-5 btn btn-outline-light shadow-lg">
-						Get Started
-					</button>
-				</a>
+			<div class="w-100 order-1 order-md-0 col-md-6 loadFade h-md-100 d-flex flex-column align-items-center justify-content-center text-white">
+				<div class="d-flex flex-column">
+					<h1 class="d-none d-md-block display-3">
+						OdoriFy
+					</h1>
+					<h1 class="d-block d-md-none">
+						OdoriFy
+					</h1>
+					<h2 class="d-none d-md-block mt-2">
+						A comprehensive AI-driven<br />web-based solution for<br />Human Olfaction
+					</h2>
+					<h4 class="d-block d-md-none mt-2">
+						A comprehensive AI-driven<br />web-based solution for<br />Human Olfaction
+					</h4>
+					<a href="{% url 'olfy-models' %}">
+						<button style="width: 280px;" class="mt-5 btn btn-outline-light shadow-lg">
+							Get Started
+						</button>
+					</a>
+				</div>
 			</div>
 			<div class="order-0 order-md-1 col-md-6 loadFade h-md-100 d-flex flex-column justify-content-center text-left text-white">
 				<img class="w-100" src="/static/olfy/images/logo.gif" />
