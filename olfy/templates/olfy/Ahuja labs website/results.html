@@ -1,8 +1,5 @@
 {% extends "olfy/Ahuja labs website/base.html" %}
 {% load static %}
-{% block loadhead %}
-<style></style>
-{% endblock %}
 {% block content %}
 	<div style="background: #00000050; left: 0; top: 77px; z-index: 10;" id="loadContent" class="d-none text-center position-absolute h-100 w-100">
 		<svg onclick="closeitem();" style="cursor: pointer; position: absolute; right: 0; top: 0;" width="40" height="40" viewBox="0 0 16 16" class="bi bi-x-circle-fill" fill="#dc3545" xmlns="http://www.w3.org/2000/svg">
@@ -50,9 +47,9 @@
 							<table class="mt-2 table text-white">
 								<thead>
 									<tr>
-										<th scope="col">S.No</th>
+										<th scope="col">S. No.</th>
 										{% if result.model == 1 %}
-											<th scope="col">Smile</th>
+											<th scope="col">SMILE</th>
 											<th scope="col">Odor</th>
 										{% elif result.model == 2 %}
 											<th scope="col">Receptor Name</th>
@@ -60,7 +57,7 @@
 										{% elif result.model == 3 %}
 											<th scope="col">Odor Ligand(Smile)</th>
 										{% elif result.model == 4 %}
-											<th scope="col">Smile</th>
+											<th scope="col">SMILE</th>
 											<th scope="col">Sequence</th>
 											<th scope="col">Activation status</th>
 										{% endif %}
