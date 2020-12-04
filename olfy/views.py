@@ -110,19 +110,7 @@ def about(request):
 				'image': 'Gaurav.jpg'
 			},
 			{
-				'name': 'Aayushi Mittal',
-				'post': 'Data Collection',
-				'email': 'aayushim@iiitd.ac.in',
-				'image': 'Aayushi.jpg'
-			},
-			{
-				'name': 'Krishan Gupta',
-				'post': 'Developing DL',
-				'email': 'krishang@iiitd.ac.in',
-				'image': 'Krishan.jpg'
-			},
-			{
-				'name': 'Vishesh Agarwal',
+				'name': 'Vishesh Agrawal',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'vishesh18420@iiitd.ac.in',
 				'image': 'Vishesh.png'
@@ -146,14 +134,26 @@ def about(request):
 				'image': 'Sushant.jpg'
 			},
 			{
+				'name': 'Aayushi Mittal',
+				'post': 'Data Collection & Design',
+				'email': 'aayushim@iiitd.ac.in',
+				'image': 'Aayushi.jpg'
+			},
+			{
+				'name': 'Krishan Gupta',
+				'post': 'Deep Learning Testing',
+				'email': 'krishang@iiitd.ac.in',
+				'image': 'Krishan.jpg'
+			},
+			{
 				'name': 'Prakriti',
-				'post': 'Web Development',
-				'email': 'riya19442@iiitd.ac.in',
+				'post': 'Testing',
+				'email': 'prakriti19439@iiitd.ac.in',
 				'image': 'Prakriti.jpg'
 			},
 			{
 				'name': 'Riya Sogani',
-				'post': 'Web Development',
+				'post': 'Web Development & Testing',
 				'email': 'riya19442@iiitd.ac.in',
 				'image': 'Riya.jpg'
 			}
@@ -597,6 +597,7 @@ def odor2(request):
 			a.job_name = job_name
 			job_name = f"{userm2}/{job_name}"
 			path = os.path.abspath(job_name)
+			print(f'\n\n\n\n{path}\n\n\n\n')
 			os.mkdir(job_name)
 			data.to_csv(f"{path}/input.csv",index=False)
 			os.chdir("olfy/static/olfy/generated/m2")
@@ -672,7 +673,7 @@ def contactus(request):
 			msg['From']= sender
 			msg['To']= email
 			msg['Subject']= f"Odorify Query: {subject}"
-			message= f"Hi {nameUser},\nWe appreciate your interest in our product. We've received your query and we'll get back to you with a (human) response as soon as possible.\n\nCheers,\nOdoriFy Bot"
+			message= f"Hi {nameUser},\nWe appreciate your interest in OdoriFy. We've received your query and we'll get back to you with a (human) response as soon as possible.\n\nCheers,\nOdoriFy Bot"
 			msg.attach(MIMEText(message, 'plain'))
 			text= msg.as_string() 
 			s.sendmail(sender, email, text)
