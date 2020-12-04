@@ -7,14 +7,14 @@
 import math 
 import pickle
 import sys 
-
+import os
 import numpy as np 
 
 from rdkit import Chem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
-
+print("one")
 #the parameters are the same as for Transformer-CNN model.
 N_HIDDEN = 512;
 N_HIDDEN_CNN = 512;
@@ -25,8 +25,8 @@ CONV_OFFSET = 20;
 #our vocabulary
 chars = " ^#%()+-./0123456789=@ABCDEFGHIKLMNOPRSTVXYZ[\\]abcdefgilmnoprstuy$";
 vocab_size = len(chars);
-
 char_to_ix = { ch:i for i,ch in enumerate(chars) }
+print("two")
 
 def LRPCheck(label, x, val):
 
@@ -117,11 +117,11 @@ def calcLRPConvStride(l_prev, w, l_out, stride):
 
 
 #load the model
-
+print("three")
 d = pickle.load(open(sys.argv[1], "rb"));
 info = d[0];
 d = d[1];
-
+print("four")
 def calcQSAR(ch, atom, MolWt, doLrp = True):
    mol = Chem.MolToSmiles(ch, rootedAtAtom = atom, canonical = False);
    
@@ -600,7 +600,8 @@ def calcQSAR(ch, atom, MolWt, doLrp = True):
 
 
 mol =  sys.argv[2];
-
+path = sys.argv[3];
+print(path,"ochem")
 m = Chem.MolFromSmiles(mol);
 MolWt = Descriptors.ExactMolWt(m);
 
@@ -610,7 +611,6 @@ vals = []
 
 impacts = np.zeros(num_atoms, dtype=np.float32);
 labels = [ m.GetAtomWithIdx(i).GetSymbol().upper() for i in range(num_atoms) ];
-
 for atom in range(num_atoms):
    val, scores, bias = calcQSAR(m, atom, MolWt);
    vals.append(val);
@@ -622,8 +622,10 @@ std = np.std(vals);
 
 print("{} = {:.7f} +/- {:7f} {}".format(info[0], res, 1.96*std / math.sqrt(len(vals)), info[3]));
 
-#save relevance
-fp = open("map.txt", "w");
+#save relevance 
+s = path[:path.rfind('/')]
+print(s,"   s")
+fp = open(s+"/map.txt", "w");
 
 y_max = np.max(impacts);
 y_min = np.min(impacts);
@@ -635,7 +637,7 @@ print("set ylabel 'Relevance", file=fp);
 print("set grid", file=fp);
 print("set boxwidth 0.75 relative", file=fp);
 print("set style fill solid 0.5 border rgb 'black' ", file=fp);
-print("set output \"lrp.pdf\"", file=fp);
+print(f"set output " + f'"{path}/lrp.pdf"', file=fp);
 print("set xrange [-2 to " + str(len(mol)) + "]", file=fp);
 print("set yrange [" + str(y_min - 0.1*dist) +" to " + str(y_max + 0.1*dist) +"]", file=fp);
 print("plot \"-\" using 0:2:3:xticlabels(1) with boxes lc rgb variable notitle, 0  lc 'black' notitle", file=fp);
@@ -676,7 +678,6 @@ while i < len(mol):
          print(sym, impacts[k], color, file = fp);
          k = k + 1;   
    i = i + 1;
-
 fp.close();
 
 drawer = rdMolDraw2D.MolDraw2DSVG(400, 400);
@@ -685,9 +686,7 @@ rdDepictor.Compute2DCoords(m);
 drawer.DrawMolecule(m,highlightAtoms = [i for i in range(num_atoms)], highlightBonds=[], highlightAtomColors = colors)
 drawer.FinishDrawing()
 svg = drawer.GetDrawingText()
-fp = open("mol.svg", "w");
+fp = open(f"{path}/mol.svg", "w");
 print(svg, file=fp);
 fp.close();
-
-
 print("Relax!");

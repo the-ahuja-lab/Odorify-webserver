@@ -1,0 +1,8 @@
+conda create -c rdkit -n my-rdkit-env rdkit
+conda activate my-rdkit-env
+conda install django
+conda install h5py
+conda install tensorflow=1.14
+sudo apt-get install gnuplot
+conda install torchvision -c pytorch
+conda install captum -c pytorch

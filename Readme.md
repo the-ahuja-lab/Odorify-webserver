@@ -1,0 +1,3 @@
+- Install conda via: https://www.anaconda.com/products/individual
+- Make the installer an executable file via: chmod u+x installer
+- Run the installer via: ./installer

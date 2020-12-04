@@ -117,15 +117,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+EXCLUDE_FROM_MINIFYING = ('^admin/')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATIC_URL = '/static/'
-
+SESSION_COOKIE_AGE = 86400
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
-]
-
-CRONJOBS=[
-    ('*1 * * * * ' , 'olfy/cron.multi' )
 ]

@@ -4,10 +4,10 @@
 # In[1]:
 
 
-import io
 import pandas as pd
 import numpy as np
 import io
+import sys
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -127,13 +127,13 @@ def prediction(model, x_input_smile, x_input_seq):
     prob=prob.tolist()
 
     
-    return round(prob[0][predictions.item()],3), predictions.item()
+    return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
 
 # In[14]:
 
 
-def combined_user_predict(model, x_input_seq, x_input_smile, filename):
+def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
 
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
@@ -193,7 +193,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename):
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Smiles", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(filename+"_SmileInterpretability.png")
+    ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.png")
     
     mol=x_input_smile
     m = Chem.MolFromSmiles(mol)
@@ -242,7 +242,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename):
     drawer.FinishDrawing()
     svg = drawer.GetDrawingText().replace('svg:','')
 
-    fp = open(filename+"_mol.svg", "w")
+    fp = open(f"{path}/{filename}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
     
@@ -302,7 +302,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename):
     ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Receptor Sequence", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(filename+"_SequenceInterpretability.png")
+    ax.figure.savefig(f"{path}/{filename}_SequenceInterpretability.png")
 
 
 # In[15]:
@@ -321,14 +321,10 @@ loaded_model = pickle.load(open(filename, 'rb'))
 
 # In[17]:
 
-
-# f = pd.read_csv("temp.csv")
-# input_seq= f["seq"][0]
-# input_k=f["k"][0]
-input_seq="MSFSSLPTEIQSLLFLTFLTIYLVTLMGNCLIILVTLADPMLHSPMYFFLRNLSFLEIGFNLVIVPKMLGTLLAQDTTISFLGCATQMYFFFFFGVAECFLLATMAYDRYVAICSPLHYPVIMNQRTRAKLAAASWFPGFPVATVQTTWLFSFPFCGTNKVNHFFCDSPPVLRLVCADTALFEIYAIVGTILVVMIPCLLILCSYTHIAAAILKIPSAKGKNKAFSTCSSHLLVVSLFYISLSLTYFRPKSNNSPEGKKLLSLSYTVMTPMLNPIIYSLRNNEVKNALSRTVSKALALRNCIP"
-input_k=5
-print(input_seq)
-print(input_k)
+path = sys.argv[1]
+f = pd.read_csv(f"{path}/temp.csv")
+input_seq= f["seq"][0]
+input_k=f["k"][0]
 
 # In[18]:
 
@@ -355,21 +351,20 @@ for smile in unique_smiles:
 df_topk=df_topk.sort_values("Probability", ascending=False)
 # value_k = min(input_k,len(df_topk))
 df_topk=df_topk.head(input_k)
-print(df_topk)
 
 
 # In[24]:
 
 
-df_topk.to_csv("output.csv", index=False)
-
-
 # In[20]:
 
 for just in range(input_k):
-    combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1))
+    combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1),path)
 
+if(len(df_topk)==0):
+    df_topk.loc[0]=['NA','NA']
 
+df_topk.to_csv(f"{path}/output.csv", index=False)
 # In[ ]:
 
 

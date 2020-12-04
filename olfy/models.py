@@ -4,14 +4,13 @@ class result:
 	model:int
 	job_name:str
 	count:int
-	ipaddr:str
+	id:str
 	
 class disp:
 	sno:int
 	smiles:str
 	prob:str
 	odor:str
-	smile_id:str
 
 class disp4:
 	sno:int
@@ -26,14 +25,14 @@ class disp2:
 	receptorname:str
 	prob:str
 	tableno:int
-	threshhold:float
-	k:int
+	noresult = False
 
 class disp3:
 	sno:int
 	smiles:str
 	prob:str
 	tableno:int
+	noresult = False
  
 class queuedisp:
 	sno:int
