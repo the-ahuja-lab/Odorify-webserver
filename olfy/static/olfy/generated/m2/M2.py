@@ -91,33 +91,33 @@ class BLSTM(nn.Module):
 
 
 def one_hot_smile(smile):
-  key="()+–./-0123456789=#@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^$"
-  test_list=list(key)
-  res = {val : idx  for idx, val in enumerate(test_list)}
-  #smile="^"+smile
-  smile="^"+smile+("$"*(299-len(smile)))
-  array=[[0 for j in range(len(key))] for i in range(300)]
-  for i in range(len(smile)):
-      array[i][res[smile[i]]]=1
-  array=torch.Tensor(array)
-  return array
+    key="()+–./-0123456789=#@$ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^"
+    test_list=list(key)
+    res = {val : idx  for idx, val in enumerate(test_list)}
+    #smile="^"+smile
+    smile=smile+("^"*(300-len(smile)))
+    array=[[0 for j in range(len(key))] for i in range(300)]
+    for i in range(len(smile)):
+        array[i][res[smile[i]]]=1
+        array=torch.Tensor(array)
+    return array
 
 
 # In[5]:
 
 
 def one_hot_seq(seq):
-  key="^ABCDEFGHIJKLMNOPQRSTUVWXYZ$"
-  seq=seq.upper()
-  test_list=list(key)
-  res = {val : idx  for idx, val in enumerate(test_list)}
-  #seq="^"+seq+"$"
-  seq="^"+seq+("$"*(399-len(seq)))
-  array=[[0 for j in range(len(key))] for i in range(400)]
-  for i in range(len(seq)):
-    array[i][res[seq[i]]]=1
-  array=torch.Tensor(array)
-  return array
+    key="ABCDEFGHIJKLMNOPQRSTUVWXYZ^"
+    seq=seq.upper()
+    test_list=list(key)
+    res = {val : idx  for idx, val in enumerate(test_list)}
+    #seq="^"+seq+"$"
+    seq=seq+("^"*(400-len(seq)))
+    array=[[0 for j in range(len(key))] for i in range(400)]
+    for i in range(len(seq)):
+        array[i][res[seq[i]]]=1
+        array=torch.Tensor(array)
+    return array
 
 
 # In[6]:
@@ -132,7 +132,7 @@ def prediction(model, x_input_smile, x_input_seq):
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
     x_user_seq=torch.stack(x_user_seq)
-    x_user_seq=x_user_seq.view(1,400,28)
+    x_user_seq=x_user_seq.view(1,400,27)
 
     scores = model(x_user_smile,x_user_seq)
     _, predictions = scores.max(1)
@@ -149,10 +149,6 @@ def prediction(model, x_input_smile, x_input_seq):
 
 def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     ax=plt.figure()
-    mol = Chem.MolFromSmiles(x_input_smile)
-    Chem.Kekulize(mol)
-    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
-
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
     x_user_smile=torch.stack(x_user_smile)
@@ -161,7 +157,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
     x_user_seq=torch.stack(x_user_seq)
-    x_user_seq=x_user_seq.view(1,400,28)
+    x_user_seq=x_user_seq.view(1,400,27)
     
     ig = IntegratedGradients(model)
     x_user_smile.requires_grad_()
@@ -169,8 +165,8 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     for i in baseline[0]:
         i[-1]=1
 
-    attr,delta= ig.attribute(x_user_smile,baselines=baseline, target=1,additional_forward_args =x_user_seq,return_convergence_delta=True)
-    attr=attr.view(300,77)
+    attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
+    attr=attr[0].view(300,77)
     maxattr,_=torch.max(attr,dim=1)
     minattr,_=torch.min(attr,dim=1)
     relevance=maxattr+minattr
@@ -213,7 +209,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     ax.set_ylabel("Relevance", fontsize=15)
     ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.png")
     
-#     Structure Interpretability
+    Structure Interpretability
     
     mol=x_input_smile
     m = Chem.MolFromSmiles(mol)
@@ -268,13 +264,13 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     
     #sequence Interpretability:
     ax=plt.figure()
-    baseline = torch.zeros(2, 400, 28)
+    baseline = torch.zeros(2, 400, 27)
     ig = IntegratedGradients(model)
     x_user_seq.requires_grad_()
     x_user_smile.requires_grad_()
     attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
     smile_attr=attr[0].view(300,77)
-    seq_attr=attr[1].view(400,28)
+    seq_attr=attr[1].view(400,27)
     maxattr,_=torch.max(seq_attr,dim=1)
     minattr,_=torch.min(seq_attr,dim=1)
     relevance=maxattr+minattr
@@ -334,6 +330,7 @@ input_smile=f["smiles"][0]
 # input_smile='CC(C)C(=O)OC(C)(C)Cc1ccccc1'
 # threshold=0.75
 # input_smile='COC1=C(C=CC(=C1)CC=C)OC=O'
+
 # Calculating similar smiles (tanimoto similarity)
 
 # In[10]:
