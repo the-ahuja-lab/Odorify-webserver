@@ -623,7 +623,7 @@ std = np.std(vals);
 print("{} = {:.7f} +/- {:7f} {}".format(info[0], res, 1.96*std / math.sqrt(len(vals)), info[3]));
 
 #save relevance
-fp = open(f"{path}/map.txt", "w");
+fp = open(f"{path}/../map.txt", "w");
 
 y_max = np.max(impacts);
 y_min = np.min(impacts);
@@ -685,9 +685,7 @@ rdDepictor.Compute2DCoords(m);
 drawer.DrawMolecule(m,highlightAtoms = [i for i in range(num_atoms)], highlightBonds=[], highlightAtomColors = colors)
 drawer.FinishDrawing()
 svg = drawer.GetDrawingText()
-fp = open("mol.svg", "w");
+fp = open(f"{path}/mol.svg", "w");
 print(svg, file=fp);
 fp.close();
-
-
 print("Relax!");

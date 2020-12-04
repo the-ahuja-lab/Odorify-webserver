@@ -411,7 +411,7 @@ def odor(request):
 			data.to_csv(f"{path}/input.csv",index=False)
 			a.model = 1
 			os.chdir("olfy/static/olfy/generated/m1")
-			os.system(f"python transformer-cnn.py config.cfg {path}")
+			os.system(f"python transformer-cnn.py {path}")
 			f = pd.read_csv(f"{path}/input.csv")
 			smiles = f["smiles"]
 			for i in smiles:
