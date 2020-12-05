@@ -114,6 +114,7 @@
 			output.innerHTML = this.value;
 		}
 		var mob = [];
+		$("input[type=file]").prop("value", "");
 		$("input[type=file]").change(function(){
 			$("input[type=file]").parse({
 				config: {
