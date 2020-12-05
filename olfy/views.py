@@ -334,7 +334,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if "Empty" in data["Final_Sequence"][j]: 
+					if "Empty" == data["Final_Sequence"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -360,7 +360,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					if "Empty" in data["Final_Sequence"][j]: 
+					if "Empty" == data["Probability"][j]: 
 						b.smiles = "NA"
 						b.prob = "NA"
 						b.noresult = True
