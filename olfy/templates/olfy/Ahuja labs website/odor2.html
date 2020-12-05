@@ -52,10 +52,11 @@
 					</div>
 				</div>
 				<div class="">
-					<button data-toggle="tooltip" data-placement="top" title="Slower, but more accurate" onclick="event.preventDefault(); $('#sample-rapid').removeClass('btn-btn-outline-light btn-light'); $('#sample-rapid').addClass('btn-outline-light'); $(this).removeClass('btn-light btn-outline-light'); $(this).addClass('btn-light'); $('#slider').addClass('d-none'); $('#normal-block').removeClass('d-none'); $('#normal_counter').val(5); $('#formControlRange').val(1);" class="mt-3 btn btn-md border btn-outline-light" id="sample-normal">
+					<input id="typeTesting" name="typeOfTesting" value="Rapid Testing" style="transform: scale(0);" />
+					<button data-toggle="tooltip" data-placement="top" title="Slower, but more accurate" onclick="event.preventDefault(); $('#sample-rapid').removeClass('btn-btn-outline-light btn-light'); $('#sample-rapid').addClass('btn-outline-light'); $(this).removeClass('btn-light btn-outline-light'); $(this).addClass('btn-light'); $('#slider').addClass('d-none'); $('#normal-block').removeClass('d-none'); $('#normal_counter').val(5); $('#formControlRange').val(1); $('#typeTesting').val('Normal Testing');" class="mt-3 btn btn-md border btn-outline-light" id="sample-normal">
 						Normal Testing
 					</button>
-					<button data-toggle="tooltip" data-placement="top" title="Faster, but less accurate" onclick="event.preventDefault(); $('#sample-normal').removeClass('btn-btn-outline-light btn-light'); $('#sample-normal').addClass('btn-outline-light'); $(this).removeClass('btn-light btn-outline-light'); $(this).addClass('btn-light'); $('#normal-block').addClass('d-none'); $('#slider').removeClass('d-none'); $('#formControlRange').val(0.75); $('#normal_counter').val(10);" class="mt-3 btn btn-md border btn-outline-light" id="sample-rapid">
+					<button data-toggle="tooltip" data-placement="top" title="Faster, but less accurate" onclick="event.preventDefault(); $('#sample-normal').removeClass('btn-btn-outline-light btn-light'); $('#sample-normal').addClass('btn-outline-light'); $(this).removeClass('btn-light btn-outline-light'); $(this).addClass('btn-light'); $('#normal-block').addClass('d-none'); $('#slider').removeClass('d-none'); $('#formControlRange').val(0.75); $('#normal_counter').val(10); $('#typeTesting').val('Rapid Testing');" class="mt-3 btn btn-md border btn-outline-light" id="sample-rapid">
 						Rapid Testing
 					</button>
 					<div class="d-none" id="normal-block">
@@ -104,7 +105,7 @@
 		sampleInput.addEventListener('click', e => {
 			e.preventDefault();
 			jobTitle.value= 'job_or_finder';
-			jobDesc.value= `CC(=C)[C@H]1CCC(=CC1)C\nCOC1=C(C=CC(=C1)CC=C)OC=O`;
+			jobDesc.value= `CC(=C)[C@H]1CCC(=CC1)C\nCC(=CCC/C(=C\CO)/C)C\nCC(=O)C1=CC=CC=C1\nCC1=CC[C@H](CC1=O)C(=C)C\nCCc1c[n+]2ccc3c4ccccc4[nH]c3c2cc1\nCc1oc(C)c(SC(=O)c2occc2)c1`;
 		});
 		var slider = document.getElementById("formControlRange");
 		var output = document.getElementById("demo");
