@@ -1,3 +1,0 @@
-smiles,seq,status,prob
-CC(=C)[C@H]1CCC(=CC1)C,nan,0,0.98
-CC(CO)CS,nan,0,0.999
