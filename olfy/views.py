@@ -334,7 +334,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if "Empty" in data["Final_Sequence"][j]: 
+					if "Empty" == data["Final_Sequence"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -360,7 +360,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					if "Empty" in data["Final_Sequence"][j]: 
+					if "Empty" == data["Probability"][j]: 
 						b.smiles = "NA"
 						b.prob = "NA"
 						b.noresult = True
@@ -390,71 +390,6 @@ def result_queue(request,job_name,model,count):
 					b.status = "binding"
 				display.append(b)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
-
-def odor(request):
-	if "GET" == request.method:
-		os.chdir(root)
-		check_user(request)		
-		return render(request, "olfy/Ahuja labs website/odor.html")
-	else:
-		try:
-			os.chdir(root)
-			a = result()
-			id = check_user(request)
-			a.id = id
-			userm1 = f"olfy/static/olfy/generated/{id}/m1"
-			job_name = request.POST["job_name"]
-			if len(job_name) == 0:
-				job_name = "untitled"
-			smiles = request.POST["smiles"]
-			email = request.POST["email"]
-			s = smiles.replace('\r',"").split('\n')
-			if "" in s:
-				s.remove("")
-			temp = {"smiles":s}
-			data = pd.DataFrame(temp)
-			data = data.head(25)
-			count = 1
-			while os.path.isdir(f"{userm1}/{job_name}"):
-				job_name = f"{job_name}1"
-			os.mkdir(f"{userm1}/{job_name}")
-			a.job_name = job_name
-			job_name = f"{userm1}/{job_name}"
-			path = os.path.abspath(job_name)
-			data.to_csv(f"{path}/input.csv",index=False)
-			a.model = 1
-			os.chdir("olfy/static/olfy/generated/m1")
-			shutil.copyfile("olfy_model_v1.tar",f'{path}/olfy_model_v1.tar')
-			os.system(f"python transformer-cnn.py {path}")
-			f = pd.read_csv(f"{path}/input.csv")
-			smiles = f["smiles"]
-			for i in smiles:
-				smile_path = f"{path}/{count}"
-				os.makedirs(smile_path)			
-				cmd = f"python ochem.py detectodor.pickle "+ f'"{i}" ' f"{smile_path}"
-				print(cmd)
-				os.system(cmd)
-				print("done")
-				os.system(f"gnuplot " + f'"{path}/map.txt"')
-				count+=1
-			print("relax pdf")
-			os.system(f"python generate_table.py {path}")
-			os.remove(f"{path}/map.txt")
-			os.remove(f"{path}/olfy_model_v1.tar")
-			os.remove(f"{path}/results.csv")
-			os.remove(f"{path}/input.csv")
-			a.count = count-1
-			os.chdir("../")
-			writeresult(a,id)
-			os.chdir("../../../../")
-			if len(email)!=0:
-				send_attachment(a,email,request)
-			return JsonResponse({'code': 1})
-		except Exception as e:
-			traceback.print_exc()
-			os.chdir(root)
-			return JsonResponse({'code': 0})
-
 # def getEmail(request):
 # 	if "POST" == request.method:
 # 		os.chdir(root)
