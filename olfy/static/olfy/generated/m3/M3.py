@@ -192,7 +192,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
             
     print(cropped_smile_relevance)
     ax=cropped_smile_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(25,15))
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'])
+    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Smiles", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
