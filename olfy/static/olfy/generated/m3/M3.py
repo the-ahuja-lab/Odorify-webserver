@@ -134,7 +134,10 @@ def prediction(model, x_input_smile, x_input_seq):
 
 
 def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
-
+    mol = Chem.MolFromSmiles(x_input_smile)
+    Chem.Kekulize(mol)
+    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
+    ax=plt.figure()
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
     x_user_seq=torch.stack(x_user_seq)
@@ -299,10 +302,12 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
 #             cropped_seq_relevance['values'][row]=0
     
 #     ax = cropped_seq_relevance['values'].plot(kind='bar',figsize=(50,25) ,color=(data_relevance['values'] > 0).map({True: 'g',False: 'r'}))
-    ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
-    ax.set_xlabel("Receptor Sequence", fontsize=15)
-    ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(f"{path}/{filename}_SequenceInterpretability.png")
+    ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
+    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.set_yticklabels(cropped_seq_relevance['seq_char'],fontsize=12,rotation=0)
+    ax.set_ylabel("Receptor Sequence",fontsize=15)
+    ax.set_xlabel("Relevance",fontsize=15,rotation=0)
+    ax.figure.savefig(f'{path}/{filename}_SequenceInterpretability.pdf')
 
 
 # In[15]:
@@ -362,7 +367,7 @@ for just in range(input_k):
     combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1),path)
 
 if(len(df_topk)==0):
-    df_topk.loc[0]=['NA','NA']
+    df_topk.loc[0]=['Empty','Empty']
 
 df_topk.to_csv(f"{path}/output.csv", index=False)
 # In[ ]:

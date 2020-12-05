@@ -133,6 +133,9 @@ def prediction(model, x_input_smile, x_input_seq):
 
 
 def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
+    mol = Chem.MolFromSmiles(x_input_smile)
+    Chem.Kekulize(mol)
+    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
     ax=plt.figure()
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
@@ -290,12 +293,12 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
      
     
 #     ax = cropped_seq_relevance['values'].plot(kind='bar',figsize=(50,25) ,color=(data_relevance['values'] > 0).map({True: 'g',False: 'r'}))
-    ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(35, 15) )
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'])
-    ax.set_xticklabels(cropped_seq_relevance['seq_char'],fontsize=15,rotation=0)
-    ax.set_xlabel("Receptor Sequence", fontsize=15)
-    ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(f"{path}/{filename}_SequenceInterpretability.png")
+    ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
+    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.set_yticklabels(cropped_seq_relevance['seq_char'],fontsize=12,rotation=0)
+    ax.set_ylabel("Receptor Sequence",fontsize=15)
+    ax.set_xlabel("Relevance",fontsize=15,rotation=0)
+    ax.figure.savefig(f'{path}/{filename}_SequenceInterpretability.pdf')
 
 
 # In[44]:
@@ -337,7 +340,6 @@ input_smile=f["smiles"][0]
 
 # In[38]:
 
-
 k=0
 df_top_seqs=pd.DataFrame(columns=['Final_Sequence', 'Probability'])
 for seq in unique_wild_type:
@@ -362,26 +364,15 @@ df_top_seqs=pd.merge(df_top_seqs, databasedf, on='Final_Sequence')
 min_k = min(value_k,len(df_top_seqs))
 df_top_seqs=df_top_seqs.head(min_k)
 print(df_top_seqs)
-
-
-# In[41]:
-
-
-
-# In[57]:
-
-
-for i in range(min_k):
-    filename=str(i+1)
-    combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
-
 if min_k==0:
-    df_top_seqs.loc[0]=['NA','NA','NA']
-# In[41]:
-
+    df_top_seqs.loc[0]=['Empty','Empty','Empty']
+else:
+    for i in range(min_k):
+        filename=str(i+1)
+        combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
+print(df_top_seqs)
 df_top_seqs.to_csv(f"{path}/output.csv", index=False)
 
-# In[ ]:
 
 
 

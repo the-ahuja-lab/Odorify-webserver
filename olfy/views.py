@@ -21,10 +21,10 @@ root = os.path.abspath('./')
 
 def get_id(request):
 	if 'id' in request.session:
-		return str(request.session['id'])
+		return str(request.session['id'])[:10]
 	else:
 		id = uuid.uuid4()
-		request.session['id'] = id.int
+		request.session['id'] = str(id.int)[:10]
 		return str(id.int)[:10]
 
 def fastaformat(s):
@@ -223,7 +223,7 @@ def results(request):
 					odor = "odorless"
 				b.odor = odor
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}], "singleT": True})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}]})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
@@ -235,7 +235,7 @@ def results(request):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if pd.isna(data["Final_Sequence"][j]):
+					if "Empty" == data["Final_Sequence"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -243,12 +243,13 @@ def results(request):
 					else:						
 						b.seq = data["Final_Sequence"][j]
 						b.receptorname = data["Receptor"][j]
-						b.prob = str(data["Probability"][i])[0:5]
+						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
+				print(temp)
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
@@ -260,18 +261,18 @@ def results(request):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					if pd.isna(data["Probability"][j]):
+					if "Empty" == data["Probability"][j]: 
 						b.smiles = "NA"
 						b.prob = "NA"
 						b.noresult = True
 					else:						
 						b.smiles = data["Smiles"][j]
-						b.prob = str(data["Probability"][i])[0:5]
+						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
@@ -289,7 +290,7 @@ def results(request):
 				else:
 					b.status = "binding"
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}], "singleT": True})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
 
 def result_queue(request,job_name,model,count):
 	if request.method == "GET":
@@ -321,7 +322,7 @@ def result_queue(request,job_name,model,count):
 					odor = "odorless"
 				b.odor = odor
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}], "singleT": True})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}]})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
@@ -333,7 +334,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if pd.isna(data["Final_Sequence"][j]):
+					if "Empty" in data["Final_Sequence"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -341,12 +342,13 @@ def result_queue(request,job_name,model,count):
 					else:						
 						b.seq = data["Final_Sequence"][j]
 						b.receptorname = data["Receptor"][j]
-						b.prob = str(data["Probability"][i])[0:5]
+						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
+				print(temp)
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
@@ -358,18 +360,18 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp3()
 					b.sno = j+1
-					if pd.isna(data["Probability"][j]):
+					if "Empty" in data["Final_Sequence"][j]: 
 						b.smiles = "NA"
 						b.prob = "NA"
 						b.noresult = True
 					else:						
 						b.smiles = data["Smiles"][j]
-						b.prob = str(data["Probability"][i])[0:5]
+						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display, "singleT": None})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
@@ -387,7 +389,7 @@ def result_queue(request,job_name,model,count):
 				else:
 					b.status = "binding"
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}], "singleT": True})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
 
 def odor(request):
 	if "GET" == request.method:
@@ -482,9 +484,13 @@ def odor_Or(request):
 			t = fasta.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
-			t = fastaformat(t)
+			seq = []
+			header = []
+			for i in range(0,len(t),2):
+				header.append(t[i][1:].strip())
+				seq.append(t[i+1].strip())
 			userm4 = f"olfy/static/olfy/generated/{id}/m4"
-			temp = {"smiles":s,"seq":t}
+			temp = {"smiles":s,"seq":seq,"header":header}
 			data = pd.DataFrame(temp)
 			data = data.head(25)
 			while os.path.isdir(f"{userm4}/{job_name}"):
@@ -533,8 +539,12 @@ def Or(request):
 			t = fasta.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
-			t = fastaformat(t)
-			temp = {"seq":t}
+			seq = []
+			header = []
+			for i in range(0,len(t),2):
+				header.append(t[i][1:].strip())
+				seq.append(t[i+1].strip())
+			temp = {"seq":seq,"header":header}
 			data = pd.DataFrame(temp)
 			while os.path.isdir(f"olfy/static/olfy/generated/{id}/m3/{job_name}"):
 				job_name = f"{job_name}1"
@@ -546,6 +556,7 @@ def Or(request):
 			data.to_csv(f"{path}/input.csv",index=False)
 			a.model = 3
 			f = pd.read_csv(f"{path}/input.csv")
+			print(f)
 			os.chdir('olfy/static/olfy/generated/m3')
 			a.count = len(f["seq"])
 			for i in range(len(f["seq"])):
@@ -592,6 +603,7 @@ def odor2(request):
 			email = request.POST["email"]
 			slider = request.POST["slider_value"]
 			counter = request.POST["normal_counter"]
+			# switch = request.POST["switch"]
 			t = smiles.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
@@ -605,7 +617,6 @@ def odor2(request):
 			a.job_name = job_name
 			job_name = f"{userm2}/{job_name}"
 			path = os.path.abspath(job_name)
-			print(f'\n\n\n\n{path}\n\n\n\n')
 			os.mkdir(job_name)
 			data.to_csv(f"{path}/input.csv",index=False)
 			os.chdir("olfy/static/olfy/generated/m2")
@@ -613,6 +624,7 @@ def odor2(request):
 			a.count = len(f["smiles"])
 			for i in range(len(f["smiles"])):
 				if counter == "10" and slider != "1":
+					print("similarity",slider,type(slider))
 					dic = {"smiles":[f["smiles"][i]],"threshhold":float(slider)}
 					df = pd.DataFrame(dic)
 					os.makedirs(f"{path}/{i+1}")
@@ -620,6 +632,7 @@ def odor2(request):
 					os.system(f"python M2.py {path}/{i+1}")
 					os.remove(f"{path}/{i+1}/temp.csv")
 				elif slider == "1" and counter != "10":
+					print("bruteforce",counter,slider,type(counter))
 					dic = {"smiles":[f["smiles"][i]],"k":int(counter)}
 					df = pd.DataFrame(dic)
 					os.makedirs(f"{path}/{i+1}")
@@ -627,6 +640,7 @@ def odor2(request):
 					os.system(f"python M2-brute-force.py {path}/{i+1}")
 					os.remove(f"{path}/{i+1}/temp.csv")					
 				else:
+					print("bruteforce",slider,type(slider))
 					dic = {"smiles":[f["smiles"][i]],"threshhold":float(slider)}
 					df = pd.DataFrame(dic)
 					os.makedirs(f"{path}/{i+1}")
@@ -740,12 +754,15 @@ def makezip2(a,request):
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m2")
 	for i in range(a.count):
+		print(os.getcwd())
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
-		count = len(f["smiles"])
+		print(f)
+		count = len(f)
 		for j in range(count):
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_SmileInterpretability.png")
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_SequenceInterpretability.png") 
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_mol.svg") 
+			if "Empty" != f["Probability"][0]:
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.png")
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SequenceInterpretability.pdf") 
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_mol.svg") 
 		file_path.append(f"{a.job_name}/{i+1}/output.csv")
 	zip = ZipFile(f"{a.job_name}/data.zip",'w') 
 	for file in file_path: 
@@ -765,9 +782,10 @@ def makezip3(a,request):
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
 		count = len(f["smiles"])
 		for j in range(count):
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_SmileInterpretability.png")
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_SequenceInterpretability.png") 
-			file_path.append(f"{a.job_name}/{i+1}/{i+1}_mol.svg") 
+			if "Empty" != f["Probability"][0]:
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.png")
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SequenceInterpretability.pdf") 
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_mol.svg") 
 		file_path.append(f"{a.job_name}/{i+1}/output.csv")
 	zip = ZipFile(f"{a.job_name}/data.zip",'w') 
 	for file in file_path: 
@@ -785,7 +803,7 @@ def makezip4(a,request):
 	os.chdir(f"olfy/static/olfy/generated/{id}/m4")
 	for i in range(a.count):
 		file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.png")
-		file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.png") 
+		file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.pdf") 
 		file_path.append(f"{a.job_name}/{i+1}_mol.svg") 
 	file_path.append(f"{a.job_name}/output.csv")
 	zip = ZipFile(f"{a.job_name}/data.zip",'w') 
