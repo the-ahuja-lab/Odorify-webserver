@@ -78,6 +78,7 @@
 			jobDesc.value= `CC(=CCC/C(=C\CO)/C)C\nCC(=O)C1=CC=CC=C1\nCC1=CC[C@H](CC1=O)C(=C)C\nCCc1c[n+]2ccc3c4ccccc4[nH]c3c2cc1\nCc1oc(C)c(SC(=O)c2occc2)c1`;
 		});
 		var mob = [];
+		$("input[type=file]").prop("value", "");
 		$("input[type=file]").change(function(){
 			$("input[type=file]").parse({
 				config: {
