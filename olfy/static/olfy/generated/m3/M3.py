@@ -330,7 +330,6 @@ path = sys.argv[1]
 f = pd.read_csv(f"{path}/temp.csv")
 input_seq= f["seq"][0]
 input_k=f["k"][0]
-
 # In[18]:
 
 
@@ -355,7 +354,8 @@ for smile in unique_smiles:
 #     k+=1   
 df_topk=df_topk.sort_values("Probability", ascending=False)
 # value_k = min(input_k,len(df_topk))
-df_topk=df_topk.head(input_k)
+min_k = min(input_k,len(df_topk))
+df_topk=df_topk.head(min_k)
 
 
 # In[24]:
@@ -363,7 +363,7 @@ df_topk=df_topk.head(input_k)
 
 # In[20]:
 
-for just in range(input_k):
+for just in range(min_k):
     combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1),path)
 
 if(len(df_topk)==0):
