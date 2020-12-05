@@ -3,7 +3,7 @@
 {% block content %}
 {% include "./loader.html" %}
 <div class="entireDoc container loadFade">
-	<div class="mt-2 d-flex flex-column flex-md-row justify-content-center">
+	<div class="mt-2 d-flex flex-column">
 		<div class="d-flex mt-3 text-white">
 			<h1 class="d-none d-md-block">
 				Odorant-OR Pair Analysis
@@ -16,6 +16,9 @@
 				<path fill-rule="evenodd" d="M10.273 2.513l-.921-.944.715-.698.622.637.89-.011a2.89 2.89 0 0 1 2.924 2.924l-.01.89.636.622a2.89 2.89 0 0 1 0 4.134l-.637.622.011.89a2.89 2.89 0 0 1-2.924 2.924l-.89-.01-.622.636a2.89 2.89 0 0 1-4.134 0l-.622-.637-.89.011a2.89 2.89 0 0 1-2.924-2.924l.01-.89-.636-.622a2.89 2.89 0 0 1 0-4.134l.637-.622-.011-.89a2.89 2.89 0 0 1 2.924-2.924l.89.01.622-.636a2.89 2.89 0 0 1 4.134 0l-.715.698a1.89 1.89 0 0 0-2.704 0l-.92.944-1.32-.016a1.89 1.89 0 0 0-1.911 1.912l.016 1.318-.944.921a1.89 1.89 0 0 0 0 2.704l.944.92-.016 1.32a1.89 1.89 0 0 0 1.912 1.911l1.318-.016.921.944a1.89 1.89 0 0 0 2.704 0l.92-.944 1.32.016a1.89 1.89 0 0 0 1.911-1.912l-.016-1.318.944-.921a1.89 1.89 0 0 0 0-2.704l-.944-.92.016-1.32a1.89 1.89 0 0 0-1.912-1.911l-1.318.016z"/>
 			</svg>
 		</div>
+		<button class="mt-3 btn btn-sm border text-white" onclick="event.preventDefault(); jobTitle.value= 'job_odor_or_finder'; jobDesc1.value= `CC(=C)[C@H]1CCC(=CC1)C\nCC(CO)CS`; jobDesc2.value= `>OR2G3\nMGLGNESSLMDFILLGFSDHPRLEAVLFVFVLFFYLLTLVGNFTIIIISYLDPPLHTPMYFFLSNLSLLDICFTTSLAPQTLVNLQRPKKTITYGGCVAQLYISLALGSTECILLADMALDRYIAVCKPLHYVVIMNPRLCQQLASISWLSGLASSLIHATFTLQLPLCGNHRLDHFICEVPALLKLACVDTTVNELVLFVVSVLFVVIPPALISISYGFITQAVLRIKSVEARHKAFSTCSSHLTVVIIFYGTIIYVYLQPSDSYAQDQGKFISLFYTMVTPTLNPIIYTLRNKDMKEALRKLLSGKL\n>OR5A1\nMSITKAWNSSSVTMFILLGFTDHPELQALLFVTFLGIYLTTLAWNLALIFLIRGDTHLHTPMYFFLSNLSFIDICYSSAVAPNMLTDFFWEQKTISFVGCAAQFFFFVGMGLSECLLLTAMAYDRYAAISSPLLYPTIMTQGLCTRMVVGAYVGGFLSSLIQASSIFRLHFCGPNI`;">
+			Load Sample Input
+		</button>
 	</div>
 	<div class="d-flex flex-column">
 		<div class="my-5">
@@ -36,9 +39,6 @@
 									Find them here
 								</a>
 							</small>
-							<button class="mt-3 btn btn-sm border text-white" onclick="event.preventDefault(); jobDesc1.value= `CC(=C)[C@H]1CCC(=CC1)C\nCC(CO)CS`;">
-								Load Sample Input
-							</button>
 						</div>
 						<div class="border-bottom border-dark mt-4 form-group">
 							<textarea required style="min-height: 200px; font-size: 20px;" name="fasta" id="job-desc-2" class="border-0 bg-dark text-white form-control" placeholder="Enter maximum of 25 FASTA entries (Enter-Separated) *"></textarea>
@@ -50,9 +50,6 @@
 									Find them here
 								</a>
 							</small>
-							<button class="mt-3 btn btn-sm border text-white" onclick="event.preventDefault(); jobDesc2.value= `>OR2G3\nMGLGNESSLMDFILLGFSDHPRLEAVLFVFVLFFYLLTLVGNFTIIIISYLDPPLHTPMYFFLSNLSLLDICFTTSLAPQTLVNLQRPKKTITYGGCVAQLYISLALGSTECILLADMALDRYIAVCKPLHYVVIMNPRLCQQLASISWLSGLASSLIHATFTLQLPLCGNHRLDHFICEVPALLKLACVDTTVNELVLFVVSVLFVVIPPALISISYGFITQAVLRIKSVEARHKAFSTCSSHLTVVIIFYGTIIYVYLQPSDSYAQDQGKFISLFYTMVTPTLNPIIYTLRNKDMKEALRKLLSGKL\n>OR5A1\nMSITKAWNSSSVTMFILLGFTDHPELQALLFVTFLGIYLTTLAWNLALIFLIRGDTHLHTPMYFFLSNLSFIDICYSSAVAPNMLTDFFWEQKTISFVGCAAQFFFFVGMGLSECLLLTAMAYDRYAAISSPLLYPTIMTQGLCTRMVVGAYVGGFLSSLIQASSIFRLHFCGPNI`;">
-								Load Sample Input
-							</button>
 						</div>
 					</div>
 					<div class="col-md-6 d-flex flex-column align-items-center text-center justify-content-center">
