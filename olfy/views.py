@@ -235,7 +235,7 @@ def results(request):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if "Empty" == data["Final_Sequence"][j]: 
+					if "Empty" == data["Probability"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -256,7 +256,7 @@ def results(request):
 				data = pd.read_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv')
 				number_of_rows = len(data["Smiles"])
 				temp = {}
-				temp["seq"] = (data["seq"][0])
+				temp["seq"] = (data["header"][0])
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp3()
@@ -334,7 +334,7 @@ def result_queue(request,job_name,model,count):
 				for j in range(number_of_rows):
 					b = disp2()
 					b.sno = j+1
-					if "Empty" == data["Final_Sequence"][j]: 
+					if "Empty" == data["Probability"][j]: 
 						b.seq = "NA"
 						b.receptorname = "NA"
 						b.prob = "NA"
@@ -571,6 +571,10 @@ def Or(request):
 				for k in range(len(df["Probability"])):
 					j.append(f["seq"][i])
 				df["seq"] = j
+				j = []
+				for k in range(len(df["Probability"])):
+					j.append(f["header"][i])				
+				df["header"] = j
 				df.to_csv(f"{path}/{i+1}/output.csv",index=False)
 			os.remove(f"{path}/input.csv")
 			os.chdir("../")
@@ -603,7 +607,7 @@ def odor2(request):
 			email = request.POST["email"]
 			slider = request.POST["slider_value"]
 			counter = request.POST["normal_counter"]
-			# switch = request.POST["switch"]
+			switch = request.POST["typeOfTesting"]
 			t = smiles.replace('\r',"").split('\n')
 			if "" in t:
 				t.remove("")
@@ -623,16 +627,14 @@ def odor2(request):
 			f = pd.read_csv(f"{path}/input.csv")
 			a.count = len(f["smiles"])
 			for i in range(len(f["smiles"])):
-				if counter == "10" and slider != "1":
-					print("similarity",slider,type(slider))
+				if switch=="Rapid":
 					dic = {"smiles":[f["smiles"][i]],"threshhold":float(slider)}
 					df = pd.DataFrame(dic)
 					os.makedirs(f"{path}/{i+1}")
 					df.to_csv(f"{path}/{i+1}/temp.csv",index=False)
 					os.system(f"python M2.py {path}/{i+1}")
 					os.remove(f"{path}/{i+1}/temp.csv")
-				elif slider == "1" and counter != "10":
-					print("bruteforce",counter,slider,type(counter))
+				elif switch=="Normal":
 					dic = {"smiles":[f["smiles"][i]],"k":int(counter)}
 					df = pd.DataFrame(dic)
 					os.makedirs(f"{path}/{i+1}")
@@ -780,7 +782,7 @@ def makezip3(a,request):
 	os.chdir(f"olfy/static/olfy/generated/{id}/m3")
 	for i in range(a.count):
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
-		count = len(f["smiles"])
+		count = len(f)
 		for j in range(count):
 			if "Empty" != f["Probability"][0]:
 				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.png")
