@@ -110,6 +110,12 @@ def about(request):
 				'image': 'Gaurav.jpg'
 			},
 			{
+				'name': 'Dr. Tripti Mishra',
+				'post': 'Intellectual Contribution',
+				'email': 'mistripti01@gmail.com',
+				'image': 'Tripti.png'
+			},
+			{
 				'name': 'Vishesh Agrawal',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'vishesh18420@iiitd.ac.in',
