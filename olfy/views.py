@@ -185,12 +185,12 @@ def help(request):
 			},
 			{
 				'name': 'Odor Finder',
-				'columnames': 'Receptor Sequence (FASTA format)',
+				'columnames': 'Header of FASTA file, Receptor Sequence',
 				'extension': '*.csv'
 			},
 			{
 				'name': 'Odorant-OR Pair Analysis',
-				'columnames': 'SMILES, Receptor Sequence (FASTA format)',
+				'columnames': 'SMILES, Header of FASTA file, Receptor Sequence',
 				'extension': '*.csv'
 			}
 		],
