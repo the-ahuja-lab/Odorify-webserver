@@ -6,18 +6,18 @@ server {
     access_log /home/sushant/Desktop/django_project/logs/nginx-access.log;
     error_log /home/sushant/Desktop/django_project/logs/nginx-error.log;
 
-location /static/ {
-    alias   /home/sushant/Desktop/django_project/olfy/static/;
-}
-
-location / {
-    proxy_read_timeout 3600s;
-    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-    proxy_set_header Host $http_host;
-    proxy_redirect off;
-    if (!-f $request_filename) {
-    proxy_pass http://olfy_app_server;
-    break;
+    location /static/ {
+        alias   /home/sushant/Desktop/django_project/olfy/static/;
     }
-}
+
+    location / {
+        proxy_read_timeout 3600s;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        if (!-f $request_filename) {
+        proxy_pass http://olfy_app_server;
+        break;
+        }
+    }
 }
