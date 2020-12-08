@@ -921,7 +921,7 @@ def send_attachment(a,email,request):
 	encoders.encode_base64(p) 
 	p.add_header('Content-Disposition', "attachment; filename= %s" % filename) 
 	msg.attach(p) 
-	message = "Dear User,\n Thank you for using OdoriFy.\n Please find attached your combined results in a zip file. In case of any queries, please contact us <a href='www.odorify.iiitd.edu.in/contact'>here</a>."
+	message = "Dear User,\n Thank you for using OdoriFy.\n Please find attached your combined results in a zip file. In case of any queries, please contact us at the following link: http://odorify.ahujalab.iiitd.edu.in/olfy/contact"
 	msg.attach(MIMEText(message, 'plain'))	
 	text = msg.as_string() 
 	s = smtplib.SMTP('smtp.gmail.com', 587)
