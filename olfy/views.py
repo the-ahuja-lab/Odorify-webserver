@@ -284,7 +284,7 @@ def results(request):
 					odor = "odorless"
 				b.odor = odor
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}]})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}],"flag":"0"})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
@@ -310,7 +310,7 @@ def results(request):
 				temp["row"] = temp1
 				print(temp)
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"flag":"0"})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
@@ -333,7 +333,7 @@ def results(request):
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"flag":"0"})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
@@ -351,21 +351,21 @@ def results(request):
 				else:
 					b.status = "binding"
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"flag":"1"})
 
-def result_queue(request,job_name,model,count):
+def result_queue(request,job_name,model,count,flag):
 	if request.method == "GET":
 		os.chdir(root)
 		id = check_user(request)
+		if flag == "1":
+			id = "precomputed"
 		user = f"olfy/static/olfy/generated/{id}"
 		a = result()
 		a.job_name = job_name
 		a.model = int(model)
 		a.count = int(count)
 		a.id = id
-		if a is None: 
-			return render(request, "olfy/Ahuja labs website/results.html",{"z": False})
-		elif a.model == 1:
+		if a.model == 1:
 			s = f'{user}/m1/{a.job_name}/predicted_output.csv'
 			data = pd.read_csv(s)
 			print(data)
@@ -383,7 +383,7 @@ def result_queue(request,job_name,model,count):
 					odor = "odorless"
 				b.odor = odor
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}]})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display":[{"row": display}],"id":True,"flag":flag})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
@@ -409,14 +409,14 @@ def result_queue(request,job_name,model,count):
 				temp["row"] = temp1
 				print(temp)
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":flag})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv')
 				number_of_rows = len(data["Smiles"])
 				temp = {}
-				temp["seq"] = (data["seq"][0])
+				temp["seq"] = (data["header"][0])
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp3()
@@ -432,7 +432,7 @@ def result_queue(request,job_name,model,count):
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":flag})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
@@ -450,7 +450,7 @@ def result_queue(request,job_name,model,count):
 				else:
 					b.status = "binding"
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"id":True,"flag":flag})
 
 
 def odor(request):
@@ -772,15 +772,34 @@ def queue(request):
 	if "GET" == request.method:
 		os.chdir(root)
 		id = check_user(request)
+		precomputed = []
 		f = open(f"olfy/static/olfy/generated/{id}/result.txt")
 		data = f.read().splitlines()
 		length = len(data)
+		with open(f"olfy/static/olfy/generated/precomputed/result.txt",'r') as f:
+			for i in range(4):
+				temp = queuedisp()
+				temp.sno = i+1
+				temp.job_name = (f.readline().replace("\n",""))
+				temp.count = (f.readline().replace("\n",""))
+				temp.model = (f.readline().replace("\n",""))
+				print(f.readline().replace("\n",""))
+				if temp.model == '1':
+					temp.model_name = "Odorant Predictor"
+				elif temp.model == '2':
+					temp.model_name = "OR Finder"
+				elif temp.model == '3':
+					temp.model_name = "Odor Finder"
+				elif temp.model == '4':
+					temp.model_name = "Odorant-OR Pair Analysis"
+				precomputed.append(temp)
+
 		queue = []
 		for i in range(0,length,4):
 			temp = queuedisp()
 			temp.count = data[i+1]
 			temp.job_name = data[i]
-			temp.sno = (i//4)+1
+			temp.sno = (i//4)+1+4
 			temp.model = data[i+2]
 			if temp.model == '1':
 				temp.model_name = "Odorant Predictor"
@@ -791,13 +810,19 @@ def queue(request):
 			elif temp.model == '4':
 				temp.model_name = "Odorant-OR Pair Analysis"
 			queue.append(temp)
-		return render(request, "olfy/Ahuja labs website/queue.html",{"queue":queue})
+		return render(request, "olfy/Ahuja labs website/queue.html",{"queue":queue,"precomputed":precomputed})
 
-def makezip(a,request):
+
+	
+def makezip(a,request,flag="0"):
 	os.chdir(root)
-	id = check_user(request)
+	if flag=="1":
+		id = "precomputed"
+	else:
+		id = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m1")
+	print(os.getcwd())
 	for i in range(a.count):
 		print(f"{a.job_name}/{i+1}/lrp.pdf")
 		file_path.append(f"{a.job_name}/{i+1}/lrp.pdf")
@@ -812,11 +837,17 @@ def makezip(a,request):
 		os.chdir("../")
 	return zip
 
-def makezip2(a,request):
+def makezip2(a,request,flag="0"):
 	os.chdir(root)
-	id = check_user(request)
+	
+	if flag=="1":
+		id = "precomputed"
+	else:
+		id = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m2")
+	print(os.getcwd())
+
 	for i in range(a.count):
 		print(os.getcwd())
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
@@ -837,11 +868,16 @@ def makezip2(a,request):
 		os.chdir("../")
 	return zip
 
-def makezip3(a,request):
+def makezip3(a,request,flag="0"):
 	os.chdir(root)
-	id = check_user(request)
+	if flag=="1":
+		id = "precomputed"
+	else:
+		id = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m3")
+	print(os.getcwd())
+
 	for i in range(a.count):
 		f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
 		count = len(f)
@@ -860,11 +896,17 @@ def makezip3(a,request):
 		os.chdir("../")	
 	return zip
 
-def makezip4(a,request):
+def makezip4(a,request,flag="0"):
+	print(flag)
 	os.chdir(root)
-	id = check_user(request)
+	if flag=="1":
+		id = "precomputed"
+	else:
+		id = check_user(request)
 	file_path = []
 	os.chdir(f"olfy/static/olfy/generated/{id}/m4")
+	print(os.getcwd())
+
 	for i in range(a.count):
 		file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.png")
 		file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.pdf") 
@@ -879,7 +921,7 @@ def makezip4(a,request):
 		os.chdir("../")
 	return zip
 
-def download(request,job_name,model,count):
+def download(request,job_name,model,count,flag):
 	os.chdir(root)
 	a = result()
 	a.job_name = job_name
@@ -887,13 +929,13 @@ def download(request,job_name,model,count):
 	a.count = int(count)
 	zip = ''
 	if a.model==1:
-		zip = makezip(a,request)
+		zip = makezip(a,request,flag)
 	if a.model==2:
-		zip = makezip2(a,request)
+		zip = makezip2(a,request,flag)
 	if a.model==3:
-		zip = makezip3(a,request)
+		zip = makezip3(a,request,flag)
 	if a.model==4:
-		zip = makezip4(a,request)
+		zip = makezip4(a,request,flag)
 	response = HttpResponse(zip,content_type='application/zip')
 	response['Content-Disposition'] = 'attachment; filename=data.zip'
 	return response
@@ -903,13 +945,13 @@ def send_attachment(a,email,request):
 	attachment = ""
 	sender = "odorify.ahujalab@iiitd.ac.in"
 	if a.model==1:
-		attachment = makezip(a,request)
+		attachment = makezip(a,request,0)
 	if a.model==2:
-		attachment = makezip2(a,request)
+		attachment = makezip2(a,request,0)
 	if a.model==3:
-		attachment = makezip3(a,request)
+		attachment = makezip3(a,request,0)
 	if a.model==4:
-		attachment = makezip4(a,request)
+		attachment = makezip4(a,request,0)
 
 	msg = MIMEMultipart()
 	msg['From'] = sender

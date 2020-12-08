@@ -14,10 +14,8 @@ urlpatterns = [
 	path('OR', views.Or, name= "olfy-or"),
 	path('queue', views.queue, name= "olfy-queue"),
 	path('results', views.results, name= "olfy-results"),
-	path('results/<str:job_name>/<str:model>/<str:count>', views.result_queue, name= "olfy-result_queue"),
+	path('results/<str:job_name>/<str:model>/<str:count>/<str:flag>', views.result_queue, name= "olfy-result_queue"),
 	path('contact', views.contactus, name= "olfy-contact"),
 	path('download/<str:job_name>/<str:model>/<str:count>', views.download, name= 'download'),
-	path('test', views.testing, name= 'test'),
-	path('delete', views.delete, name= 'delete'),
-	
+	path('download/<str:job_name>/<str:model>/<str:count>/<str:flag>', views.download, name= 'download'),
 ]
