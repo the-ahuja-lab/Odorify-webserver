@@ -209,6 +209,24 @@ def help(request):
 				'extension': '*.csv'
 			}
 		],
+		'outputData': [
+			{
+				'name': 'Probability Of Prediction',
+				'extension': 'This is the confidence of the prediction being true'
+			},
+			{
+				'name': 'Receptor Sequence Interpretability',
+				'extension': 'A bar graph representation of relevant amino acids in receptor sequence contributing towards the prediction'
+			},
+			{
+				'name': 'SMILES Interpretability (Bar Graph)',
+				'extension': 'A bar graph representation of relevant atoms in ligands contributing towards the prediction'
+			},
+			{
+				'name': 'SMILES Interpretability (Structure)',
+				'extension': 'Substructure Analysis of the ligand(SMILES) highlighting relevant atoms contributing towards the prediction'
+			}
+		],
 		'troubleshoot':  [
 			{
 				'ques': 'Where can I see the input format?',

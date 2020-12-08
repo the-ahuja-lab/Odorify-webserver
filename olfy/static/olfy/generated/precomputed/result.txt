@@ -1,4 +1,4 @@
-pre_computer_job_odor_or_finder
+pre_computed_job_odor_or_finder
 2
 4
 precomputed

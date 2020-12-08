@@ -20,7 +20,9 @@
 				<h1 class="d-block d-md-none">
 					Tutorial
 				</h1>
-				<iframe class="mt-4 rounded-lg" width="320px" height="500px" src="https://www.youtube.com/embed/KR0g-1hnQPA" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+				<video class="mt-5 shadow rounded-lg border" style="min-height: 500px; width: 75vw;" controls>
+					<source src="{% static 'olfy/tutorialVideo.mp4' %}" type="video/mp4">
+				</video>
 			</div>
 		</div>
 		<div class="mt-5 row">
@@ -59,6 +61,42 @@
 				</div>
 			</div>
 		</div>
+		<div class="mt-5 row">
+			<div class="p-3 order-1 order-md-0 col-12 loadFade h-md-100 d-flex flex-column align-items-center text-center text-white">
+				<h1 class="d-none d-md-block">
+					Output Format
+				</h1>
+				<h2 class="d-block d-md-none">
+					Output Format
+				</h2>
+				<div class="text-left table-responsive">
+					<table class="mt-5 table text-white">
+						<thead>
+						<tr>
+							<th scope="col">
+								Columns
+							</th>
+							<th scope="col">
+								Explanation
+							</th>
+						</tr>
+						</thead>
+						<tbody>
+						{% for i in outputData %}
+						<tr>
+							<th scope="row">
+								{{i.name}}
+							</th>
+							<td>
+								{{i.extension}}
+							</td>
+						</tr>
+						{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
 		<div class="my-5 row">
 			<div class="p-3 order-1 order-md-0 col-12 loadFade h-md-100 d-flex flex-column align-items-center text-center text-white">
 				<h1 class="d-none d-md-block">
@@ -67,16 +105,121 @@
 				<h2 class="d-block d-md-none">
 					Troubleshooting
 				</h2>
-				{% for i in troubleshoot %}
-				<div class="text-left">
-					<h5 class="mt-3">
-						Q. {{i.ques}}
-					</h5>
-					<h5 class="mt-1">
-						A. {{i.ans}}
-					</h5>
+				<div class="d-flex flex-column">
+					{% for i in troubleshoot %}
+						<div class="py-2 text-left">
+							<h5 class="mt-3">
+								Q. {{i.ques}}
+							</h5>
+							<h5 class="pb-5 border-dark border-bottom">
+								A. {{i.ans}}
+							</h5>
+						</div>
+					{% endfor %}
 				</div>
-				{% endfor %}
+			</div>
+		</div>
+		<div class="my-5 row">
+			<div class="p-3 order-1 order-md-0 col-12 loadFade h-md-100 d-flex flex-column align-items-center text-center text-white">
+				<h1 class="d-none d-md-block">
+					Get Started
+				</h1>
+				<h2 class="d-block d-md-none">
+					Get Started
+				</h2>
+				<ol class="h5 px-3 px-md-5 mt-5 text-left">
+					<li>
+						Go to the Home page. There are 4 prediction engines. Each has a different application and use. They are:-
+						<ul>
+							<li>
+								Odorant predictor 
+							</li>
+							<li>
+								OR Finder
+							</li>
+							<li>
+								Odor Finder
+							</li>
+							<li>
+								Odor-OR Analysis
+							</li>
+						</ul>
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/homepage.png' %}" />
+					</li>
+					<li class="h5 px-5 mt-5">
+						Select which prediction engine you need to use according to your requirements. You can choose them on the Prediction Engines page or you can select the engine from the Create Job tab in the menu bar.
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/models_homepage.png' %}" />
+					</li>
+					<li class="h5 px-5 mt-5">
+						You are required to submit your input files according to the format given below. You can also take a look at the sample input files by downloading them. The sample files are also available on the prediction engines page.
+						<ul>
+							<li class="mt-5">
+								Odorant predictor: Input is required in the form of SMILES. <br />There are 2 ways of giving input:
+								<ul class="ml-5">
+									<li>
+										Text box: You have to put ENTER separated SMILES in the box. (You can copy-paste)
+									</li>
+									<li>
+										File: A comma-separated values file (.csv file) must be provided containing only a single column of the input smiles.
+									</li>
+								</ul>
+								<img class="lazy mt-5 w-100" src="{% static 'olfy/images/m1.png' %}" />
+							</li>
+							<li class="mt-5">
+								OR Finder: Input is required in the form of SMILES. <br />There are 2 ways of giving input:
+								<ul class="ml-5">
+									<li>
+										Text box: You have to put ENTER separated smiles in the box. (You can copy-paste)
+									</li>
+									<li>
+										File: A comma-separated values file (.csv file) must be provided containing only a single column of the input smiles.
+									</li>
+								</ul>
+								<img class="lazy mt-5 w-100" src="{% static 'olfy/images/m2.png' %}" />
+							</li>
+							<li class="mt-5">
+								Odor Finder: Input is required in the form of olfactory receptors FASTA sequence. <br />There are 2 ways of giving input:
+								<ul class="ml-5">
+									<li>
+										Text box: The format should be the header of FASTA and in the next line the whole receptor sequence. For multiple input sequences, the format should be a FASTA header then next line sequence, then in next line the 2nd input’s header and in next line 2nd input’s sequence and so on.
+									</li>
+									<li>
+										File: A comma-separated values file(.csv file) must be provided. 2 columns should be there. 1st column contains the header of the FASTA sequence starting with > and the 2nd column contains the sequence itself.
+									</li>
+								</ul>
+								<img class="lazy mt-5 w-100" src="{% static 'olfy/images/m3.png' %}" />
+							</li>
+							<li class="mt-5">
+								Odor-OR Analysis: Input is required in the form of SMILES and protein sequences. <br />There are 2 ways of giving input:
+								<ul class="ml-5">
+									<li>
+										Text box: You have to put ENTER separated SMILES in box 1. (You can copy-paste), and ENTER separated FASTA Format sequences similar to Odor-Finder in box 2.
+									</li>
+									<li>
+										File: A comma-separated values file (.csv file) must be provided with 3 columns. The 1st column should contain the input SMILES.<br />The 2nd column should contain the corresponding FASTA protein sequence’s header starting with > and the 3rd column should contain the amino acid sequence of the protein.
+									</li>
+								</ul>
+								<img class="lazy mt-5 w-100" src="{% static 'olfy/images/m4.png' %}" />
+							</li>
+						</ul>
+					</li>
+					<li class="h5 px-5 mt-5">
+						While submitting the job you will have an option to choose to provide your email, in which case we will send you the results directly on your email and you don’t have to wait after submitting the job.
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/email.jpg' %}" />
+					</li>
+					<li class="h5 px-5 mt-5">
+						After the job is completed you will be redirected to the results page where you can see the results of your current job.
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/m4_results.png' %}" />
+					</li>
+					<li class="h5 px-5 mt-5">
+						All your jobs will be saved for a week, the results of which can be accessed via the History page.
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/history.png' %}" />
+					</li>
+					<li class="h5 px-5 mt-5">
+						In the results page, you also have the option to download the zip file containing all the results for that particular job.
+						<img class="lazy mt-5 w-100" src="{% static 'olfy/images/zip.jpg' %}" />
+					</li>
+				</ol>
 			</div>
 		</div>
 	</div>
