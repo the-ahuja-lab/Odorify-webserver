@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '@^(!b1x)ck&dg=kjq0um8hhwo1pmrj*wn5_%e5t7lb&(ftqr@3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["odorify.ahujalab.iiitd.edu.in","192.168.30.53"]
 
 
 # Application definition
