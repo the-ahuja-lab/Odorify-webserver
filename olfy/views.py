@@ -795,9 +795,27 @@ def queue(request):
 		data = f.read().splitlines()
 		length = len(data)
 		with open(f"olfy/static/olfy/generated/precomputed/result.txt",'r') as f:
-			for i in range(4):
+		queue = []
+		count = 0
+		for i in range(0,length,4):
+			temp = queuedisp()
+			temp.count = data[i+1]
+			temp.job_name = data[i]
+			temp.sno = count + 1
+			temp.model = data[i+2]
+			if temp.model == '1':
+				temp.model_name = "Odorant Predictor"
+			elif temp.model == '2':
+				temp.model_name = "OR Finder"
+			elif temp.model == '3':
+				temp.model_name = "Odor Finder"
+			elif temp.model == '4':
+				temp.model_name = "Odorant-OR Pair Analysis"
+			queue.append(temp)
+			count+=1
+		for i in range(4):
 				temp = queuedisp()
-				temp.sno = i+1
+				temp.sno = count+1
 				temp.job_name = (f.readline().replace("\n",""))
 				temp.count = (f.readline().replace("\n",""))
 				temp.model = (f.readline().replace("\n",""))
@@ -811,27 +829,8 @@ def queue(request):
 				elif temp.model == '4':
 					temp.model_name = "Odorant-OR Pair Analysis"
 				precomputed.append(temp)
-
-		queue = []
-		for i in range(0,length,4):
-			temp = queuedisp()
-			temp.count = data[i+1]
-			temp.job_name = data[i]
-			temp.sno = (i//4)+1+4
-			temp.model = data[i+2]
-			if temp.model == '1':
-				temp.model_name = "Odorant Predictor"
-			elif temp.model == '2':
-				temp.model_name = "OR Finder"
-			elif temp.model == '3':
-				temp.model_name = "Odor Finder"
-			elif temp.model == '4':
-				temp.model_name = "Odorant-OR Pair Analysis"
-			queue.append(temp)
 		return render(request, "olfy/Ahuja labs website/queue.html",{"queue":queue,"precomputed":precomputed})
 
-
-	
 def makezip(a,request,flag="0"):
 	os.chdir(root)
 	if flag=="1":
