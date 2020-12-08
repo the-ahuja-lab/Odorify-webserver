@@ -125,6 +125,12 @@ def about(request):
 				'image': 'Gaurav.jpg'
 			},
 			{
+				'name': 'Dr. Tripti Mishra',
+				'post': 'Intellectual Contribution',
+				'email': 'mistripti01@gmail.com',
+				'image': 'Tripti.png'
+			},
+			{
 				'name': 'Vishesh Agrawal',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'vishesh18420@iiitd.ac.in',
@@ -194,19 +200,59 @@ def help(request):
 			},
 			{
 				'name': 'Odor Finder',
-				'columnames': 'Receptor Sequence (FASTA format)',
+				'columnames': 'Header of FASTA file, Receptor Sequence',
 				'extension': '*.csv'
 			},
 			{
 				'name': 'Odorant-OR Pair Analysis',
-				'columnames': 'SMILES, Receptor Sequence (FASTA format)',
+				'columnames': 'SMILES, Header of FASTA file, Receptor Sequence',
 				'extension': '*.csv'
 			}
 		],
 		'troubleshoot':  [
 			{
-				'ques': 'How can I integrate your product with PayPal?',
-				'ans': 'Simple, you cannot.'
+				'ques': 'Where can I see the input format?',
+				'ans': 'See input format here and the sample CSV for each prediction engine here properly to understand and replicate the format.'
+			},
+			{
+				'ques': 'If I log out of my browser, would my history remain saved?',
+				'ans': 'Yes, your history will remain saved up to 7 days, or if you choose to clear your cookies in the browser cache.'
+			},
+			{
+				'ques': 'Can I run 2 prediction models from different tabs of the same browser?',
+				'ans': 'No.'
+			},
+			{
+				'ques': 'Can I navigate away from the loading screen?',
+				'ans': 'We understand that it can be a little time consuming, considering the high computations. Please try to be patient, and do not navigate away from the loading screen to get your results. You could, however, add your email address to receive your results.'
+			},
+			{
+				'ques': 'What if I add more than 25 entries?',
+				'ans': 'We only select the first 25 entries as input.'
+			},
+			{
+				'ques': 'The result page shows a table of only ‘NA’ entries. What does this mean?',
+				'ans': "Don't worry, NA stands for Not Applicable, which indicates that for the given input, there are no ligands/receptors which can bind to the input receptor/ligand with the given input parameters."
+			},
+			{
+				'ques': 'How do I interpret my results?',
+				'ans': 'We have used 3 ways to interpret results, receptor sequence-based, smile based. structure-based. Atoms highlighted in green symbolizes positive contribution towards the binding, and atoms highlighted in red would symbolize Negative contribution towards binding.'
+			},
+			{
+				'ques': 'I set the counter value of Top-k to be ‘x’, but I receive ‘y’ output records (y<x)?',
+				'ans': "The value of ‘k’ only sets an upper bound of the number of outputs you can get. It is possible to have fewer receptors binding a given input smile than k, or vice versa."
+			},
+			{
+				'ques': 'What does the threshold mean?',
+				'ans': "In OR finder, we have used a Tanimoto similarity threshold to find SMILES similar within that threshold. Setting a lower threshold would produce more output records."
+			},
+			{
+				'ques': 'How to set a job title? Can I have special characters in my title?',
+				'ans': "Yes, all characters are fit for job titles. We recommend using meaningful job names to keep track of the job. You can see the sample input for more information."
+			},
+			{
+				'ques': 'What is the prediction based on?',
+				'ans': "The prediction is based on Deep Learning Models."
 			}
 		]
 	}
