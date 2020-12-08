@@ -1,4 +1,15 @@
-[2020-12-04 04:58:53 -0800] [1149] [DEBUG] Current configuration:
+[2020-12-07 18:47:03 -0800] [10230] [INFO] Handling signal: term
+[2020-12-08 02:47:03 +0000] [10241] [INFO] Worker exiting (pid: 10241)
+[2020-12-08 02:47:03 +0000] [10243] [INFO] Worker exiting (pid: 10243)
+[2020-12-08 02:47:03 +0000] [10242] [INFO] Worker exiting (pid: 10242)
+[2020-12-08 02:47:03 +0000] [10246] [INFO] Worker exiting (pid: 10246)
+[2020-12-08 02:47:03 +0000] [10247] [INFO] Worker exiting (pid: 10247)
+[2020-12-08 02:47:03 +0000] [10244] [INFO] Worker exiting (pid: 10244)
+[2020-12-08 02:47:03 +0000] [10249] [INFO] Worker exiting (pid: 10249)
+[2020-12-08 02:47:03 +0000] [10245] [INFO] Worker exiting (pid: 10245)
+[2020-12-08 02:47:03 +0000] [10248] [INFO] Worker exiting (pid: 10248)
+[2020-12-07 18:47:04 -0800] [10230] [INFO] Shutting down: Master
+[2020-12-07 18:47:05 -0800] [10393] [DEBUG] Current configuration:
   config: None
   bind: ['unix:/home/sushant/Desktop/django_project/run/gunicorn.sock']
   backlog: 2048
@@ -8,7 +19,7 @@
   worker_connections: 1000
   max_requests: 0
   max_requests_jitter: 0
-  timeout: 30
+  timeout: 240
   graceful_timeout: 30
   keepalive: 2
   limit_request_line: 4094
@@ -55,21 +66,21 @@
   default_proc_name: django_project.wsgi:application
   pythonpath: None
   paste: None
-  on_starting: <function OnStarting.on_starting at 0x7fac711cc560>
-  on_reload: <function OnReload.on_reload at 0x7fac711cc680>
-  when_ready: <function WhenReady.when_ready at 0x7fac711cc7a0>
-  pre_fork: <function Prefork.pre_fork at 0x7fac711cc8c0>
-  post_fork: <function Postfork.post_fork at 0x7fac711cc9e0>
-  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fac711ccb00>
-  worker_int: <function WorkerInt.worker_int at 0x7fac711ccc20>
-  worker_abort: <function WorkerAbort.worker_abort at 0x7fac711ccd40>
-  pre_exec: <function PreExec.pre_exec at 0x7fac711cce60>
-  pre_request: <function PreRequest.pre_request at 0x7fac711ccf80>
-  post_request: <function PostRequest.post_request at 0x7fac711e3050>
-  child_exit: <function ChildExit.child_exit at 0x7fac711e3170>
-  worker_exit: <function WorkerExit.worker_exit at 0x7fac711e3290>
-  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fac711e33b0>
-  on_exit: <function OnExit.on_exit at 0x7fac711e34d0>
+  on_starting: <function OnStarting.on_starting at 0x7f5bfa4b8680>
+  on_reload: <function OnReload.on_reload at 0x7f5bfa4b87a0>
+  when_ready: <function WhenReady.when_ready at 0x7f5bfa4b88c0>
+  pre_fork: <function Prefork.pre_fork at 0x7f5bfa4b89e0>
+  post_fork: <function Postfork.post_fork at 0x7f5bfa4b8b00>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f5bfa4b8c20>
+  worker_int: <function WorkerInt.worker_int at 0x7f5bfa4b8d40>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7f5bfa4b8e60>
+  pre_exec: <function PreExec.pre_exec at 0x7f5bfa4b8f80>
+  pre_request: <function PreRequest.pre_request at 0x7f5bfa4d00e0>
+  post_request: <function PostRequest.post_request at 0x7f5bfa4d0170>
+  child_exit: <function ChildExit.child_exit at 0x7f5bfa4d0290>
+  worker_exit: <function WorkerExit.worker_exit at 0x7f5bfa4d03b0>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f5bfa4d04d0>
+  on_exit: <function OnExit.on_exit at 0x7f5bfa4d05f0>
   proxy_protocol: False
   proxy_allow_ips: ['127.0.0.1']
   keyfile: None
@@ -82,182 +93,454 @@
   ciphers: None
   raw_paste_global_conf: []
   strip_header_spaces: False
-[2020-12-04 04:58:53 -0800] [1149] [INFO] Starting gunicorn 20.0.4
-[2020-12-04 04:58:53 -0800] [1149] [DEBUG] Arbiter booted
-[2020-12-04 04:58:53 -0800] [1149] [INFO] Listening at: unix:/home/sushant/Desktop/django_project/run/gunicorn.sock (1149)
-[2020-12-04 04:58:53 -0800] [1149] [INFO] Using worker: sync
-[2020-12-04 04:58:53 -0800] [1226] [INFO] Booting worker with pid: 1226
-[2020-12-04 04:58:53 -0800] [1227] [INFO] Booting worker with pid: 1227
-[2020-12-04 04:58:53 -0800] [1228] [INFO] Booting worker with pid: 1228
-[2020-12-04 04:58:53 -0800] [1229] [INFO] Booting worker with pid: 1229
-[2020-12-04 04:58:53 -0800] [1230] [INFO] Booting worker with pid: 1230
-[2020-12-04 04:58:53 -0800] [1231] [INFO] Booting worker with pid: 1231
-[2020-12-04 04:58:53 -0800] [1232] [INFO] Booting worker with pid: 1232
-[2020-12-04 04:58:53 -0800] [1233] [INFO] Booting worker with pid: 1233
-[2020-12-04 04:58:53 -0800] [1149] [DEBUG] 9 workers
-[2020-12-04 04:58:53 -0800] [1234] [INFO] Booting worker with pid: 1234
-[2020-12-04 07:08:11 -0800] [1149] [INFO] Handling signal: term
-[2020-12-04 15:08:11 +0000] [1227] [INFO] Worker exiting (pid: 1227)
-[2020-12-04 15:08:11 +0000] [1233] [INFO] Worker exiting (pid: 1233)
-[2020-12-04 15:08:11 +0000] [1229] [INFO] Worker exiting (pid: 1229)
-[2020-12-04 15:08:11 +0000] [1228] [INFO] Worker exiting (pid: 1228)
-[2020-12-04 15:08:11 +0000] [1231] [INFO] Worker exiting (pid: 1231)
-[2020-12-04 15:08:11 +0000] [1234] [INFO] Worker exiting (pid: 1234)
-[2020-12-04 15:08:11 +0000] [1232] [INFO] Worker exiting (pid: 1232)
-[2020-12-04 15:08:11 +0000] [1226] [INFO] Worker exiting (pid: 1226)
-[2020-12-04 15:08:11 +0000] [1230] [INFO] Worker exiting (pid: 1230)
-[2020-12-04 07:08:13 -0800] [1149] [INFO] Shutting down: Master
-[2020-12-04 09:45:02 -0800] [1130] [DEBUG] Current configuration:
-  config: None
-  bind: ['unix:/home/sushant/Desktop/django_project/run/gunicorn.sock']
-  backlog: 2048
-  workers: 9
-  worker_class: sync
-  threads: 1
-  worker_connections: 1000
-  max_requests: 0
-  max_requests_jitter: 0
-  timeout: 30
-  graceful_timeout: 30
-  keepalive: 2
-  limit_request_line: 4094
-  limit_request_fields: 100
-  limit_request_field_size: 8190
-  reload: False
-  reload_engine: auto
-  reload_extra_files: []
-  spew: False
-  check_config: False
-  preload_app: False
-  sendfile: None
-  reuse_port: False
-  chdir: /home/sushant/Desktop/django_project
-  daemon: False
-  raw_env: []
-  pidfile: None
-  worker_tmp_dir: None
-  user: 1000
-  group: 1000
-  umask: 0
-  initgroups: False
-  tmp_upload_dir: None
-  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
-  forwarded_allow_ips: ['127.0.0.1']
-  accesslog: None
-  disable_redirect_access_to_syslog: False
-  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
-  errorlog: -
-  loglevel: debug
-  capture_output: False
-  logger_class: gunicorn.glogging.Logger
-  logconfig: None
-  logconfig_dict: {}
-  syslog_addr: udp://localhost:514
-  syslog: False
-  syslog_prefix: None
-  syslog_facility: user
-  enable_stdio_inheritance: False
-  statsd_host: None
-  dogstatsd_tags: 
-  statsd_prefix: 
-  proc_name: olfy
-  default_proc_name: django_project.wsgi:application
-  pythonpath: None
-  paste: None
-  on_starting: <function OnStarting.on_starting at 0x7f74373d1560>
-  on_reload: <function OnReload.on_reload at 0x7f74373d1680>
-  when_ready: <function WhenReady.when_ready at 0x7f74373d17a0>
-  pre_fork: <function Prefork.pre_fork at 0x7f74373d18c0>
-  post_fork: <function Postfork.post_fork at 0x7f74373d19e0>
-  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7f74373d1b00>
-  worker_int: <function WorkerInt.worker_int at 0x7f74373d1c20>
-  worker_abort: <function WorkerAbort.worker_abort at 0x7f74373d1d40>
-  pre_exec: <function PreExec.pre_exec at 0x7f74373d1e60>
-  pre_request: <function PreRequest.pre_request at 0x7f74373d1f80>
-  post_request: <function PostRequest.post_request at 0x7f74373e8050>
-  child_exit: <function ChildExit.child_exit at 0x7f74373e8170>
-  worker_exit: <function WorkerExit.worker_exit at 0x7f74373e8290>
-  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7f74373e83b0>
-  on_exit: <function OnExit.on_exit at 0x7f74373e84d0>
-  proxy_protocol: False
-  proxy_allow_ips: ['127.0.0.1']
-  keyfile: None
-  certfile: None
-  ssl_version: 2
-  cert_reqs: 0
-  ca_certs: None
-  suppress_ragged_eofs: True
-  do_handshake_on_connect: False
-  ciphers: None
-  raw_paste_global_conf: []
-  strip_header_spaces: False
-[2020-12-04 09:45:02 -0800] [1130] [INFO] Starting gunicorn 20.0.4
-[2020-12-04 09:45:02 -0800] [1130] [DEBUG] Arbiter booted
-[2020-12-04 09:45:02 -0800] [1130] [INFO] Listening at: unix:/home/sushant/Desktop/django_project/run/gunicorn.sock (1130)
-[2020-12-04 09:45:02 -0800] [1130] [INFO] Using worker: sync
-[2020-12-04 09:45:02 -0800] [1203] [INFO] Booting worker with pid: 1203
-[2020-12-04 09:45:02 -0800] [1210] [INFO] Booting worker with pid: 1210
-[2020-12-04 09:45:02 -0800] [1215] [INFO] Booting worker with pid: 1215
-[2020-12-04 09:45:02 -0800] [1218] [INFO] Booting worker with pid: 1218
-[2020-12-04 09:45:03 -0800] [1219] [INFO] Booting worker with pid: 1219
-[2020-12-04 09:45:03 -0800] [1223] [INFO] Booting worker with pid: 1223
-[2020-12-04 09:45:03 -0800] [1224] [INFO] Booting worker with pid: 1224
-[2020-12-04 09:45:03 -0800] [1225] [INFO] Booting worker with pid: 1225
-[2020-12-04 09:45:03 -0800] [1228] [INFO] Booting worker with pid: 1228
-[2020-12-04 09:45:03 -0800] [1130] [DEBUG] 9 workers
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1203)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1210)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1215)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1218)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1219)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1223)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1224)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1225)
-[2020-12-04 19:26:09 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:1228)
-[2020-12-05 03:26:09 +0000] [1215] [INFO] Worker exiting (pid: 1215)
-[2020-12-05 03:26:09 +0000] [1203] [INFO] Worker exiting (pid: 1203)
-[2020-12-05 03:26:09 +0000] [1210] [INFO] Worker exiting (pid: 1210)
-[2020-12-05 03:26:09 +0000] [1225] [INFO] Worker exiting (pid: 1225)
-[2020-12-05 03:26:09 +0000] [1218] [INFO] Worker exiting (pid: 1218)
-[2020-12-05 03:26:09 +0000] [1228] [INFO] Worker exiting (pid: 1228)
-[2020-12-05 03:26:09 +0000] [1219] [INFO] Worker exiting (pid: 1219)
-[2020-12-05 03:26:09 +0000] [1224] [INFO] Worker exiting (pid: 1224)
-[2020-12-05 03:26:09 +0000] [1223] [INFO] Worker exiting (pid: 1223)
-[2020-12-04 19:26:10 -0800] [30597] [INFO] Booting worker with pid: 30597
-[2020-12-04 19:26:10 -0800] [30598] [INFO] Booting worker with pid: 30598
-[2020-12-04 19:26:10 -0800] [30599] [INFO] Booting worker with pid: 30599
-[2020-12-04 19:26:10 -0800] [30600] [INFO] Booting worker with pid: 30600
-[2020-12-04 19:26:10 -0800] [30601] [INFO] Booting worker with pid: 30601
-[2020-12-04 19:26:10 -0800] [30602] [INFO] Booting worker with pid: 30602
-[2020-12-04 19:26:10 -0800] [30603] [INFO] Booting worker with pid: 30603
-[2020-12-04 19:26:10 -0800] [30604] [INFO] Booting worker with pid: 30604
-[2020-12-04 19:26:10 -0800] [30605] [INFO] Booting worker with pid: 30605
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30597)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30598)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30599)
-[2020-12-05 08:30:00 +0000] [30597] [INFO] Worker exiting (pid: 30597)
-[2020-12-05 08:30:00 +0000] [30599] [INFO] Worker exiting (pid: 30599)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30600)
-[2020-12-05 08:30:00 +0000] [30600] [INFO] Worker exiting (pid: 30600)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30601)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30602)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30603)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30604)
-[2020-12-05 00:30:00 -0800] [1130] [CRITICAL] WORKER TIMEOUT (pid:30605)
-[2020-12-05 08:30:00 +0000] [30602] [INFO] Worker exiting (pid: 30602)
-[2020-12-05 08:30:00 +0000] [30603] [INFO] Worker exiting (pid: 30603)
-[2020-12-05 08:30:00 +0000] [30601] [INFO] Worker exiting (pid: 30601)
-[2020-12-05 08:30:00 +0000] [30604] [INFO] Worker exiting (pid: 30604)
-[2020-12-05 08:30:00 +0000] [30605] [INFO] Worker exiting (pid: 30605)
-[2020-12-05 08:30:00 +0000] [30598] [INFO] Worker exiting (pid: 30598)
-[2020-12-05 00:30:00 -0800] [31056] [INFO] Booting worker with pid: 31056
-[2020-12-05 00:30:00 -0800] [1130] [DEBUG] 1 workers
-[2020-12-05 00:30:00 -0800] [31057] [INFO] Booting worker with pid: 31057
-[2020-12-05 00:30:00 -0800] [31058] [INFO] Booting worker with pid: 31058
-[2020-12-05 00:30:00 -0800] [31059] [INFO] Booting worker with pid: 31059
-[2020-12-05 00:30:00 -0800] [31060] [INFO] Booting worker with pid: 31060
-[2020-12-05 00:30:00 -0800] [31061] [INFO] Booting worker with pid: 31061
-[2020-12-05 00:30:00 -0800] [31062] [INFO] Booting worker with pid: 31062
-[2020-12-05 00:30:00 -0800] [31063] [INFO] Booting worker with pid: 31063
-[2020-12-05 00:30:00 -0800] [31064] [INFO] Booting worker with pid: 31064
-[2020-12-05 00:30:00 -0800] [1130] [DEBUG] 9 workers
+[2020-12-07 18:47:05 -0800] [10393] [INFO] Starting gunicorn 20.0.4
+[2020-12-07 18:47:05 -0800] [10393] [DEBUG] Arbiter booted
+[2020-12-07 18:47:05 -0800] [10393] [INFO] Listening at: unix:/home/sushant/Desktop/django_project/run/gunicorn.sock (10393)
+[2020-12-07 18:47:05 -0800] [10393] [INFO] Using worker: sync
+[2020-12-07 18:47:05 -0800] [10404] [INFO] Booting worker with pid: 10404
+[2020-12-07 18:47:05 -0800] [10405] [INFO] Booting worker with pid: 10405
+[2020-12-07 18:47:05 -0800] [10406] [INFO] Booting worker with pid: 10406
+[2020-12-07 18:47:05 -0800] [10407] [INFO] Booting worker with pid: 10407
+[2020-12-07 18:47:05 -0800] [10408] [INFO] Booting worker with pid: 10408
+[2020-12-07 18:47:05 -0800] [10409] [INFO] Booting worker with pid: 10409
+[2020-12-07 18:47:06 -0800] [10410] [INFO] Booting worker with pid: 10410
+[2020-12-07 18:47:06 -0800] [10411] [INFO] Booting worker with pid: 10411
+[2020-12-07 18:47:06 -0800] [10413] [INFO] Booting worker with pid: 10413
+[2020-12-07 18:47:06 -0800] [10393] [DEBUG] 9 workers
+[2020-12-08 02:47:40 +0000] [10413] [DEBUG] GET /olfy/
+[2020-12-08 02:47:42 +0000] [10413] [DEBUG] GET /olfy/models
+[2020-12-08 02:47:44 +0000] [10413] [DEBUG] GET /olfy/odor2
+[2020-12-08 02:47:55 +0000] [10413] [DEBUG] POST /olfy/odor2
+['CC1=CC[C@@H](CC1)C(=C)C', 'CC1=CC[C@H](CC1)C(=C)C', 'CC(=C)[C@H]1CCC(=CC1)C', 'CC1=CCC(CC1)C(=C)C']
+Empty DataFrame
+Columns: [Probability, Receptor, Final_Sequence]
+Index: []
+['CC(=CCC/C(=C/CO)/C)C', 'CC(=CCCC(=CCCC(=CCO)C)C)C', 'CC(=CCC/C(=C\\CO)/C)C']
+Empty DataFrame
+Columns: [Probability, Receptor, Final_Sequence]
+Index: []
+/home/sushant/anaconda3/envs/my-rdkit-env/lib/python3.7/site-packages/torch/autograd/__init__.py:204: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /opt/conda/conda-bld/pytorch_1603729047590/work/c10/cuda/CUDAFunctions.cpp:100.)
+  inputs, allow_unused)
+M2.py:183: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['smile_char']=x_smile_labels
+M2.py:187: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive']=['']*len_smile
+M2.py:188: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative']=['']*len_smile
+M2.py:199: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=cropped_smile_relevance['values'][row]
+M2.py:415: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
+M2.py:200: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:196: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=cropped_smile_relevance['values'][row]
+M2.py:197: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:191: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['values'][row]=0
+M2.py:192: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:193: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:285: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['seq_char']=x_seq_labels
+M2.py:286: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive']=['']*len_seq
+M2.py:287: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative']=['']*len_seq
+M2.py:299: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=cropped_seq_relevance['values'][row]
+M2.py:300: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=0
+M2.py:296: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=cropped_seq_relevance['values'][row]
+M2.py:297: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=0
+['CC(=O)C1=CC=CC=C1', 'CC1=CC=C(C=C1)C(=O)C']
+                                      Final_Sequence  Probability Receptor
+0  MEGKNLTSISECFLLGFSEQLEEQKPLFGSFLFMYLVTVAGNLLII...        0.587    OR1G1
+C -0.0032955117340656937 0xfd0000
+C 0.04593008623265115 0x00ed00
+( 0.0 0xFFFFFF
+= 0.0 0xFFFFFF
+O -0.4269484892562926 0x640000
+) 0.0 0xFFFFFF
+C 0.24149016721288402 0x00a300
+1 0.0 0xFFFFFF
+= 0.0 0xFFFFFF
+C 0.4104583344091543 0x006400
+C 0.061903426065690416 0x00e700
+= 0.0 0xFFFFFF
+C -0.12277328057554142 0xd20000
+C 0.3242206475188664 0x008400
+= 0.0 0xFFFFFF
+C 0.16980067621931066 0x00be00
+1 0.0 0xFFFFFF
+/home/sushant/anaconda3/envs/my-rdkit-env/lib/python3.7/site-packages/torch/autograd/__init__.py:204: UserWarning: CUDA initialization: Found no NVIDIA driver on your system. Please check that you have an NVIDIA GPU and installed a driver from http://www.nvidia.com/Download/index.aspx (Triggered internally at  /opt/conda/conda-bld/pytorch_1603729047590/work/c10/cuda/CUDAFunctions.cpp:100.)
+  inputs, allow_unused)
+M2.py:183: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['smile_char']=x_smile_labels
+M2.py:187: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive']=['']*len_smile
+M2.py:188: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative']=['']*len_smile
+M2.py:199: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=cropped_smile_relevance['values'][row]
+M2.py:415: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
+M2.py:200: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:191: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['values'][row]=0
+M2.py:192: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:193: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:196: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=cropped_smile_relevance['values'][row]
+M2.py:197: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:285: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['seq_char']=x_seq_labels
+M2.py:286: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive']=['']*len_seq
+M2.py:287: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative']=['']*len_seq
+M2.py:299: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=cropped_seq_relevance['values'][row]
+M2.py:300: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=0
+M2.py:296: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=cropped_seq_relevance['values'][row]
+M2.py:297: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=0
+M2.py:183: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['smile_char']=x_smile_labels
+M2.py:187: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive']=['']*len_smile
+M2.py:188: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative']=['']*len_smile
+M2.py:199: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=cropped_smile_relevance['values'][row]
+M2.py:415: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
+M2.py:200: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:191: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['values'][row]=0
+M2.py:192: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=0
+M2.py:193: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:196: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['positive'][row]=cropped_smile_relevance['values'][row]
+M2.py:197: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_smile_relevance['negative'][row]=0
+M2.py:285: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['seq_char']=x_seq_labels
+M2.py:286: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive']=['']*len_seq
+M2.py:287: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame.
+Try using .loc[row_indexer,col_indexer] = value instead
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative']=['']*len_seq
+M2.py:299: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=cropped_seq_relevance['values'][row]
+M2.py:300: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=0
+M2.py:296: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['positive'][row]=cropped_seq_relevance['values'][row]
+M2.py:297: SettingWithCopyWarning: 
+A value is trying to be set on a copy of a slice from a DataFrame
+
+See the caveats in the documentation: https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#returning-a-view-versus-a-copy
+  cropped_seq_relevance['negative'][row]=0
+['CC1=CC[C@@H](CC1=O)C(=C)C', 'CC1=CC[C@H](CC1=O)C(=C)C', 'CC1=CCC(CC1=O)C(=C)C']
+                                      Final_Sequence  Probability Receptor
+0  MLARNNSLVTEFILAGLTDHPEFQQPLFFLFLVVYIVTMVGNLGLI...        0.892    OR8B3
+1  MRNGTVITEFILLGFPVIQGLQTPLFIAIFLTYILTLAGNGLIIAT...        0.717    OR6X1
+C -0.021676427597654722 0xfc0000
+= 0.0 0xFFFFFF
+C 0.7589745163162475 0x008000
+( 0.0 0xFFFFFF
+C -0.13795484182740292 0xef0000
+) 0.0 0xFFFFFF
+[ 0.0 0xFFFFFF
+C -0.4422490101549539 0xce0000
+@ 0.0 0xFFFFFF
+@ 0.0 0xFFFFFF
+H 0.0 0xFFFFFF
+] 0.0 0xFFFFFF
+1 0.0 0xFFFFFF
+C -0.0810739409621173 0xf60000
+C 0.9336238138514865 0x006400
+= 0.0 0xFFFFFF
+C 0.11984929308764523 0x00eb00
+( 0.0 0xFFFFFF
+C 0.6907430095728777 0x008c00
+) 0.0 0xFFFFFF
+C -0.38533231010420915 0xd40000
+( 0.0 0xFFFFFF
+= 0.0 0xFFFFFF
+O -1.1980598795263637 0x7b0000
+) 0.0 0xFFFFFF
+C -1.4097343397847142 0x640000
+1 0.0 0xFFFFFF
+C -0.05658947517530298 0xf80000
+= 0.0 0xFFFFFF
+C 0.6739655862039823 0x008b00
+( 0.0 0xFFFFFF
+C -0.07203884140010945 0xf70000
+) 0.0 0xFFFFFF
+[ 0.0 0xFFFFFF
+C -0.4805703548989896 0xcb0000
+@ 0.0 0xFFFFFF
+@ 0.0 0xFFFFFF
+H 0.0 0xFFFFFF
+] 0.0 0xFFFFFF
+1 0.0 0xFFFFFF
+C -0.08851988056806546 0xf50000
+C 0.9005731042542359 0x006400
+= 0.0 0xFFFFFF
+C 0.17518068030467773 0x00e000
+( 0.0 0xFFFFFF
+C 0.5786924128649207 0x009b00
+) 0.0 0xFFFFFF
+C -0.42313656453688725 0xd10000
+( 0.0 0xFFFFFF
+= 0.0 0xFFFFFF
+O -1.1220671922565697 0x870000
+) 0.0 0xFFFFFF
+C -1.4558960594422075 0x640000
+1 0.0 0xFFFFFF
+[]
+Empty DataFrame
+Columns: [Probability, Receptor, Final_Sequence]
+Index: []
+[]
+Empty DataFrame
+Columns: [Probability, Receptor, Final_Sequence]
+Index: []
+[2020-12-08 02:48:22 +0000] [10413] [DEBUG] GET /olfy/results
+[2020-12-07 18:49:07 -0800] [10393] [INFO] Handling signal: term
+[2020-12-08 02:49:07 +0000] [10407] [INFO] Worker exiting (pid: 10407)
+[2020-12-08 02:49:07 +0000] [10406] [INFO] Worker exiting (pid: 10406)
+[2020-12-08 02:49:07 +0000] [10405] [INFO] Worker exiting (pid: 10405)
+[2020-12-08 02:49:07 +0000] [10404] [INFO] Worker exiting (pid: 10404)
+[2020-12-08 02:49:07 +0000] [10413] [INFO] Worker exiting (pid: 10413)
+[2020-12-08 02:49:07 +0000] [10409] [INFO] Worker exiting (pid: 10409)
+bruteforce 0.75 <class 'str'>
+bruteforce 0.75 <class 'str'>
+bruteforce 0.75 <class 'str'>
+bruteforce 0.75 <class 'str'>
+bruteforce 0.75 <class 'str'>
+bruteforce 0.75 <class 'str'>
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+  Probability Receptor Final_Sequence                  smiles
+0       Empty    Empty          Empty  CC(=C)[C@H]1CCC(=CC1)C
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+  Probability Receptor Final_Sequence               smiles
+0       Empty    Empty          Empty  CC(=CCC/C(=CCO)/C)C
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+                                      Final_Sequence  ...             smiles
+0  MEGKNLTSISECFLLGFSEQLEEQKPLFGSFLFMYLVTVAGNLLII...  ...  CC(=O)C1=CC=CC=C1
+
+[1 rows x 4 columns]
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+                                      Final_Sequence  ...                    smiles
+0  MLARNNSLVTEFILAGLTDHPEFQQPLFFLFLVVYIVTMVGNLGLI...  ...  CC1=CC[C@H](CC1=O)C(=C)C
+1  MRNGTVITEFILLGFPVIQGLQTPLFIAIFLTYILTLAGNGLIIAT...  ...  CC1=CC[C@H](CC1=O)C(=C)C
+
+[2 rows x 4 columns]
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+  Probability Receptor Final_Sequence                             smiles
+0       Empty    Empty          Empty  CCc1c[n+]2ccc3c4ccccc4[nH]c3c2cc1
+/home/sushant/Desktop/django_project/olfy/static/olfy/generated/1005456329/m2
+  Probability Receptor Final_Sequence                      smiles
+0       Empty    Empty          Empty  Cc1oc(C)c(SC(=O)c2occc2)c1
+{'smiles': 'CC(=C)[C@H]1CCC(=CC1)C', 'row': [<olfy.models.disp2 object at 0x7f5be97db710>]}
+{'smiles': 'CC(=CCC/C(=CCO)/C)C', 'row': [<olfy.models.disp2 object at 0x7f5be97db410>]}
+{'smiles': 'CC(=O)C1=CC=CC=C1', 'row': [<olfy.models.disp2 object at 0x7f5be97e6cd0>]}
+{'smiles': 'CC1=CC[C@H](CC1=O)C(=C)C', 'row': [<olfy.models.disp2 object at 0x7f5be97db050>, <olfy.models.disp2 object at 0x7f5be97b9b50>]}
+{'smiles': 'CCc1c[n+]2ccc3c4ccccc4[nH]c3c2cc1', 'row': [<olfy.models.disp2 object at 0x7f5be97e6a10>]}
+{'smiles': 'Cc1oc(C)c(SC(=O)c2occc2)c1', 'row': [<olfy.models.disp2 object at 0x7f5be97dbe10>]}
+[2020-12-08 02:49:07 +0000] [10408] [INFO] Worker exiting (pid: 10408)
+[2020-12-08 02:49:07 +0000] [10410] [INFO] Worker exiting (pid: 10410)
+[2020-12-08 02:49:07 +0000] [10411] [INFO] Worker exiting (pid: 10411)
+[2020-12-07 18:49:07 -0800] [10393] [INFO] Shutting down: Master

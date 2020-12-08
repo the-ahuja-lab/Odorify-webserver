@@ -19,7 +19,6 @@ from layers import PositionLayer, MaskLayerLeft, \
                    SelfLayer, LayerNormalization
 
 version = 4
-print("Version: ", version)
 
 # config = configparser.ConfigParser()
 # config.read(sys.argv[1])
@@ -57,7 +56,6 @@ MODEL_FILE = f'{path}/olfy_model_v1.tar'
 # TRAIN_FILE = getConfig("Task","train_data_file")
 APPLY_FILE = f'{path}/input.csv'
 RESULT_FILE = f"{path}/results.csv"
-print(f"this is result.csv {RESULT_FILE}")
 NUM_EPOCHS =  100
 BATCH_SIZE = 32
 SEED = 657488
@@ -86,9 +84,6 @@ vocab_size = len(chars)
 
 char_to_ix = { ch:i for i,ch in enumerate(chars) }
 ix_to_char = { i:ch for i,ch in enumerate(chars) }
-
-print("Using: ", DEVICE)
-print("Set seed to ", SEED)
 
 import tensorflow as tf
 from tensorflow.keras import layers
@@ -149,7 +144,6 @@ def findBoundaries(DS):
           props[prop].extend(["regression", y_min, y_max])
 
        else:
-          print(props[prop][1], "classification")
           props[prop].extend(["classification"])
 
 
@@ -590,7 +584,6 @@ if __name__ == "__main__":
     device_str = "GPU" + str(DEVICE)
 
     if TRAIN == "True":
-        print("Analyze training file...")
 
         DS = analyzeDescrFile(TRAIN_FILE)
 
@@ -637,7 +630,6 @@ if __name__ == "__main__":
                                      shuffle = True,
                                      callbacks = callback)
 
-           print("Averaging weights")
            f = []
 
            for i in epochs_to_save:
@@ -680,7 +672,6 @@ if __name__ == "__main__":
         mdl, encoder = buildNetwork()
 
         nall = len(DS)
-        print("Number of all points: ", nall)
 
         inds = np.arange(nall)
 
@@ -706,7 +697,6 @@ if __name__ == "__main__":
            np.random.shuffle(inds)
            ntrain = int(EARLY_STOPPING * nall)
 
-           print("Trainig samples:", ntrain, "validation:", nall - ntrain)
            inds_train = inds[:ntrain]
            inds_valid = inds[ntrain:]
 
@@ -815,7 +805,6 @@ if __name__ == "__main__":
                      verbose = 0,
                      callbacks = [MessagerCallback()])
 
-           print("Averaging weights")
            f = []
 
            for i in range(NUM_EPOCHS - AVERAGING-1, NUM_EPOCHS):
@@ -1039,5 +1028,4 @@ if __name__ == "__main__":
        df = pd.read_csv(RESULT_FILE)
        df = pd.DataFrame(df["property"])
        df.to_csv(f"{path}/results.csv",index=False)
-       print(df)
     print("Relax!")

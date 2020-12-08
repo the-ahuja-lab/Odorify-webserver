@@ -4,7 +4,7 @@ DJANGODIR=/home/sushant/Desktop/django_project            # Django project direc
 SOCKFILE=/home/sushant/Desktop/django_project/run/gunicorn.sock # we will communicte using this unix socket 
 USER=sushant                                       # the user to run as 
 GROUP=sushant                                    # the group to run as 
-NUM_WORKERS=9                                    # how many worker processes should Gunicorn spawn 
+NUM_WORKERS=7                                    # how many worker processes should Gunicorn spawn 
 DJANGO_SETTINGS_MODULE=django_project.settings            # which settings file should Django use 
 DJANGO_WSGI_MODULE=django_project.wsgi                    # WSGI module name 
 
@@ -25,4 +25,5 @@ exec gunicorn ${DJANGO_WSGI_MODULE}:application \
 --user=$USER --group=$GROUP \
 --bind=unix:$SOCKFILE \
 --log-level=debug \
---log-file=-
+--log-file=- \
+--timeout 3600

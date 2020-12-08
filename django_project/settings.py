@@ -108,13 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 EXCLUDE_FROM_MINIFYING = ('^admin/')
@@ -122,7 +117,9 @@ EXCLUDE_FROM_MINIFYING = ('^admin/')
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 STATIC_URL = '/static/'
-SESSION_COOKIE_AGE = 86400
+SESSION_COOKIE_AGE = 345600
+# SESSION_COOKIE_AGE = 300
+SESSION_COOKIE_HTTPOLNY = True
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
