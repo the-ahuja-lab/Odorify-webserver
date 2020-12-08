@@ -1,5 +1,10 @@
 from uuid import uuid4
+
+from pandas.core.frame import DataFrame
 from htmlmin.decorators import minified_response
+import datetime
+from django.utils import timezone
+import pytz
 from django.http import request
 from django.shortcuts import render,redirect
 from django.http import HttpResponse
@@ -16,7 +21,6 @@ from email.mime.base import MIMEBase
 from email import encoders
 import traceback
 import uuid
-
 root = os.path.abspath('./')
 
 def get_id(request):
@@ -71,6 +75,17 @@ def check_user(request):
 	os.chdir(root)
 	id = get_id(request)
 	generated = "olfy/static/olfy/generated"
+	if os.path.isfile(f"{generated}/session.csv"):
+		data = pd.read_csv(f"{generated}/session.csv")
+		if id not in data["id"]:
+			print([id,request.session.get_expiry_date()])
+			data = data.append({"id":id,"date":request.session.get_expiry_date()},ignore_index=True)
+			data.to_csv(f"{generated}/session.csv",index=False)
+	else:
+		data = pd.DataFrame()
+		data = data.append({"id":id,"date":request.session.get_expiry_date()},ignore_index=True)
+		data.to_csv(f"{generated}/session.csv",index=False)
+
 	if not os.path.isdir(f"{generated}/{id}"): 
 		os.makedirs(f"{generated}/{id}/m1")
 		os.makedirs(f"{generated}/{id}/m2")
@@ -436,6 +451,7 @@ def result_queue(request,job_name,model,count):
 					b.status = "binding"
 				display.append(b)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}]})
+
 
 def odor(request):
 	if "GET" == request.method:

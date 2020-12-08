@@ -17,4 +17,7 @@ urlpatterns = [
 	path('results/<str:job_name>/<str:model>/<str:count>', views.result_queue, name= "olfy-result_queue"),
 	path('contact', views.contactus, name= "olfy-contact"),
 	path('download/<str:job_name>/<str:model>/<str:count>', views.download, name= 'download'),
+	path('test', views.testing, name= 'test'),
+	path('delete', views.delete, name= 'delete'),
+	
 ]

@@ -1,0 +1,7 @@
+127.0.0.1 - - [07/Dec/2020:18:47:41 -0800] "GET /olfy/ HTTP/1.1" 200 3181 "-" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:47:42 -0800] "GET /olfy/models HTTP/1.1" 200 3914 "http://localhost/olfy/" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:47:43 -0800] "GET /static/olfy/images/Model3.jpg HTTP/1.1" 403 196 "http://localhost/olfy/models" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:47:43 -0800] "GET /static/olfy/images/Model4.jpg HTTP/1.1" 403 196 "http://localhost/olfy/models" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:47:44 -0800] "GET /olfy/odor2 HTTP/1.1" 200 6993 "http://localhost/olfy/models" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:48:22 -0800] "POST /olfy/odor2 HTTP/1.1" 200 11 "http://localhost/olfy/odor2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"
+127.0.0.1 - - [07/Dec/2020:18:48:22 -0800] "GET /olfy/results HTTP/1.1" 200 5860 "http://localhost/olfy/odor2" "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36"

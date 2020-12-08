@@ -14,7 +14,6 @@ from rdkit import Chem
 from rdkit.Chem import Descriptors
 from rdkit.Chem import rdDepictor
 from rdkit.Chem.Draw import rdMolDraw2D
-print("one")
 #the parameters are the same as for Transformer-CNN model.
 N_HIDDEN = 512;
 N_HIDDEN_CNN = 512;
@@ -26,7 +25,6 @@ CONV_OFFSET = 20;
 chars = " ^#%()+-./0123456789=@ABCDEFGHIKLMNOPRSTVXYZ[\\]abcdefgilmnoprstuy$";
 vocab_size = len(chars);
 char_to_ix = { ch:i for i,ch in enumerate(chars) }
-print("two")
 
 def LRPCheck(label, x, val):
 
@@ -41,7 +39,6 @@ def LRPCheck(label, x, val):
 
     s = round(s, 7);
     if np.isnan(s):
-       print(label, "NaN");
        sys.exit(0);
  
     print("{:25}|{:15.5f}  |{:15.5g}  |{:15.5g}%   | ".format( label, s, v - s, (v-s)/v*100.));
@@ -117,18 +114,15 @@ def calcLRPConvStride(l_prev, w, l_out, stride):
 
 
 #load the model
-print("three")
 d = pickle.load(open(sys.argv[1], "rb"));
 info = d[0];
 d = d[1];
-print("four")
 def calcQSAR(ch, atom, MolWt, doLrp = True):
    mol = Chem.MolToSmiles(ch, rootedAtAtom = atom, canonical = False);
    
    N = len(mol);
    NN = N + CONV_OFFSET;
 
-   print("Analyzing molecule (canonical): ", mol);
 
    x = np.zeros( NN, np.int32);
    for i in range(N):
@@ -504,8 +498,6 @@ def calcQSAR(ch, atom, MolWt, doLrp = True):
    if doLrp == False:
        return l_out[0];
 
-   print("\nExplaining the result with LRP technique.\n");
-   print("   Layer                     Relevance(l)          Delta            Bias(%)\n");
 
    R_highway = calcLRPDenseOut(l_highway, [d[151], d[152]], l_out);
    LRPCheck("HighWay Output:", R_highway, l_out);
@@ -551,7 +543,6 @@ def calcQSAR(ch, atom, MolWt, doLrp = True):
 
    LRPCheck("DeMaxPool:", [d_1, d_2, d_3, d_4, d_5, d_6, d_7, d_8, d_9, d_10, d_15, d_20], R_input_highway);
 
-   print("Char-CNN block:");
 
    R_cnn_1 = calcLRPConv(l_embed, [d[121], d[122]], d_1);
    LRPCheck("  Conv1:", R_cnn_1, np.sum(d_1));
@@ -601,7 +592,6 @@ def calcQSAR(ch, atom, MolWt, doLrp = True):
 
 mol =  sys.argv[2];
 path = sys.argv[3];
-print(path,"ochem")
 m = Chem.MolFromSmiles(mol);
 MolWt = Descriptors.ExactMolWt(m);
 
@@ -624,7 +614,6 @@ print("{} = {:.7f} +/- {:7f} {}".format(info[0], res, 1.96*std / math.sqrt(len(v
 
 #save relevance 
 s = path[:path.rfind('/')]
-print(s,"   s")
 fp = open(s+"/map.txt", "w");
 
 y_max = np.max(impacts);
