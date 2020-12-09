@@ -229,10 +229,6 @@ def help(request):
 		],
 		'troubleshoot':  [
 			{
-				'ques': 'Where can I see the input format?',
-				'ans': 'See input format here and the sample CSV for each prediction engine here properly to understand and replicate the format.'
-			},
-			{
 				'ques': 'If I log out of my browser, would my history remain saved?',
 				'ans': 'Yes, your history will remain saved up to 7 days, or if you choose to clear your cookies in the browser cache.'
 			},
