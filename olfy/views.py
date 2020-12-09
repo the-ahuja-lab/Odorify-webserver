@@ -167,10 +167,16 @@ def about(request):
 				'image': 'Krishan.jpg'
 			},
 			{
-				'name': 'Prakriti',
+				'name': 'Prakriti Garg',
 				'post': 'Testing',
 				'email': 'prakriti19439@iiitd.ac.in',
 				'image': 'Prakriti.jpg'
+			},
+			{
+				'name': 'Sanjay Kumar Mohanty',
+				'post': 'Testing',
+				'email': 'kumeres741@gmail.com',
+				'image': 'Sanjay.jpg'
 			},
 			{
 				'name': 'Riya Sogani',
