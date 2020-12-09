@@ -618,9 +618,19 @@ def Or(request):
 			fasta = request.POST["fasta"]
 			email = request.POST["email"]
 			counter = request.POST["normal_counter"]
-			t = fasta.replace('\r',"").split('\n')
-			while "" in t:
-				t.remove("")
+			fasta=fasta.split('>')
+			fasta.pop(0)
+			t=[]
+			for seq in fasta:
+				for i in range(len(seq)):
+					if(seq[i]=='\n'):
+						break
+				t.append('>'+seq[:i])
+				t.append(seq[i+1:].replace("\n",""))
+			print(t)
+			#t = fasta.replace('\r',"").split('\n')
+			#while "" in t:
+				#t.remove("")
 			seq = []
 			header = []
 			for i in range(0,len(t),2):
