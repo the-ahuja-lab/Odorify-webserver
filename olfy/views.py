@@ -489,7 +489,7 @@ def odor(request):
 			smiles = request.POST["smiles"]
 			email = request.POST["email"]
 			s = smiles.replace('\r',"").split('\n')
-			if "" in s:
+			while "" in s:
 				s.remove("")
 			temp = {"smiles":s}
 			data = pd.DataFrame(temp)
@@ -559,10 +559,10 @@ def odor_Or(request):
 			id = check_user(request)
 			a.id = id
 			s = smiles.replace('\r',"").split('\n')
-			if "" in s:
+			while "" in s:
 				s.remove("")
 			t = fasta.replace('\r',"").split('\n')
-			if "" in t:
+			while "" in t:
 				t.remove("")
 			seq = []
 			header = []
@@ -617,7 +617,7 @@ def Or(request):
 			email = request.POST["email"]
 			counter = request.POST["normal_counter"]
 			t = fasta.replace('\r',"").split('\n')
-			if "" in t:
+			while "" in t:
 				t.remove("")
 			seq = []
 			header = []
@@ -689,7 +689,7 @@ def odor2(request):
 			counter = request.POST["normal_counter"]
 			switch = request.POST["typeOfTesting"]
 			t = smiles.replace('\r',"").split('\n')
-			if "" in t:
+			while "" in t:
 				t.remove("")
 			temp = {"smiles":t}
 			data = pd.DataFrame(temp)
