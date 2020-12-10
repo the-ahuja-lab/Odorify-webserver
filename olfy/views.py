@@ -73,17 +73,19 @@ def readresult(user):
 
 def check_user(request):
 	os.chdir(root)
-	id = get_id(request)
+	id = str(get_id(request))
 	generated = "olfy/static/olfy/generated"
 	if os.path.isfile(f"{generated}/session.csv"):
 		data = pd.read_csv(f"{generated}/session.csv")
-		if id not in data["id"]:
+		list1 = list(map(str,list(data["id"])))
+		if id not in list1:
 			print([id,request.session.get_expiry_date()])
-			data = data.append({"id":id,"date":request.session.get_expiry_date()},ignore_index=True)
+			data = data.append({"id":str(id),"date":request.session.get_expiry_date()},ignore_index=True)
 			data.to_csv(f"{generated}/session.csv",index=False)
 	else:
-		data = pd.DataFrame()
-		data = data.append({"id":id,"date":request.session.get_expiry_date()},ignore_index=True)
+		temp = {"id":[id],"date":[request.session.get_expiry_date()]}
+		data = pd.DataFrame(temp)
+		data["id"].map(str)
 		data.to_csv(f"{generated}/session.csv",index=False)
 
 	if not os.path.isdir(f"{generated}/{id}"): 
@@ -807,31 +809,14 @@ def queue(request):
 		data = f.read().splitlines()
 		length = len(data)
 		with open(f"olfy/static/olfy/generated/precomputed/result.txt",'r') as f:
-		queue = []
-		count = 0
-		for i in range(0,length,4):
-			temp = queuedisp()
-			temp.count = data[i+1]
-			temp.job_name = data[i]
-			temp.sno = count + 1
-			temp.model = data[i+2]
-			if temp.model == '1':
-				temp.model_name = "Odorant Predictor"
-			elif temp.model == '2':
-				temp.model_name = "OR Finder"
-			elif temp.model == '3':
-				temp.model_name = "Odor Finder"
-			elif temp.model == '4':
-				temp.model_name = "Odorant-OR Pair Analysis"
-			queue.append(temp)
-			count+=1
-		for i in range(4):
+			queue = []
+			count = 0
+			for i in range(0,length,4):
 				temp = queuedisp()
-				temp.sno = count+1
-				temp.job_name = (f.readline().replace("\n",""))
-				temp.count = (f.readline().replace("\n",""))
-				temp.model = (f.readline().replace("\n",""))
-				print(f.readline().replace("\n",""))
+				temp.count = data[i+1]
+				temp.job_name = data[i]
+				temp.sno = count + 1
+				temp.model = data[i+2]
 				if temp.model == '1':
 					temp.model_name = "Odorant Predictor"
 				elif temp.model == '2':
@@ -840,7 +825,24 @@ def queue(request):
 					temp.model_name = "Odor Finder"
 				elif temp.model == '4':
 					temp.model_name = "Odorant-OR Pair Analysis"
-				precomputed.append(temp)
+				queue.append(temp)
+				count+=1
+			for i in range(4):
+					temp = queuedisp()
+					temp.sno = count+1
+					temp.job_name = (f.readline().replace("\n",""))
+					temp.count = (f.readline().replace("\n",""))
+					temp.model = (f.readline().replace("\n",""))
+					print(f.readline().replace("\n",""))
+					if temp.model == '1':
+						temp.model_name = "Odorant Predictor"
+					elif temp.model == '2':
+						temp.model_name = "OR Finder"
+					elif temp.model == '3':
+						temp.model_name = "Odor Finder"
+					elif temp.model == '4':
+						temp.model_name = "Odorant-OR Pair Analysis"
+					precomputed.append(temp)
 		return render(request, "olfy/Ahuja labs website/queue.html",{"queue":queue,"precomputed":precomputed})
 
 def makezip(a,request,flag="0"):
