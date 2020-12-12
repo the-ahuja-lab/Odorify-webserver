@@ -7,15 +7,15 @@
 width='400px' height='400px' viewBox='0 0 400 400'>
 <!-- END OF HEADER -->
 <rect style='opacity:1.0;fill:#FFFFFF;stroke:none' width='400' height='400' x='0' y='0'> </rect>
-<ellipse cx='366.976' cy='135.731' rx='14.8423' ry='14.8423' style='fill:#00E300;fill-rule:evenodd;stroke:#00E300;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='329.87' cy='200' rx='14.8423' ry='14.8423' style='fill:#D50000;fill-rule:evenodd;stroke:#D50000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='366.976' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#AD0000;fill-rule:evenodd;stroke:#AD0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='255.659' cy='200' rx='14.8423' ry='14.8423' style='fill:#006400;fill-rule:evenodd;stroke:#006400;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='218.553' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#00A900;fill-rule:evenodd;stroke:#00A900;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='144.341' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#EE0000;fill-rule:evenodd;stroke:#EE0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='107.236' cy='200' rx='14.8423' ry='14.8423' style='fill:#F50000;fill-rule:evenodd;stroke:#F50000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='33.0241' cy='200' rx='14.8423' ry='14.8423' style='fill:#00A600;fill-rule:evenodd;stroke:#00A600;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
-<ellipse cx='144.341' cy='135.731' rx='14.8423' ry='14.8423' style='fill:#00A400;fill-rule:evenodd;stroke:#00A400;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='366.976' cy='135.731' rx='14.8423' ry='14.8423' style='fill:#00CF00;fill-rule:evenodd;stroke:#00CF00;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='329.87' cy='200' rx='14.8423' ry='14.8423' style='fill:#C30000;fill-rule:evenodd;stroke:#C30000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='366.976' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#DF0000;fill-rule:evenodd;stroke:#DF0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='255.659' cy='200' rx='14.8423' ry='14.8423' style='fill:#007500;fill-rule:evenodd;stroke:#007500;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='218.553' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#00A700;fill-rule:evenodd;stroke:#00A700;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='144.341' cy='264.269' rx='14.8423' ry='14.8423' style='fill:#DA0000;fill-rule:evenodd;stroke:#DA0000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='107.236' cy='200' rx='14.8423' ry='14.8423' style='fill:#00BC00;fill-rule:evenodd;stroke:#00BC00;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='33.0241' cy='200' rx='14.8423' ry='14.8423' style='fill:#006400;fill-rule:evenodd;stroke:#006400;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
+<ellipse cx='144.341' cy='135.731' rx='14.8423' ry='14.8423' style='fill:#00D800;fill-rule:evenodd;stroke:#00D800;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
 <ellipse cx='218.553' cy='135.731' rx='14.8423' ry='14.8423' style='fill:#640000;fill-rule:evenodd;stroke:#640000;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
 <path class='bond-0' d='M 360.549,132.02 L 323.443,196.289' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.0px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
 <path class='bond-0' d='M 373.403,139.442 L 336.297,203.711' style='fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:2.0px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1' />
