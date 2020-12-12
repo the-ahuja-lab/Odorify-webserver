@@ -122,11 +122,11 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     scores = model(x_user_smile,x_user_seq)
     _, predictions = scores.max(1)
     pred_ind = predictions.item()
-    print("Prediction is ",pred_ind )
+    # print("Prediction is ",pred_ind )
 
     prob=torch.exp(scores)
     prob=prob.tolist()
-    print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
+    # print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
     z = [predictions.item(), float(str(prob[0][predictions.item()])[:5])]
 
     ig = IntegratedGradients(model)
@@ -171,15 +171,16 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
                 cropped_smile_relevance['negative'][row]=0
             impacts.append(cropped_smile_relevance['values'][row])
             
-    print(cropped_smile_relevance)
+    # print(cropped_smile_relevance)
     ax=cropped_smile_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(25,15))
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
-    ax.set_xlabel("Smiles",fontsize=15)
-    ax.set_ylabel("Relevance",fontsize=15,rotation=0)
-    ax.figure.savefig(f'{path}/{count}_SmileInterpretability.png')
+    ax.set_xlabel("SMILES",fontsize=15)
+    ax.set_ylabel("Relevance",fontsize=15)
+    ax.figure.savefig(f'{path}/{count}_SmileInterpretability.pdf')
+    ax.close()
     impacts=np.array(impacts)
-    print(impacts)
+    # print(impacts)
 
 #     molecule structure interpretability
     mol=x_input_smile
@@ -278,14 +279,15 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
              
             
      
-    print(cropped_seq_relevance)
+    # print(cropped_seq_relevance)
 
     ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
     ax.set_yticklabels(cropped_seq_relevance['seq_char'],fontsize=12,rotation=0)
     ax.set_ylabel("Receptor Sequence",fontsize=15)
     ax.set_xlabel("Relevance",fontsize=15,rotation=0)
     ax.figure.savefig(f'{path}/{count}_SequenceInterpretability.pdf')
+    ax.close()
     return z
 
 
