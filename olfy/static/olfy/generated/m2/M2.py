@@ -349,7 +349,7 @@ for i in range(len(fps)):
     sim = DataStructs.FingerprintSimilarity(fps[i],input_fps)
     if(sim > threshold):
         similar_smiles.append(unique_smiles[i])
-print(similar_smiles)
+# print(similar_smiles)
 
 
 # Finding seqs with Activation status with similar_smiles= 1 
@@ -403,7 +403,7 @@ df_top_seqs=df_top_seqs.sort_values("Probability", ascending=False)
 
 
 df_top_seqs=pd.merge(df_top_seqs, databasedf, on='Final_Sequence')
-print(df_top_seqs)
+# print(df_top_seqs)
 
 
 # In[20]:

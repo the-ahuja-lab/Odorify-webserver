@@ -122,11 +122,11 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     scores = model(x_user_smile,x_user_seq)
     _, predictions = scores.max(1)
     pred_ind = predictions.item()
-    print("Prediction is ",pred_ind )
+    # print("Prediction is ",pred_ind )
 
     prob=torch.exp(scores)
     prob=prob.tolist()
-    print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
+    # print("Probability is",  float(str(prob[0][predictions.item()])[:5]) )
     z = [predictions.item(), float(str(prob[0][predictions.item()])[:5])]
 
     ig = IntegratedGradients(model)
@@ -180,7 +180,7 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     ax.figure.savefig(f'{path}/{count}_SmileInterpretability.pdf')
     ax.close()
     impacts=np.array(impacts)
-    print(impacts)
+    # print(impacts)
 
 #     molecule structure interpretability
     mol=x_input_smile
@@ -279,7 +279,7 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
              
             
      
-    print(cropped_seq_relevance)
+    # print(cropped_seq_relevance)
 
     ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
     ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})

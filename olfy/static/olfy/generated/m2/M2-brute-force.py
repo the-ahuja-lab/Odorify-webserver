@@ -190,7 +190,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
             
 
     impacts=np.array(impacts)
-    print(cropped_smile_relevance)
+    # print(cropped_smile_relevance)
     ax=cropped_smile_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(25,15))
     ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
@@ -306,7 +306,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
 
 df = pd.read_csv('Full_Data.csv')
 unique_sequences=df["Final_Sequence"].unique().tolist()
-print(len(unique_sequences))
+# print(len(unique_sequences))
 
 
 # In[35]:
@@ -353,7 +353,7 @@ for seq in unique_wild_type:
 
 
 df_top_seqs=df_top_seqs.sort_values("Probability", ascending=False)
-print(df_top_seqs.head())
+# print(df_top_seqs.head())
 
 
 # In[40]:
@@ -363,14 +363,14 @@ df_top_seqs=pd.merge(df_top_seqs, databasedf, on='Final_Sequence')
 # print(df_top_seqs.head())
 min_k = min(value_k,len(df_top_seqs))
 df_top_seqs=df_top_seqs.head(min_k)
-print(df_top_seqs)
+# print(df_top_seqs)
 if min_k==0:
     df_top_seqs.loc[0]=['Empty','Empty','Empty']
 else:
     for i in range(min_k):
         filename=str(i+1)
         combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
-print(df_top_seqs)
+# print(df_top_seqs)
 df_top_seqs.to_csv(f"{path}/output.csv", index=False)
 
 
