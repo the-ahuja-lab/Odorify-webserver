@@ -301,9 +301,9 @@ def results(request):
 				b.sno = i+1
 				temp = data["pred_odor"][i]
 				if temp == 1:
-					odor = "odorant"
+					odor = "Odorant"
 				else:
-					odor = "odorless"
+					odor = "Non-odorant"
 				b.odor = odor
 				display.append(b)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}],"flag":"0"})
@@ -369,9 +369,9 @@ def results(request):
 				b.sno = i+1
 				b.seq = data["seq"][i]
 				if data["status"][i] == 0:
-					b.status = "non binding"
+					b.status = "Non-binding"
 				else:
-					b.status = "binding"
+					b.status = "Binding"
 				display.append(b)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"flag":"1"})
 
