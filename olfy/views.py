@@ -130,19 +130,19 @@ def about(request):
 				'name': 'Dr. Tripti Mishra',
 				'post': 'Intellectual Contribution',
 				'email': 'mistripti01@gmail.com',
-				'image': 'Tripti.pdf'
+				'image': 'Tripti.png'
 			},
 			{
 				'name': 'Vishesh Agrawal',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'vishesh18420@iiitd.ac.in',
-				'image': 'Vishesh.pdf'
+				'image': 'Vishesh.png'
 			},
 			{
 				'name': 'Ria Gupta',
 				'post': 'Deep Learning & Interpretability',
 				'email': 'ria18405@iiitd.ac.in',
-				'image': 'Ria.pdf'
+				'image': 'Ria.png'
 			},
 			{
 				'name': 'Rishi Raj Jain',
