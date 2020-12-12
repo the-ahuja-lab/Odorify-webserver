@@ -288,32 +288,39 @@ def results(request):
 		a = readresult(user)
 		if a is None: 
 			return render(request, "olfy/Ahuja labs website/results.html",{"z": False})
-		elif a.model == 1:
+		if a.model == 1:
 			s = f'{user}/m1/{a.job_name}/predicted_output.csv'
 			data = pd.read_csv(s)
+			data.rename(columns = {'smiles':'SMILES'}, inplace = True)
 			print(data)
 			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp()
-				b.smiles = data["smiles"][i]
+				b.smiles = data["SMILES"][i]
 				b.prob = str(data["prob"][i])[0:5]
 				b.sno = i+1
 				temp = data["pred_odor"][i]
 				if temp == 1:
-					odor = "odorant"
+					odor = "Odorant"
 				else:
-					odor = "odorless"
+					odor = "Non-Odorant"
 				b.odor = odor
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display": [{"row": display}],"flag":"0"})
+			col = [i for i in range(1,len(data)+1)]
+			if "S.No" not in data:
+				data.insert(0, 'S.No', col)				
+			data.to_csv(s,index=False)
+			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display":[{"row": display}],"id":True,"flag":"0"})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv')
-				number_of_rows = len(data["smiles"])
+				number_of_rows = len(data)
 				temp = {}
-				temp["smiles"] = data["smiles"][0]
+				data.rename(columns = {'smiles':'SMILES'}, inplace = True)
+				data.rename(columns = {'Final_Sequence':'Sequence'}, inplace = True)
+				temp["smiles"] = data["SMILES"][0]
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp2()
@@ -324,7 +331,7 @@ def results(request):
 						b.prob = "NA"
 						b.noresult = True
 					else:						
-						b.seq = data["Final_Sequence"][j]
+						b.seq = data["Sequence"][j]
 						b.receptorname = data["Receptor"][j]
 						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
@@ -332,12 +339,18 @@ def results(request):
 				temp["row"] = temp1
 				print(temp)
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"flag":"0"})
+				col = [i for i in range(1,len(data)+1)]
+				if "S.No" not in data:
+					data.insert(0, 'S.No', col)				
+				data.to_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv',index=False)
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":"0"})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv')
-				number_of_rows = len(data["Smiles"])
+				data.rename(columns = {'Smiles':'SMILES'}, inplace = True)
+				data.rename(columns = {'seq':'Sequence'}, inplace = True)
+				number_of_rows = len(data)
 				temp = {}
 				temp["seq"] = (data["header"][0])
 				temp1 = []
@@ -349,31 +362,40 @@ def results(request):
 						b.prob = "NA"
 						b.noresult = True
 					else:						
-						b.smiles = data["Smiles"][j]
+						b.smiles = data["SMILES"][j]
 						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"flag":"0"})
+				col = [i for i in range(1,len(data)+1)]
+				if "S.No" not in data:
+					data.insert(0, 'S.No', col)				
+				data.to_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv',index=False)
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":"0"})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
-			index = data.index
-			number_of_rows = len(index)
+			data.rename(columns = {'seq':'Sequence'}, inplace = True)
+			data.rename(columns = {'smiles':'SMILES'}, inplace = True)
+			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp4()
-				b.smiles = data["smiles"][i]
+				b.smiles = data["SMILES"][i]
 				b.prob = str(data["prob"][i])[:5]
 				b.sno = i+1
-				b.seq = data["seq"][i]
+				b.seq = data["Sequence"][i]
 				if data["status"][i] == 0:
-					b.status = "non binding"
+					b.status = "Non-Binding"
 				else:
-					b.status = "binding"
+					b.status = "Binding"
 				display.append(b)
-			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"flag":"1"})
+			col = [i for i in range(1,len(data)+1)]	
+			if "S.No" not in data:
+				data.insert(0, 'S.No', col)
+			data.to_csv(s,index=False)
+			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"id":True,"flag":"0"})
 
 def result_queue(request,job_name,model,count,flag):
 	if request.method == "GET":
@@ -390,29 +412,36 @@ def result_queue(request,job_name,model,count,flag):
 		if a.model == 1:
 			s = f'{user}/m1/{a.job_name}/predicted_output.csv'
 			data = pd.read_csv(s)
+			data.rename(columns = {'smiles':'SMILES'}, inplace = True)
 			print(data)
 			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp()
-				b.smiles = data["smiles"][i]
+				b.smiles = data["SMILES"][i]
 				b.prob = str(data["prob"][i])[0:5]
 				b.sno = i+1
 				temp = data["pred_odor"][i]
 				if temp == 1:
-					odor = "odorant"
+					odor = "Odorant"
 				else:
-					odor = "odorless"
+					odor = "Non-Odorant"
 				b.odor = odor
 				display.append(b)
+			col = [i for i in range(1,len(data)+1)]
+			if "S.No" not in data:
+				data.insert(0, 'S.No', col)				
+			data.to_csv(s,index=False)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result": a, "z":True, "display":[{"row": display}],"id":True,"flag":flag})
 		elif a.model == 2:
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv')
-				number_of_rows = len(data["smiles"])
+				number_of_rows = len(data)
 				temp = {}
-				temp["smiles"] = data["smiles"][0]
+				data.rename(columns = {'smiles':'SMILES'}, inplace = True)
+				data.rename(columns = {'Final_Sequence':'Sequence'}, inplace = True)
+				temp["smiles"] = data["SMILES"][0]
 				temp1 = []
 				for j in range(number_of_rows):
 					b = disp2()
@@ -423,7 +452,7 @@ def result_queue(request,job_name,model,count,flag):
 						b.prob = "NA"
 						b.noresult = True
 					else:						
-						b.seq = data["Final_Sequence"][j]
+						b.seq = data["Sequence"][j]
 						b.receptorname = data["Receptor"][j]
 						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
@@ -431,12 +460,18 @@ def result_queue(request,job_name,model,count,flag):
 				temp["row"] = temp1
 				print(temp)
 				display.append(temp)
+				col = [i for i in range(1,len(data)+1)]
+				if "S.No" not in data:
+					data.insert(0, 'S.No', col)				
+				data.to_csv(f'{user}/m2/{a.job_name}/{i+1}/output.csv',index=False)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":flag})
 		elif a.model == 3:
 			display = []
 			for i in range(a.count):
 				data = pd.read_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv')
-				number_of_rows = len(data["Smiles"])
+				data.rename(columns = {'Smiles':'SMILES'}, inplace = True)
+				data.rename(columns = {'seq':'Sequence'}, inplace = True)
+				number_of_rows = len(data)
 				temp = {}
 				temp["seq"] = (data["header"][0])
 				temp1 = []
@@ -448,32 +483,40 @@ def result_queue(request,job_name,model,count,flag):
 						b.prob = "NA"
 						b.noresult = True
 					else:						
-						b.smiles = data["Smiles"][j]
+						b.smiles = data["SMILES"][j]
 						b.prob = str(data["Probability"][j])[0:5]
 					b.tableno = i+1
 					temp1.append(b)
 				temp["row"] = temp1
 				display.append(temp)
+				col = [i for i in range(1,len(data)+1)]
+				if "S.No" not in data:
+					data.insert(0, 'S.No', col)				
+				data.to_csv(f'{user}/m3/{a.job_name}/{i+1}/output.csv',index=False)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True,"display":display,"id":True,"flag":flag})
 		elif a.model == 4:
 			s = f'{user}/m4/{a.job_name}/output.csv'
 			data = pd.read_csv(s)
-			index = data.index
-			number_of_rows = len(index)
+			data.rename(columns = {'seq':'Sequence'}, inplace = True)
+			data.rename(columns = {'smiles':'SMILES'}, inplace = True)
+			number_of_rows = len(data)
 			display = []
 			for i in range(number_of_rows):
 				b = disp4()
-				b.smiles = data["smiles"][i]
+				b.smiles = data["SMILES"][i]
 				b.prob = str(data["prob"][i])[:5]
 				b.sno = i+1
-				b.seq = data["seq"][i]
+				b.seq = data["Sequence"][i]
 				if data["status"][i] == 0:
-					b.status = "non binding"
+					b.status = "Non-Binding"
 				else:
-					b.status = "binding"
+					b.status = "Binding"
 				display.append(b)
+			col = [i for i in range(1,len(data)+1)]	
+			if "S.No" not in data:
+				data.insert(0, 'S.No', col)
+			data.to_csv(s,index=False)
 			return render(request, "olfy/Ahuja labs website/results.html",{"result":a,"z":True, "display": [{"row": display}],"id":True,"flag":flag})
-
 
 def odor(request):
 	if "GET" == request.method:
@@ -847,6 +890,7 @@ def queue(request):
 
 def makezip(a,request,flag="0"):
 	os.chdir(root)
+	print(flag)
 	if flag=="1":
 		id = "precomputed"
 	else:
@@ -886,7 +930,7 @@ def makezip2(a,request,flag="0"):
 		count = len(f)
 		for j in range(count):
 			if "Empty" != f["Probability"][0]:
-				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.png")
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.pdf")
 				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SequenceInterpretability.pdf") 
 				file_path.append(f"{a.job_name}/{i+1}/{j+1}_mol.svg") 
 		file_path.append(f"{a.job_name}/{i+1}/output.csv")
@@ -914,7 +958,7 @@ def makezip3(a,request,flag="0"):
 		count = len(f)
 		for j in range(count):
 			if "Empty" != f["Probability"][0]:
-				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.png")
+				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SmileInterpretability.pdf")
 				file_path.append(f"{a.job_name}/{i+1}/{j+1}_SequenceInterpretability.pdf") 
 				file_path.append(f"{a.job_name}/{i+1}/{j+1}_mol.svg") 
 		file_path.append(f"{a.job_name}/{i+1}/output.csv")
@@ -939,7 +983,7 @@ def makezip4(a,request,flag="0"):
 	print(os.getcwd())
 
 	for i in range(a.count):
-		file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.png")
+		file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
 		file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.pdf") 
 		file_path.append(f"{a.job_name}/{i+1}_mol.svg") 
 	file_path.append(f"{a.job_name}/output.csv")
