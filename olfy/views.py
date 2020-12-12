@@ -238,7 +238,7 @@ def help(request):
 		'troubleshoot':  [
 			{
 				'ques': 'If I log out of my browser, would my history remain saved?',
-				'ans': 'Yes, your history will remain saved up to 7 days, or if you choose to clear your cookies in the browser cache.'
+				'ans': 'Yes, your history will remain saved up to 7 days, till you choose to clear your cookies in the browser cache.'
 			},
 			{
 				'ques': 'Can I run 2 prediction models from different tabs of the same browser?',
@@ -258,11 +258,11 @@ def help(request):
 			},
 			{
 				'ques': 'How do I interpret my results?',
-				'ans': 'We have used 3 ways to interpret results, receptor sequence-based, smile based. structure-based. Atoms highlighted in green symbolizes positive contribution towards the binding, and atoms highlighted in red would symbolize Negative contribution towards binding.'
+				'ans': 'The results can be interpreted in three ways: based on Receptor Sequence, based on SMILES & based on Structure Based. The colors in the structure and graphs, green and red represent positive and negative contribution towards the binding, respectively.'
 			},
 			{
-				'ques': 'I set the counter value of Top-k to be ‘x’, but I receive ‘y’ output records (y<x)?',
-				'ans': "The value of ‘k’ only sets an upper bound of the number of outputs you can get. It is possible to have fewer receptors binding a given input smile than k, or vice versa."
+				'ques': 'I set the counter value of Top-K to be ‘x’, but I receive ‘y’ output records (y<x)?',
+				'ans': "The value of ‘K’ only sets an upper bound of the number of outputs you can get. It is possible to have fewer receptors binding a given input smile than K, or vice versa."
 			},
 			{
 				'ques': 'What does the threshold mean?',
