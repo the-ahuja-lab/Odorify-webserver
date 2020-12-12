@@ -197,7 +197,8 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     ax.set_xlabel("SMILES", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
     ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.pdf")
-    
+    ax.close()
+
     mol=x_input_smile
     m = Chem.MolFromSmiles(mol)
     num_atoms = m.GetNumAtoms()
@@ -308,7 +309,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     ax.set_ylabel("Receptor Sequence",fontsize=15)
     ax.set_xlabel("Relevance",fontsize=15,rotation=0)
     ax.figure.savefig(f'{path}/{filename}_SequenceInterpretability.pdf')
-
+    ax.close()
 
 # In[15]:
 

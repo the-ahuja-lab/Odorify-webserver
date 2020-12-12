@@ -192,12 +192,12 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     impacts=np.array(impacts)
     print(cropped_smile_relevance)
     ax=cropped_smile_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(25,15))
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
     ax.set_xticklabels(cropped_smile_relevance['smile_char'],fontsize=15,rotation=0)
     ax.set_xlabel("Smiles", fontsize=15)
     ax.set_ylabel("Relevance", fontsize=15)
-    ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.png")
-    
+    ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.pdf")
+    ax.close()
     
 # #     Structural Interpretability
     mol=x_input_smile
@@ -294,12 +294,12 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     
 #     ax = cropped_seq_relevance['values'].plot(kind='bar',figsize=(50,25) ,color=(data_relevance['values'] > 0).map({True: 'g',False: 'r'}))
     ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
-    ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
+    ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
     ax.set_yticklabels(cropped_seq_relevance['seq_char'],fontsize=12,rotation=0)
     ax.set_ylabel("Receptor Sequence",fontsize=15)
     ax.set_xlabel("Relevance",fontsize=15,rotation=0)
     ax.figure.savefig(f'{path}/{filename}_SequenceInterpretability.pdf')
-
+    ax.close()
 
 # In[44]:
 

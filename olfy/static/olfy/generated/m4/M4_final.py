@@ -178,6 +178,7 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     ax.set_xlabel("SMILES",fontsize=15)
     ax.set_ylabel("Relevance",fontsize=15)
     ax.figure.savefig(f'{path}/{count}_SmileInterpretability.pdf')
+    ax.close()
     impacts=np.array(impacts)
     print(impacts)
 
@@ -286,6 +287,7 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     ax.set_ylabel("Receptor Sequence",fontsize=15)
     ax.set_xlabel("Relevance",fontsize=15,rotation=0)
     ax.figure.savefig(f'{path}/{count}_SequenceInterpretability.pdf')
+    ax.close()
     return z
 
 
