@@ -232,7 +232,7 @@ def help(request):
 			},
 			{
 				'name': 'SMILES Interpretability (Structure)',
-				'extension': 'Substructure Analysis of the ligand(SMILES) highlighting relevant atoms contributing towards the prediction'
+				'extension': 'Substructure Analysis of the ligand (SMILES) highlighting relevant atoms contributing towards the prediction'
 			}
 		],
 		'troubleshoot':  [
