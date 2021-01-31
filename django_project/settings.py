@@ -23,15 +23,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = '@^(!b1x)ck&dg=kjq0um8hhwo1pmrj*wn5_%e5t7lb&(ftqr@3'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ["odorify.ahujalab.iiitd.edu.in","192.168.30.53","127.0.0.1"]
+ALLOWED_HOSTS = ["odorify.ahujalab.iiitd.edu.in", "192.168.30.53", "127.0.0.1"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
-	'django_crontab',
+    # 'django_crontab',
     "olfy.apps.OlfyConfig",
     'django.contrib.admin',
     'django.contrib.auth',

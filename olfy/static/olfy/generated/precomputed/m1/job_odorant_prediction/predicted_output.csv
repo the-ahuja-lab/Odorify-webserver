@@ -1,0 +1,6 @@
+S.No,SMILES,prob,pred_odor
+1,CC(=CCC/C(=CCO)/C)C,0.996,1.0
+2,CC(=O)C1=CC=CC=C1,0.989,1.0
+3,CC1=CC[C@H](CC1=O)C(=C)C,0.997,1.0
+4,CCc1c[n+]2ccc3c4ccccc4[nH]c3c2cc1,1.0,1.0
+5,Cc1oc(C)c(SC(=O)c2occc2)c1,0.999,1.0

@@ -571,7 +571,7 @@ def odor(request):
             data.to_csv(f"{path}/input.csv", index=False)
             a.model = 1
             os.chdir("olfy/static/olfy/generated/m1")
-            shutil.copyfile("olfy_model_v1.tar", f'{path}/olfy_model_v1.tar')
+            shutil.copyfile("model21.tar", f'{path}/model21.tar')
             os.system(f"python transformer-cnn.py {path}")
             f = pd.read_csv(f"{path}/input.csv")
             smiles = f["smiles"]
@@ -586,7 +586,7 @@ def odor(request):
             print("relax pdf")
             os.system(f"python generate_table.py {path}")
             os.remove(f"{path}/map.txt")
-            os.remove(f"{path}/olfy_model_v1.tar")
+            os.remove(f"{path}/model21.tar")
             os.remove(f"{path}/results.csv")
             os.remove(f"{path}/input.csv")
             a.count = count - 1
@@ -647,24 +647,32 @@ def odor_Or(request):
             os.mkdir(job_name)
             path = os.path.abspath(job_name)
             os.chdir("olfy/static/olfy/generated/m4")
-
             data1 = pd.DataFrame({"smiles": s})
-            data1.to_csv(f"{path}/input1.csv")
+            data1.to_csv(f"{path}/input1.csv", index=False)
+            shutil.copyfile("model21.tar", f'{path}/model21.tar')
             os.system(f"python transformer-cnn.py {path}")
             os.system(f"python generate_table.py {path}")
             data2 = pd.read_csv(f"{path}/predicted_output.csv")
             resultdf = pd.DataFrame(
                 columns=['smiles', 'seq', 'status', 'prob', "odorant"])
+            resultdf.loc[0] = ["", "", "", "", ""]
             other = []
+            # for i in range(len(data2)):
+            #     if data2["pred_odor"][i] == 1.0:
+            #         temp.loc[i]["odorant"] = "1"
+            #     else:
+            #         temp.loc[i]["odorant"] = "0"
+            #         temp.loc[i]["prob"] == "Non-Odorant"
+            #         temp.loc[i]["status"] == "Non-Odorant"
+            #     temp.loc[i]["smiles"] = data["smiles"][i]
+            #     temp.loc[i]["seq"] = data["seq"][i]
             for i in range(len(data2)):
-                if data2["pred_odor"][i] == "1":
-                    resultdf.loc[i]["odorant"] = "1"
+                if data2["pred_odor"][i] == 1.0:
+                    resultdf.loc[resultdf.index.max(
+                    ) + 1] = [data["smiles"][i], data["seq"][i], "NA", "NA", "1"]
                 else:
-                    resultdf.loc[i]["odorant"] = "0"
-                    resultdf.loc[i]["prob"] == "Non-Odorant"
-                    resultdf.loc[i]["status"] == "Non-Odorant"
-                resultdf.loc[i]["smiles"] = data["smiles"][i]
-                resultdf.loc[i]["seq"] = data["seq"][i]
+                    resultdf.loc[resultdf.index.max(
+                    ) + 1] = [data["smiles"][i], data["seq"][i], "Non-Odorant", "Non-Odorant", "0"]
             resultdf[resultdf["odorant"] == "1"].to_csv(
                 f"{path}/input.csv", index=False)
             # s1 = []
@@ -692,14 +700,16 @@ def odor_Or(request):
                 if resultdf["odorant"][i] == "1":
                     resultdf["prob"][i] = data["prob"][count]
                     resultdf["status"][i] = data["status"][count]
+                    count += 1
 
-            resultdf.drop("odorant")
+            resultdf.drop("odorant", axis=1, inplace=True)
+            resultdf.drop(0, inplace=True)
             resultdf.to_csv(f"{path}/output.csv", index=False)
             # data.append(list(data4["smiles"]), list(data4["seq"]), [
             #             "NA" for i in range(len(data4))], ["NA" for i in range(len(data4))])
-            os.remove(f"{path}/input.csv")
-            os.remove(f"{path}/input1.csv")
-            os.remove(f"{path}/predicted_output.csv")
+            # os.remove(f"{path}/input.csv")
+            # os.remove(f"{path}/input1.csv")
+            a.count = len(resultdf)
             os.chdir("../")
             writeresult(a, id)
             for i in range(4):
@@ -740,7 +750,7 @@ def Or(request):
                 t.append('>' + seq[:i])
                 t.append(seq[i + 1:].replace("\n", ""))
             print(t)
-            #t = fasta.replace('\r',"").split('\n')
+            # t = fasta.replace('\r',"").split('\n')
             # while "" in t:
             # t.remove("")
             seq = []
