@@ -160,7 +160,7 @@ def prediction(model, x_input_smile, x_input_seq):
 
 # In[18]:
 
-
+device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu" )
 def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     mol = Chem.MolFromSmiles(x_input_smile)
     Chem.Kekulize(mol)
