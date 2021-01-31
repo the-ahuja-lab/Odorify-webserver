@@ -84,7 +84,6 @@ def check_user(request):
         data = pd.read_csv(f"{generated}/session.csv")
         list1 = list(map(str, list(data["id"])))
         if id not in list1:
-            print([id, request.session.get_expiry_date()])
             data = data.append(
                 {"id": str(id), "date": request.session.get_expiry_date()}, ignore_index=True)
             data.to_csv(f"{generated}/session.csv", index=False)
@@ -304,7 +303,6 @@ def results(request):
             s = f'{user}/m1/{a.job_name}/predicted_output.csv'
             data = pd.read_csv(s)
             data.rename(columns={'smiles': 'SMILES'}, inplace=True)
-            print(data)
             number_of_rows = len(data)
             display = []
             for i in range(number_of_rows):
@@ -350,7 +348,6 @@ def results(request):
                     b.tableno = i + 1
                     temp1.append(b)
                 temp["row"] = temp1
-                print(temp)
                 display.append(temp)
                 col = [i for i in range(1, len(data) + 1)]
                 if "S.No" not in data:
@@ -429,7 +426,6 @@ def result_queue(request, job_name, model, count, flag):
             s = f'{user}/m1/{a.job_name}/predicted_output.csv'
             data = pd.read_csv(s)
             data.rename(columns={'smiles': 'SMILES'}, inplace=True)
-            print(data)
             number_of_rows = len(data)
             display = []
             for i in range(number_of_rows):
@@ -475,7 +471,6 @@ def result_queue(request, job_name, model, count, flag):
                     b.tableno = i + 1
                     temp1.append(b)
                 temp["row"] = temp1
-                print(temp)
                 display.append(temp)
                 col = [i for i in range(1, len(data) + 1)]
                 if "S.No" not in data:
@@ -583,7 +578,6 @@ def odor(request):
                 os.system(cmd)
                 os.system(f"gnuplot " + f'"{path}/map.txt"')
                 count += 1
-            print("relax pdf")
             os.system(f"python generate_table.py {path}")
             os.remove(f"{path}/map.txt")
             os.remove(f"{path}/model21.tar")
@@ -657,15 +651,7 @@ def odor_Or(request):
                 columns=['smiles', 'seq', 'status', 'prob', "odorant"])
             resultdf.loc[0] = ["", "", "", "", ""]
             other = []
-            # for i in range(len(data2)):
-            #     if data2["pred_odor"][i] == 1.0:
-            #         temp.loc[i]["odorant"] = "1"
-            #     else:
-            #         temp.loc[i]["odorant"] = "0"
-            #         temp.loc[i]["prob"] == "Non-Odorant"
-            #         temp.loc[i]["status"] == "Non-Odorant"
-            #     temp.loc[i]["smiles"] = data["smiles"][i]
-            #     temp.loc[i]["seq"] = data["seq"][i]
+
             for i in range(len(data2)):
                 if data2["pred_odor"][i] == 1.0:
                     resultdf.loc[resultdf.index.max(
@@ -675,23 +661,6 @@ def odor_Or(request):
                     ) + 1] = [data["smiles"][i], data["seq"][i], "Non-Odorant", "Non-Odorant", "0"]
             resultdf[resultdf["odorant"] == "1"].to_csv(
                 f"{path}/input.csv", index=False)
-            # s1 = []
-            # s2 = []
-            # for i, j in list(data2["SMILES"]), list(data2["pred_odor"]):
-            #     if j == "1":
-            #         s1.append(i)
-            #     else:
-            #         s2.append(i)
-            # data3 = pd.DataFrame()
-            # data4 = pd.DataFrame()
-            # for i, j in s1, s2:
-            #     if i in data["smiles"]:
-            #         d = data.loc[data['smiles'] == i]
-            #         pd.concat([data3, d], ignore_index=True)
-            #     if j in data["smiles"]:
-            #         d = data.loc[data['smiles'] == j]
-            #         pd.concat([data4, d], ignore_index=True)
-
             os.system(f"python M4_final.py {path}")
             a.model = 4
             data = pd.read_csv(f"{path}/output.csv")
@@ -705,10 +674,11 @@ def odor_Or(request):
             resultdf.drop("odorant", axis=1, inplace=True)
             resultdf.drop(0, inplace=True)
             resultdf.to_csv(f"{path}/output.csv", index=False)
-            # data.append(list(data4["smiles"]), list(data4["seq"]), [
-            #             "NA" for i in range(len(data4))], ["NA" for i in range(len(data4))])
-            # os.remove(f"{path}/input.csv")
-            # os.remove(f"{path}/input1.csv")
+            os.remove(f"{path}/input.csv")
+            os.remove(f"{path}/input1.csv")
+            os.remove(f"{path}/model21.tar")
+            os.remove(f"{path}/predicted_output.csv")
+            os.remove(f"{path}/results.csv")
             a.count = len(resultdf)
             os.chdir("../")
             writeresult(a, id)
@@ -749,7 +719,6 @@ def Or(request):
                         break
                 t.append('>' + seq[:i])
                 t.append(seq[i + 1:].replace("\n", ""))
-            print(t)
             # t = fasta.replace('\r',"").split('\n')
             # while "" in t:
             # t.remove("")
@@ -770,7 +739,6 @@ def Or(request):
             data.to_csv(f"{path}/input.csv", index=False)
             a.model = 3
             f = pd.read_csv(f"{path}/input.csv")
-            print(f)
             os.chdir('olfy/static/olfy/generated/m3')
             a.count = len(f["seq"])
             for i in range(len(f["seq"])):
@@ -858,7 +826,6 @@ def odor2(request):
                     os.system(f"python M2-brute-force.py {path}/{i+1}")
                     os.remove(f"{path}/{i+1}/temp.csv")
                 else:
-                    print("bruteforce", slider, type(slider))
                     dic = {"smiles": [f["smiles"][i]],
                            "threshhold": float(slider)}
                     df = pd.DataFrame(dic)
@@ -899,7 +866,6 @@ def contactus(request):
             subject = request.POST["title"]
             message = request.POST["message"]
             nameUser = request.POST["name"]
-            print(email, subject, message, nameUser)
             sender = "odorify.ahujalab@iiitd.ac.in"
             msg = MIMEMultipart()
             msg['From'] = sender
@@ -951,14 +917,13 @@ def queue(request):
                 elif temp.model == '4':
                     temp.model_name = "Odorant-OR Pair Analysis"
                 queue.append(temp)
-                count += 1
+                count+=1
             for i in range(4):
                 temp = queuedisp()
                 temp.sno = count + 1
                 temp.job_name = (f.readline().replace("\n", ""))
                 temp.count = (f.readline().replace("\n", ""))
                 temp.model = (f.readline().replace("\n", ""))
-                print(f.readline().replace("\n", ""))
                 if temp.model == '1':
                     temp.model_name = "Odorant Predictor"
                 elif temp.model == '2':
@@ -968,21 +933,20 @@ def queue(request):
                 elif temp.model == '4':
                     temp.model_name = "Odorant-OR Pair Analysis"
                 precomputed.append(temp)
+                f.readline().replace("\n", "")
+                count += 1
         return render(request, "olfy/Ahuja labs website/queue.html", {"queue": queue, "precomputed": precomputed})
 
 
 def makezip(a, request, flag="0"):
     os.chdir(root)
-    print(flag)
     if flag == "1":
         id = "precomputed"
     else:
         id = check_user(request)
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m1")
-    print(os.getcwd())
     for i in range(a.count):
-        print(f"{a.job_name}/{i+1}/lrp.pdf")
         file_path.append(f"{a.job_name}/{i+1}/lrp.pdf")
         file_path.append(f"{a.job_name}/{i+1}/mol.svg")
     file_path.append(f"{a.job_name}/predicted_output.csv")
@@ -1005,12 +969,9 @@ def makezip2(a, request, flag="0"):
         id = check_user(request)
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m2")
-    print(os.getcwd())
 
     for i in range(a.count):
-        print(os.getcwd())
         f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
-        print(f)
         count = len(f)
         for j in range(count):
             if "Empty" != f["Probability"][0]:
@@ -1038,7 +999,6 @@ def makezip3(a, request, flag="0"):
         id = check_user(request)
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m3")
-    print(os.getcwd())
 
     for i in range(a.count):
         f = pd.read_csv(f"{a.job_name}/{i+1}/output.csv")
@@ -1062,7 +1022,6 @@ def makezip3(a, request, flag="0"):
 
 
 def makezip4(a, request, flag="0"):
-    print(flag)
     os.chdir(root)
     if flag == "1":
         id = "precomputed"
@@ -1070,8 +1029,6 @@ def makezip4(a, request, flag="0"):
         id = check_user(request)
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m4")
-    print(os.getcwd())
-
     for i in range(a.count):
         file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
         file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.pdf")
