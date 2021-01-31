@@ -178,10 +178,10 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     data_relevance=pd.DataFrame()
     data_relevance["values"]=relevance
 
-    len_smile=len(x_input_smile)
+    len_smile=min(len(x_input_smile), 80)
     # cropped_smile_relevance=data_relevance.iloc[0:len_smile]
     cropped_smile_relevance=data_relevance.head(len_smile)
-    x_smile_labels=pd.Series(list(x_input_smile))
+    x_smile_labels=pd.Series(list(x_input_smile[:len_smile]))
     cropped_smile_relevance['smile_char']=x_smile_labels
     impacts=[]
     

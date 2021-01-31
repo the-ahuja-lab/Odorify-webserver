@@ -159,7 +159,7 @@ def user_predict(model, x_input_smile, x_input_seq,count,path):
     
     cropped_smile_relevance=data_relevance.iloc[0:len_smile]
     
-    x_smile_labels=pd.Series(list(x_input_smile))
+    x_smile_labels=pd.Series(list(x_input_smile[:len_smile]))
     cropped_smile_relevance['smile_char']=x_smile_labels
     impacts=[]
     
