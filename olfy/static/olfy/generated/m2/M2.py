@@ -380,7 +380,7 @@ for i in range(len(similar_smiles)):
 # In[12]:
 
 
-filename = 'fullmodel_M1.sav'
+filename = 'fullmodel_M4.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 
 
