@@ -400,8 +400,11 @@ def results(request):
                 b.seq = data["Sequence"][i]
                 if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                else:
+                elif data['status'][i]==1:
                     b.status = "Binding"
+                else:
+                    b.status = data['status'][i]
+
                 display.append(b)
             col = [i for i in range(1, len(data) + 1)]
             if "S.No" not in data:
@@ -658,7 +661,7 @@ def odor_Or(request):
                     ) + 1] = [data["smiles"][i], data["seq"][i], "NA", "NA", "1"]
                 else:
                     resultdf.loc[resultdf.index.max(
-                    ) + 1] = [data["smiles"][i], data["seq"][i], "Non-Odorant", "Non-Odorant", "0"]
+                    ) + 1] = [data["smiles"][i], data["seq"][i], "Non-Odorant", "NA", "0"]
             resultdf[resultdf["odorant"] == "1"].to_csv(
                 f"{path}/input.csv", index=False)
             os.system(f"python M4_final.py {path}")
