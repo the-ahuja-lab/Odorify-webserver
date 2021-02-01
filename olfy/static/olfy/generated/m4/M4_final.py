@@ -321,7 +321,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
 # In[9]:
 
 
-filename = '100_model.sav'
+filename = 'fullmodel_M4.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
 path = sys.argv[1]
 data = pd.read_csv(f"{path}/input.csv")
