@@ -396,15 +396,16 @@ def results(request):
                 b = disp4()
                 b.smiles = data["SMILES"][i]
                 b.prob = str(data["prob"][i])[:5]
+                if b.prob == "nan":
+                    b.prob = "NA"
                 b.sno = i + 1
                 b.seq = data["Sequence"][i]
-                if data["status"][i] == 0:
+                if data["status"][i] == "0":
                     b.status = "Non-Binding"
-                elif data['status'][i]==1:
+                elif data['status'][i] == "1":
                     b.status = "Binding"
                 else:
                     b.status = data['status'][i]
-
                 display.append(b)
             col = [i for i in range(1, len(data) + 1)]
             if "S.No" not in data:
@@ -522,12 +523,16 @@ def result_queue(request, job_name, model, count, flag):
                 b = disp4()
                 b.smiles = data["SMILES"][i]
                 b.prob = str(data["prob"][i])[:5]
+                if b.prob == "nan":
+                    b.prob = "NA"
                 b.sno = i + 1
                 b.seq = data["Sequence"][i]
                 if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                else:
+                elif data["status"][i] == 1:
                     b.status = "Binding"
+                else:
+                    b.status = data['status'][i]
                 display.append(b)
             col = [i for i in range(1, len(data) + 1)]
             if "S.No" not in data:
@@ -920,7 +925,7 @@ def queue(request):
                 elif temp.model == '4':
                     temp.model_name = "Odorant-OR Pair Analysis"
                 queue.append(temp)
-                count+=1
+                count += 1
             for i in range(4):
                 temp = queuedisp()
                 temp.sno = count + 1
@@ -1032,10 +1037,15 @@ def makezip4(a, request, flag="0"):
         id = check_user(request)
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m4")
+    f = pd.read_csv(f"{a.job_name}/output.csv")
     for i in range(a.count):
-        file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
-        file_path.append(f"{a.job_name}/{i+1}_SequenceInterpretability.pdf")
-        file_path.append(f"{a.job_name}/{i+1}_mol.svg")
+        if not str(f["prob"][i]) == "nan":
+            file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
+            file_path.append(
+                f"{a.job_name}/{i+1}_SequenceInterpretability.pdf")
+            file_path.append(f"{a.job_name}/{i+1}_mol.svg")
+        else:
+            continue
     file_path.append(f"{a.job_name}/output.csv")
     zip = ZipFile(f"{a.job_name}/data.zip", 'w')
     for file in file_path:
