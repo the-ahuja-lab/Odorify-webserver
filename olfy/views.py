@@ -186,7 +186,7 @@ def about(request):
             {
                 'name': 'Sanjay Kumar Mohanty',
                 'post': 'Testing',
-                'email': 'kumeres741@gmail.com',
+                'email': 'sanjaym@iiitd.ac.in',
                 'image': 'Sanjay.jpg'
             },
             {
