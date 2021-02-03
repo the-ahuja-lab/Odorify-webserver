@@ -194,6 +194,12 @@ def about(request):
                 'post': 'Web Development & Testing',
                 'email': 'riya19442@iiitd.ac.in',
                 'image': 'Riya.jpg'
+            },
+            {
+                'name': 'Sengupta Labs',
+                'post': 'Collaboration',
+                'email': 'debarka@iiitd.ac.in',
+                'image': 'Sengupta.png'
             }
         ]
     }
