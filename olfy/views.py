@@ -580,7 +580,7 @@ def odor(request):
             data.to_csv(f"{path}/input.csv", index=False)
             a.model = 1
             os.chdir("olfy/static/olfy/generated/m1")
-            shutil.copyfile("olfy_model_v1.tar", f'{path}/olfy_model_v1.tar')
+            shutil.copyfile("model56.tar", f'{path}/model56.tar')
             os.system(f"python transformer-cnn.py {path}")
             f = pd.read_csv(f"{path}/input.csv")
             smiles = f["smiles"]
@@ -594,7 +594,7 @@ def odor(request):
                 count += 1
             os.system(f"python generate_table.py {path}")
             os.remove(f"{path}/map.txt")
-            os.remove(f"{path}/olfy_model_v1.tar")
+            os.remove(f"{path}/model56.tar")
             os.remove(f"{path}/results.csv")
             os.remove(f"{path}/input.csv")
             a.count = count - 1
@@ -657,7 +657,7 @@ def odor_Or(request):
             os.chdir("olfy/static/olfy/generated/m4")
             data1 = pd.DataFrame({"smiles": s})
             data1.to_csv(f"{path}/input1.csv", index=False)
-            shutil.copyfile("olfy_model_v1.tar", f'{path}/olfy_model_v1.tar')
+            shutil.copyfile("model56.tar", f'{path}/model56.tar')
             os.system(f"python transformer-cnn.py {path}")
             os.system(f"python generate_table.py {path}")
             data2 = pd.read_csv(f"{path}/predicted_output.csv")
@@ -690,7 +690,7 @@ def odor_Or(request):
             resultdf.to_csv(f"{path}/output.csv", index=False)
             os.remove(f"{path}/input.csv")
             os.remove(f"{path}/input1.csv")
-            os.remove(f"{path}/olfy_model_v1.tar")
+            os.remove(f"{path}/model56.tar")
             os.remove(f"{path}/predicted_output.csv")
             os.remove(f"{path}/results.csv")
             a.count = len(resultdf)
