@@ -338,16 +338,22 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
 # In[15]:
 
 
-df = pd.read_csv('Odorant-database.csv')
+df = pd.read_csv('odorants.csv')
 unique_smiles=df["SMILES"].unique().tolist()
 
 
 # In[16]:
-
+smile_l=75
+seq_l=315
+smile_h=50 #smile_hidden
+seq_h=50 #hidden_seq
+smile_o=50
+seq_o=50
+bt=32 #batch
+eph=50 #epoch
 
 filename = '42_model.sav'
 loaded_model = pickle.load(open(filename, 'rb'))
-
 
 # In[17]:
 
@@ -356,7 +362,6 @@ f = pd.read_csv(f"{path}/temp.csv")
 input_seq= f["seq"][0]
 input_k=f["k"][0]
 # In[18]:
-
 
 df_topk=pd.DataFrame(columns=['Smiles','Probability'])
 k=0
