@@ -224,7 +224,8 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     ax.set_ylabel("Relevance", fontsize=15)
     ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.pdf")
     #ax.close()
-
+    '''
+    # Structural Interpretability
     mol=x_input_smile
     m = Chem.MolFromSmiles(mol)
     num_atoms = m.GetNumAtoms()
@@ -275,8 +276,8 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     fp = open(f"{path}/{filename}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-    
-    
+    '''
+    # Sequence Interpretability
     ax=plt.figure()
     baseline = torch.zeros(2, seq_l, 27)
     ig = IntegratedGradients(model)
@@ -290,7 +291,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     data_relevance=pd.DataFrame()
     data_relevance["values"]=relevance
 
-    len_seq=len(x_input_seq)
+    len_seq=min(len(x_input_seq), seq_l)
     # cropped_seq_relevance=data_relevance.iloc[0:len_seq]
     cropped_seq_relevance=data_relevance.head(len_seq)
 
@@ -368,6 +369,7 @@ path = sys.argv[1]
 f = pd.read_csv(f"{path}/temp.csv")
 input_seq= f["seq"][0]
 input_k=f["k"][0]
+
 # In[18]:
 
 df_topk=pd.DataFrame(columns=['Smiles','Probability'])

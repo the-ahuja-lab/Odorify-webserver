@@ -290,7 +290,7 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     data_relevance=pd.DataFrame()
     data_relevance["values"]=relevance
 
-    len_seq=len(x_input_seq)
+    len_seq=min(len(x_input_seq), seq_l)
     cropped_seq_relevance=data_relevance.iloc[0:len_seq]
     x_seq_labels=pd.Series(list(x_input_seq))
     cropped_seq_relevance['seq_char']=x_seq_labels
@@ -327,10 +327,9 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
 
 df = pd.read_csv('odorants.csv')
 unique_sequences=df["Final_Sequence"].unique().tolist()
-# print(len(unique_sequences))
 
 
-# In[35]:
+
 df=df.loc[ df['Mutations'].isnull() ]
 unique_wild_type=df['Final_Sequence'].unique().tolist()
 
@@ -339,10 +338,7 @@ databasedf=df[['Receptor','Final_Sequence']]
 databasedf= databasedf.drop_duplicates()
 
 
-# In[36]:
-
-
-# filename = 'fullmodel_M4.sav'
+# Load the saved model
 # loaded_model = pickle.load(open(filename, 'rb'))
 class CPU_Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
@@ -354,20 +350,13 @@ f=open(filename, 'rb')
 loaded_model = CPU_Unpickler(f).load()
 
 
-# Read input smile
-
-# In[37]:
-
+# Read input smiles
 path = sys.argv[1]
 f = pd.read_csv(f"{path}/temp.csv")
 value_k=f["k"][0]
 input_smile=f["smiles"][0]
-# value_k=2
-# input_smile='CC(C)C(=O)OC(C)(C)Cc1ccccc1'
 
 # Run M4 on these smile, seq pair (find top-k sequences, and interpretability of those top-k)
-
-# In[38]:
 
 k=0
 df_top_seqs=pd.DataFrame(columns=['Final_Sequence', 'Probability'])
@@ -378,28 +367,20 @@ for seq in unique_wild_type:
         k+=1
 
 
-# In[39]:
-
-
 df_top_seqs=df_top_seqs.sort_values("Probability", ascending=False)
-# print(df_top_seqs.head())
-
-
-# In[40]:
-
 
 df_top_seqs=pd.merge(df_top_seqs, databasedf, on='Final_Sequence')
-# print(df_top_seqs.head())
+
 min_k = min(value_k,len(df_top_seqs))
 df_top_seqs=df_top_seqs.head(min_k)
-# print(df_top_seqs)
+
 if min_k==0:
     df_top_seqs.loc[0]=['Empty','Empty','Empty']
 else:
     for i in range(min_k):
         filename=str(i+1)
         combined_user_predict(loaded_model, input_smile, df_top_seqs['Final_Sequence'][i] , filename,path)
-# print(df_top_seqs)
+
 df_top_seqs.to_csv(f"{path}/output.csv", index=False)
 
 
