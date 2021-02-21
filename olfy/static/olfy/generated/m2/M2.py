@@ -388,10 +388,14 @@ for i in range(len(similar_smiles)):
 
 # In[12]:
 
-
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else: return super().find_class(module, name)
 filename = '42_model.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
-
+f=open(filename, 'rb')
+loaded_model = CPU_Unpickler(f).load()
 
 # In[13]:
 
