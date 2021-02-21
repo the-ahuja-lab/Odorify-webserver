@@ -114,11 +114,16 @@ class BLSTM(nn.Module):
         out_seq = self.dropout(out_seq)
         out_smile=self.fc_smile(out_smile.view(-1,self.smile_len*self.hidden_smile_dim*self.num_smile_dir))
         out_smile = self.dropout(out_smile)
- 
+    
+        out_smile.to(device)
+        out_seq.to(device)
+        
         out_combined=torch.cat((out_smile,out_seq), dim=1)
         out_combined = self.batch_norm_combined(out_combined)
         out_combined=self.fc_combined(out_combined)
- 
+
+        out_combined.to(device)
+
         prob=nn.Softmax(dim=1)(out_combined)
         pred=nn.LogSoftmax(dim=1)(out_combined)
         return pred
