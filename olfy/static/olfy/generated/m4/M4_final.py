@@ -143,6 +143,8 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     x_user_seq = list(x_user_seq)
     x_user_seq = torch.stack(x_user_seq)
     x_user_seq = x_user_seq.view(1, seq_l, 27)
+    x_user_smile.to(device)
+    x_user_seq.to(device)
     model.eval()
     scores = model(x_user_smile, x_user_seq)
     print("scores", scores)
@@ -327,6 +329,7 @@ class CPU_Unpickler(pickle.Unpickler):
 filename = '42_model.sav'
 f=open(filename, 'rb')
 loaded_model = CPU_Unpickler(f).load()
+loaded_model.to(device)
 
 path = sys.argv[1]
 data = pd.read_csv(f"{path}/input.csv")
