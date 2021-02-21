@@ -121,9 +121,6 @@ class BLSTM(nn.Module):
  
         prob=nn.Softmax(dim=1)(out_combined)
         pred=nn.LogSoftmax(dim=1)(out_combined)
- 
- 
- 
         return pred
 
 
@@ -212,7 +209,6 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     # print(impacts)
 
 #     molecule structure interpretability
-
     mol = x_input_smile
     m = Chem.MolFromSmiles(mol)
     num_atoms = m.GetNumAtoms()
@@ -265,7 +261,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     fp = open(f"{path}/{count}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-
+    
 
 #     Sequence Interpretability
     ax = plt.figure()
@@ -323,10 +319,15 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
 
 
 # In[9]:
-
-
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else: return super().find_class(module, name)
 filename = '42_model.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
+f=open(filename, 'rb')
+loaded_model = CPU_Unpickler(f).load()
+
 path = sys.argv[1]
 data = pd.read_csv(f"{path}/input.csv")
 output = []
@@ -342,6 +343,7 @@ for i in range(number_of_rows):
     temp.append(z[0])
     temp.append(z[1])
     output.append(temp)
+
 
 df = pd.DataFrame(output, columns=['smiles', 'seq', 'status', 'prob'])
 df.to_csv(f"{path}/output.csv", index=False)
