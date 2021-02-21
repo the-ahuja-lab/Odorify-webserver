@@ -86,6 +86,8 @@ class BLSTM(nn.Module):
         
         self.fc_seq= nn.Linear(self.seq_len*hidden_seq_dim*self.num_seq_dir,smile_o)
         self.fc_smile= nn.Linear(self.smile_len*hidden_smile_dim*self.num_smile_dir,seq_o)
+        self.fc_smile.to(device)
+        self.fc_seq.to(device)
         self.batch_norm_combined = nn.BatchNorm1d(smile_o+seq_o, affine = False)
         # self.fc_combined = nn.Sequential(nn.Linear(1000,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.BatchNorm1d(100, affine = False),nn.Dropout(.5),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
@@ -105,9 +107,7 @@ class BLSTM(nn.Module):
  
         out_smile, (hn_smile, cn_smile) = self.lstm_smile(x1, (h0_smile, c0_smile))
         out_seq, (hn_seq, cn_seq) = self.lstm_seq(x2, (h0_seq, c0_seq))
- 
- 
- 
+
         out_smile = self.dropout(out_smile)
         out_seq = self.dropout(out_seq)
         out_seq=self.fc_seq(out_seq.view(-1,self.seq_len*self.hidden_seq_dim*self.num_seq_dir))
@@ -117,7 +117,7 @@ class BLSTM(nn.Module):
     
         out_smile.to(device)
         out_seq.to(device)
-        
+
         out_combined=torch.cat((out_smile,out_seq), dim=1)
         out_combined = self.batch_norm_combined(out_combined)
         out_combined=self.fc_combined(out_combined)
