@@ -278,10 +278,10 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     data_relevance = pd.DataFrame()
     data_relevance["values"] = relevance
 
-    len_seq = len(x_input_seq)
+    len_seq = min(len(x_input_seq), seq_l)
     cropped_seq_relevance = data_relevance.iloc[0:len_seq]
 
-    x_seq_labels = pd.Series(list(x_input_seq))
+    x_seq_labels = pd.Series(list(x_input_seq[:len_seq]))
     cropped_seq_relevance['seq_char'] = x_seq_labels
 
     cropped_seq_relevance['positive'] = [''] * len_seq
