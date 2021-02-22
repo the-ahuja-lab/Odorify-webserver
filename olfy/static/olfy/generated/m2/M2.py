@@ -158,7 +158,7 @@ def prediction(model, x_input_smile, x_input_seq):
     x_user_seq=torch.stack(x_user_seq)
     x_user_seq=x_user_seq.view(1,seq_l,27)
     model.eval()
-    scores = model(x_user_smile,x_user_seq)
+    scores = model(x_user_smile.to(device),x_user_seq.to(device))
     _, predictions = scores.max(1)
 
     prob=torch.exp(scores)
@@ -185,17 +185,18 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     x_user_seq=torch.stack(x_user_seq)
     x_user_seq=x_user_seq.view(1,seq_l,27)
     model.eval()
+    torch.backends.cudnn.enabled=False
     ig = IntegratedGradients(model)
     baseline = torch.zeros(1, smile_l, 77)
     for i in baseline[0]:
         i[-1]=1
 
-    attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
+    attr,delta= ig.attribute((x_user_smile.to(device),x_user_seq.to(device)), target=1,return_convergence_delta=True)
     attr=attr[0].view(smile_l,77)
     maxattr,_=torch.max(attr,dim=1)
     minattr,_=torch.min(attr,dim=1)
     relevance=maxattr+minattr
-    relevance=relevance.detach().numpy()
+    relevance=relevance.cpu().detach().numpy()
     data_relevance=pd.DataFrame()
     data_relevance["values"]=relevance
 
@@ -290,13 +291,13 @@ def combined_user_predict(model, x_input_smile, x_input_seq, filename,path):
     ax=plt.figure()
     baseline = torch.zeros(2, seq_l, 27)
     ig = IntegratedGradients(model)
-    attr,delta= ig.attribute((x_user_smile,x_user_seq), target=1,return_convergence_delta=True)
+    attr,delta= ig.attribute((x_user_smile.to(device),x_user_seq.to(device)), target=1,return_convergence_delta=True)
     smile_attr=attr[0].view(smile_l,77)
     seq_attr=attr[1].view(seq_l,27)
     maxattr,_=torch.max(seq_attr,dim=1)
     minattr,_=torch.min(seq_attr,dim=1)
     relevance=maxattr+minattr
-    relevance=relevance.detach().numpy()
+    relevance=relevance.cpu().detach().numpy()
     data_relevance=pd.DataFrame()
     data_relevance["values"]=relevance
 
@@ -395,8 +396,8 @@ class CPU_Unpickler(pickle.Unpickler):
         else: return super().find_class(module, name)
 filename = '42_model.sav'
 f=open(filename, 'rb')
-loaded_model = CPU_Unpickler(f).load()
-
+# loaded_model = CPU_Unpickler(f).load()
+loaded_model=pickle.load(f)
 # In[13]:
 
 
