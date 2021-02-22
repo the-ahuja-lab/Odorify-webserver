@@ -80,22 +80,17 @@ class BLSTM(nn.Module):
         self.num_smile_dir=2
         self.num_seq_dir=2
 
-        self.lstm_smile = nn.LSTM(input_smile_dim, hidden_smile_dim, layer_smile_dim,bidirectional=True)
-        self.lstm_seq = nn.LSTM(input_seq_dim, hidden_seq_dim, layer_seq_dim,bidirectional=True)
-        self.dropout = nn.Dropout(0.5)
-        self.lstm_smile.to(device)
-        self.lstm_seq.to(device)
+        self.lstm_smile = nn.LSTM(input_smile_dim, hidden_smile_dim, layer_smile_dim,bidirectional=True).to(device)
+        self.lstm_seq = nn.LSTM(input_seq_dim, hidden_seq_dim, layer_seq_dim,bidirectional=True).to(device)
+        self.dropout = nn.Dropout(0.5).to(device)
 
-        self.fc_seq= nn.Linear(self.seq_len*hidden_seq_dim*self.num_seq_dir,smile_o)
-        self.fc_smile= nn.Linear(self.smile_len*hidden_smile_dim*self.num_smile_dir,seq_o)
-        self.fc_smile.to(device)
-        self.fc_seq.to(device)
-        self.batch_norm_combined = nn.BatchNorm1d(smile_o+seq_o, affine = False)
-        self.batch_norm_combined.to(device)
+        self.fc_seq= nn.Linear(self.seq_len*hidden_seq_dim*self.num_seq_dir,smile_o).to(device)
+        self.fc_smile= nn.Linear(self.smile_len*hidden_smile_dim*self.num_smile_dir,seq_o).to(device)
+        self.batch_norm_combined = nn.BatchNorm1d(smile_o+seq_o, affine = False).to(device)
         # self.fc_combined = nn.Sequential(nn.Linear(1000,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.BatchNorm1d(100, affine = False),nn.Dropout(.5),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,10),nn.ReLU(),nn.Linear(10,output_dim))
-        self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
+        self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim)).to(device)
         
     def forward(self, x1,x2):
         h0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
@@ -116,7 +111,7 @@ class BLSTM(nn.Module):
         cn_smile.to(device)
         hn_seq.to(device)
         cn_seq.to(device)
-        
+
         out_smile = self.dropout(out_smile)
         out_seq = self.dropout(out_seq)
         out_seq=self.fc_seq(out_seq.view(-1,self.seq_len*self.hidden_seq_dim*self.num_seq_dir))
@@ -159,6 +154,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     x_user_seq = x_user_seq.view(1, seq_l, 27)
     x_user_smile.to(device)
     x_user_seq.to(device)
+    model.to(device)
     model.eval()
     scores = model(x_user_smile, x_user_seq)
     print("scores", scores)
