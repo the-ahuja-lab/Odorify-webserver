@@ -354,7 +354,7 @@ seq_o=50
 bt=32 #batch
 eph=50 #epoch
 
-filename = '42_model.sav'
+filename = '42_model_1.sav'
 # loaded_model = pickle.load(open(filename, 'rb'))
 class CPU_Unpickler(pickle.Unpickler):
     def find_class(self, module, name):
