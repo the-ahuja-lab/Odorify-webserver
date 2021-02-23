@@ -235,7 +235,7 @@ def help(request):
         ],
         'outputData': [
             {
-                'name': 'Probability Of Prediction',
+                'name': 'Prediction Probability',
                 'extension': 'This is the confidence of the prediction being true'
             },
             {
