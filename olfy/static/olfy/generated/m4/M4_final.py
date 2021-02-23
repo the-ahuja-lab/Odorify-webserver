@@ -150,8 +150,8 @@ def prediction(model, x_input_smile, x_input_seq):
 
 def user_predict(model, x_input_smile, x_input_seq, count, path):
     mol = Chem.MolFromSmiles(x_input_smile)
-    Chem.Kekulize(mol)
-    x_input_smile = Chem.MolToSmiles(mol, kekuleSmiles=True)
+    # Chem.Kekulize(mol)
+    # x_input_smile = Chem.MolToSmiles(mol, kekuleSmiles=True)
     x_user_smile = one_hot_smile(x_input_smile)
     x_user_smile = list(x_user_smile)
     x_user_smile = torch.stack(x_user_smile)

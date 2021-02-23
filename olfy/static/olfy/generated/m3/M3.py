@@ -161,8 +161,8 @@ device=torch.device("cuda:0" if torch.cuda.is_available() else "cpu" )
 
 def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     mol = Chem.MolFromSmiles(x_input_smile)
-    Chem.Kekulize(mol)
-    x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
+    # Chem.Kekulize(mol)
+    # x_input_smile=Chem.MolToSmiles(mol, kekuleSmiles=True)
     ax=plt.figure()
     x_user_seq=one_hot_seq(x_input_seq)
     x_user_seq=list(x_user_seq)
