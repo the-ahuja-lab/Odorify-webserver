@@ -359,7 +359,7 @@ for i in range(number_of_rows):
     temp = []
     user_smile = str(data["smiles"][i])
     user_seq = str(data["seq"][i])
-    prob,preb= predictions(loaded_model, user_smile, user_seq)
+    prob,preb= prediction(loaded_model, user_smile, user_seq)
     user_predict(loaded_model, user_smile, user_seq, i + 1, path)
     temp.append(user_smile)
     temp.append(user_seq)
