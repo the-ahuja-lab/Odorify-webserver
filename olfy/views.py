@@ -678,9 +678,9 @@ def odor_Or(request):
                     resultdf["prob"][i] = data["prob"][count]
                     resultdf["status"][i] = data["status"][count]
                     count += 1
-
             resultdf.drop("odorant", axis=1, inplace=True)
             resultdf.drop(0, inplace=True)
+            resultdf["header"] = header
             resultdf.to_csv(f"{path}/output.csv", index=False)
             os.remove(f"{path}/input.csv")
             os.remove(f"{path}/input1.csv")
