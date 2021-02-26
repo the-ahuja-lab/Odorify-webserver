@@ -27,19 +27,20 @@ import sys
 
 
 def one_hot_smile(smile):
-    key = "()+–./-0123456789=#@$ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^"
-    test_list = list(key)
-    res = {val: idx for idx, val in enumerate(test_list)}
-    threshold = 80
+    key="()+–./-0123456789=#@$ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]abcdefghijklmnopqrstuvwxyz^"
+    test_list=list(key)
+    res = {val : idx  for idx, val in enumerate(test_list)}
+    threshold=smile_l
 
-    if len(smile) <= threshold:
-        smile = smile + ("^" * (threshold - len(smile)))
+    if len(smile)<=threshold:
+        smile=smile+("^"*(threshold-len(smile)))
     else:
-        smile = smile[0:threshold]
-    array = [[0 for j in range(len(key))] for i in range(threshold)]
+        smile=smile[0:threshold]
+    array=[[0 for j in range(len(key))] for i in range(threshold)]
     for i in range(len(smile)):
-        array[i][res[smile[i]]] = 1
-    array = torch.Tensor(array)
+        array[i][res[smile[i]]]=1
+    array=torch.Tensor(array)
+
     return array
 
 
@@ -47,17 +48,22 @@ def one_hot_smile(smile):
 
 
 def one_hot_seq(seq):
-    key = "ABCDEFGHIJKLMNOPQRSTUVWXYZ^"
-    seq = seq.upper()
-    test_list = list(key)
-    res = {val: idx for idx, val in enumerate(test_list)}
-    seq = seq + ("^" * (400 - len(seq)))
-    array = [[0 for j in range(len(key))] for i in range(400)]
-    for i in range(len(seq)):
-        array[i][res[seq[i]]] = 1
-        array = torch.Tensor(array)
-    return array
+    key="ABCDEFGHIJKLMNOPQRSTUVWXYZ^"
+    seq=seq.upper()
+    test_list=list(key)
+    res = {val : idx  for idx, val in enumerate(test_list)}
+    threshold=seq_l
 
+    if len(seq)<=threshold:
+        seq=seq+("^"*(threshold-len(seq)))
+    else:
+        seq=seq[0:threshold]
+    array=[[0 for j in range(len(key))] for i in range(threshold)]
+    for i in range(len(seq)):
+      array[i][res[seq[i]]]=1
+    array=torch.Tensor(array)
+
+    return array
 
 # In[6]:
 
@@ -69,81 +75,97 @@ class BLSTM(nn.Module):
         self.hidden_seq_dim = hidden_seq_dim
         self.layer_seq_dim = layer_seq_dim
         self.output_dim = output_dim
-        self.smile_len = 80
-        self.seq_len = 400
-        self.num_smile_dir = 2
-        self.num_seq_dir = 2
+        self.smile_len = smile_l
+        self.seq_len = seq_l
+        self.num_smile_dir=2
+        self.num_seq_dir=2
 
-        self.lstm_smile = nn.LSTM(
-            input_smile_dim, hidden_smile_dim, layer_smile_dim, bidirectional=True)
-        self.lstm_seq = nn.LSTM(
-            input_seq_dim, hidden_seq_dim, layer_seq_dim, bidirectional=True)
-        self.dropout = nn.Dropout(0.5)
+        self.lstm_smile = nn.LSTM(input_smile_dim, hidden_smile_dim, layer_smile_dim,bidirectional=True).to(device)
+        self.lstm_seq = nn.LSTM(input_seq_dim, hidden_seq_dim, layer_seq_dim,bidirectional=True).to(device)
+        self.dropout = nn.Dropout(0.5).to(device)
 
-        self.fc_seq = nn.Linear(
-            self.seq_len * hidden_seq_dim * self.num_seq_dir, 100)
-        self.fc_smile = nn.Linear(
-            self.smile_len * hidden_smile_dim * self.num_smile_dir, 100)
+        self.fc_seq= nn.Linear(self.seq_len*hidden_seq_dim*self.num_seq_dir,smile_o).to(device)
+        self.fc_smile= nn.Linear(self.smile_len*hidden_smile_dim*self.num_smile_dir,seq_o).to(device)
+        self.batch_norm_combined = nn.BatchNorm1d(smile_o+seq_o, affine = False).to(device)
         # self.fc_combined = nn.Sequential(nn.Linear(1000,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
-        self.fc_combined = nn.Sequential(nn.Linear(200, 100), nn.ReLU(), nn.Linear(
-            100, 100), nn.ReLU(), nn.Linear(100, 10), nn.ReLU(), nn.Linear(10, output_dim))
-
-    def forward(self, x1, x2):
-        h0_smile = torch.zeros(self.layer_smile_dim * self.num_smile_dir,
-                               x1.size(1), self.hidden_smile_dim).requires_grad_()
-        c0_smile = torch.zeros(self.layer_smile_dim * self.num_smile_dir,
-                               x1.size(1), self.hidden_smile_dim).requires_grad_()
-        h0_seq = torch.zeros(self.layer_seq_dim * self.num_seq_dir,
-                             x2.size(1), self.hidden_seq_dim).requires_grad_()
-        c0_seq = torch.zeros(self.layer_seq_dim * self.num_seq_dir,
-                             x2.size(1), self.hidden_seq_dim).requires_grad_()
-
-        h0_smile = h0_smile.to(device)
-        c0_smile = c0_smile.to(device)
-        h0_seq = h0_seq.to(device)
-        c0_seq = c0_seq.to(device)
-
-        out_smile, (hn_smile, cn_smile) = self.lstm_smile(
-            x1, (h0_smile, c0_smile))
+        # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.BatchNorm1d(100, affine = False),nn.Dropout(.5),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
+        # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,10),nn.ReLU(),nn.Linear(10,output_dim))
+        self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim)).to(device)
+        
+    def forward(self, x1,x2):
+        h0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
+        c0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
+        h0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
+        c0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
+ 
+        h0_smile=h0_smile.to(device)
+        c0_smile=c0_smile.to(device)
+        h0_seq=h0_seq.to(device)
+        c0_seq=c0_seq.to(device)
+ 
+        out_smile, (hn_smile, cn_smile) = self.lstm_smile(x1, (h0_smile, c0_smile))
         out_seq, (hn_seq, cn_seq) = self.lstm_seq(x2, (h0_seq, c0_seq))
 
         out_smile = self.dropout(out_smile)
         out_seq = self.dropout(out_seq)
-        out_seq = self.fc_seq(
-            out_seq.view(-1, self.seq_len * self.hidden_seq_dim * self.num_seq_dir))
+        out_seq=self.fc_seq(out_seq.view(-1,self.seq_len*self.hidden_seq_dim*self.num_seq_dir))
         out_seq = self.dropout(out_seq)
-        out_smile = self.fc_smile(
-            out_smile.view(-1, self.smile_len * self.hidden_smile_dim * self.num_smile_dir))
+        out_smile=self.fc_smile(out_smile.view(-1,self.smile_len*self.hidden_smile_dim*self.num_smile_dir))
         out_smile = self.dropout(out_smile)
 
-        out_combined = torch.cat((out_smile, out_seq), dim=1)
-        out_combined = self.fc_combined(out_combined)
+        out_combined=torch.cat((out_smile,out_seq), dim=1)
+        out_combined = self.batch_norm_combined(out_combined)
+        out_combined=self.fc_combined(out_combined)
 
-        prob = nn.Softmax(dim=1)(out_combined)
-        pred = nn.LogSoftmax(dim=1)(out_combined)
-
+        prob=nn.Softmax(dim=1)(out_combined)
+        pred=nn.LogSoftmax(dim=1)(out_combined)
         return pred
 
 
 # In[38]:
+
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+smile_l=75
+seq_l=315
+
+def prediction(model, x_input_smile, x_input_seq):
+    x_user_smile=one_hot_smile(x_input_smile)
+    x_user_smile=list(x_user_smile)
+    x_user_smile=torch.stack(x_user_smile)
+    x_user_smile=x_user_smile.view(1,smile_l,77)
+
+    x_user_seq=one_hot_seq(x_input_seq)
+    x_user_seq=list(x_user_seq)
+    x_user_seq=torch.stack(x_user_seq)
+    x_user_seq=x_user_seq.view(1,seq_l,27)
+    model.eval()
+    scores = model(x_user_smile.to(device),x_user_seq.to(device))
+    _, predictions = scores.max(1)
+
+    prob=torch.exp(scores)
+    prob=prob.tolist()
+    
+    return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
 
 def user_predict(model, x_input_smile, x_input_seq, count, path):
     mol = Chem.MolFromSmiles(x_input_smile)
-    Chem.Kekulize(mol)
-    x_input_smile = Chem.MolToSmiles(mol, kekuleSmiles=True)
+    # Chem.Kekulize(mol)
+    # x_input_smile = Chem.MolToSmiles(mol, kekuleSmiles=True)
     x_user_smile = one_hot_smile(x_input_smile)
     x_user_smile = list(x_user_smile)
     x_user_smile = torch.stack(x_user_smile)
-    x_user_smile = x_user_smile.view(1, 80, 77)
+    x_user_smile = x_user_smile.view(1, smile_l, 77)
 
     x_user_seq = one_hot_seq(x_input_seq)
     x_user_seq = list(x_user_seq)
     x_user_seq = torch.stack(x_user_seq)
-    x_user_seq = x_user_seq.view(1, 400, 27)
+    x_user_seq = x_user_seq.view(1, seq_l, 27)
+    x_user_smile.to(device)
+    x_user_seq.to(device)
+    model.to(device)
     model.eval()
-    scores = model(x_user_smile, x_user_seq)
+    scores = model(x_user_smile.cuda(), x_user_seq.cuda())
     print("scores", scores)
     _, predictions = scores.max(1)
     pred_ind = predictions.item()
@@ -155,18 +177,17 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     # baseline = torch.zeros(1, 80, 77)
     # for i in baseline[0]:
     #     i[-1]=1
-
-    attr, delta = ig.attribute(
-        (x_user_smile, x_user_seq), target=1, return_convergence_delta=True)
-    attr = attr[0].view(80, 77)
+    torch.backends.cudnn.enabled=False
+    attr, delta = ig.attribute((x_user_smile.to(device), x_user_seq.to(device)), target=1, return_convergence_delta=True)
+    attr = attr[0].view(smile_l, 77)
     maxattr, _ = torch.max(attr, dim=1)
     minattr, _ = torch.min(attr, dim=1)
     relevance = maxattr + minattr
-    relevance = relevance.detach().numpy()
+    relevance = relevance.cpu().detach().numpy()
     data_relevance = pd.DataFrame()
     data_relevance["values"] = relevance
 
-    len_smile = min(len(x_input_smile), 80)
+    len_smile = min(len(x_input_smile), smile_l)
 
     cropped_smile_relevance = data_relevance.iloc[0:len_smile]
 
@@ -208,7 +229,6 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     # print(impacts)
 
 #     molecule structure interpretability
-
     mol = x_input_smile
     m = Chem.MolFromSmiles(mol)
     num_atoms = m.GetNumAtoms()
@@ -261,27 +281,27 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     fp = open(f"{path}/{count}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-
+    
 
 #     Sequence Interpretability
     ax = plt.figure()
-    baseline = torch.zeros(2, 400, 27)
+    baseline = torch.zeros(2, seq_l, 27)
     ig = IntegratedGradients(model)
     attr, delta = ig.attribute(
-        (x_user_smile, x_user_seq), target=1, return_convergence_delta=True)
-    smile_attr = attr[0].view(80, 77)
-    seq_attr = attr[1].view(400, 27)
+        (x_user_smile.to(device), x_user_seq.to(device)), target=1, return_convergence_delta=True)
+    smile_attr = attr[0].view(smile_l, 77)
+    seq_attr = attr[1].view(seq_l, 27)
     maxattr, _ = torch.max(seq_attr, dim=1)
     minattr, _ = torch.min(seq_attr, dim=1)
     relevance = maxattr + minattr
-    relevance = relevance.detach().numpy()
+    relevance = relevance.cpu().detach().numpy()
     data_relevance = pd.DataFrame()
     data_relevance["values"] = relevance
 
-    len_seq = len(x_input_seq)
+    len_seq = min(len(x_input_seq), seq_l)
     cropped_seq_relevance = data_relevance.iloc[0:len_seq]
 
-    x_seq_labels = pd.Series(list(x_input_seq))
+    x_seq_labels = pd.Series(list(x_input_seq[:len_seq]))
     cropped_seq_relevance['seq_char'] = x_seq_labels
 
     cropped_seq_relevance['positive'] = [''] * len_seq
@@ -319,10 +339,17 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
 
 
 # In[9]:
+class CPU_Unpickler(pickle.Unpickler):
+    def find_class(self, module, name):
+        if module == 'torch.storage' and name == '_load_from_bytes':
+            return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
+        else: return super().find_class(module, name)
 
+filename = '42_model_1.sav'
+f=open(filename, 'rb')
+loaded_model = CPU_Unpickler(f).load()
+loaded_model.to(device)
 
-filename = 'fullmodel_M4.sav'
-loaded_model = pickle.load(open(filename, 'rb'))
 path = sys.argv[1]
 data = pd.read_csv(f"{path}/input.csv")
 output = []
@@ -332,12 +359,14 @@ for i in range(number_of_rows):
     temp = []
     user_smile = str(data["smiles"][i])
     user_seq = str(data["seq"][i])
-    z = user_predict(loaded_model, user_smile, user_seq, i + 1, path)
+    prob,pred= prediction(loaded_model, user_smile, user_seq)
+    user_predict(loaded_model, user_smile, user_seq, i + 1, path)
     temp.append(user_smile)
     temp.append(user_seq)
-    temp.append(z[0])
-    temp.append(z[1])
+    temp.append(pred)
+    temp.append(prob)
     output.append(temp)
+
 
 df = pd.DataFrame(output, columns=['smiles', 'seq', 'status', 'prob'])
 df.to_csv(f"{path}/output.csv", index=False)
