@@ -347,7 +347,8 @@ class CPU_Unpickler(pickle.Unpickler):
 
 filename = '42_model_1.sav'
 f=open(filename, 'rb')
-loaded_model = CPU_Unpickler(f).load()
+loaded_model=pickle.load(f)
+# loaded_model = CPU_Unpickler(f).load()
 loaded_model.to(device)
 
 path = sys.argv[1]
@@ -371,5 +372,3 @@ for i in range(number_of_rows):
 df = pd.DataFrame(output, columns=['smiles', 'seq', 'status', 'prob'])
 df.to_csv(f"{path}/output.csv", index=False)
 
-
-# In[ ]:

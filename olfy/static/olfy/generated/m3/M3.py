@@ -383,18 +383,8 @@ for smile in unique_smiles:
         k+=1
 
 
-# In[23]:
-
-
-# k=0
-# df_topk=pd.DataFrame(columns=['smiles','probability'])
-# for i,j in sorted(smiles_seq_pred.items(),key=lambda item: item[1], reverse=True):
-#     if(k==input_k):
-#         break
-#     df_topk.loc[k]=[i,j]
-#     k+=1   
+ 
 df_topk=df_topk.sort_values("Probability", ascending=False)
-# value_k = min(input_k,len(df_topk))
 min_k = min(input_k,len(df_topk))
 df_topk=df_topk.head(min_k)
 
@@ -406,7 +396,6 @@ if(len(df_topk)==0):
     df_topk.loc[0]=['Empty','Empty']
 
 df_topk.to_csv(f"{path}/output.csv", index=False)
-
 
 
 
