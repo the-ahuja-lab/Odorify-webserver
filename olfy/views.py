@@ -1044,15 +1044,18 @@ def makezip4(a, request, flag="0"):
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m4")
     f = pd.read_csv(f"{a.job_name}/output.csv")
+    count = 0
     for i in range(a.count):
         if not str(f["prob"][i]) == "nan":
-            file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
+            file_path.append(f"{a.job_name}/{count+1}_SmileInterpretability.pdf")
             file_path.append(
-                f"{a.job_name}/{i+1}_SequenceInterpretability.pdf")
-            file_path.append(f"{a.job_name}/{i+1}_mol.svg")
+                f"{a.job_name}/{count+1}_SequenceInterpretability.pdf")
+            file_path.append(f"{a.job_name}/{count+1}_mol.svg")
+            count+=1
         else:
             continue
     file_path.append(f"{a.job_name}/output.csv")
+    print(file_path)
     zip = ZipFile(f"{a.job_name}/data.zip", 'w')
     for file in file_path:
         zip.write(file)

@@ -91,18 +91,18 @@ class BLSTM(nn.Module):
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.BatchNorm1d(100, affine = False),nn.Dropout(.5),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,10),nn.ReLU(),nn.Linear(10,output_dim))
         self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim)).to(device)
-        
+
     def forward(self, x1,x2):
         h0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
         c0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
         h0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
         c0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
- 
+
         h0_smile=h0_smile.to(device)
         c0_smile=c0_smile.to(device)
         h0_seq=h0_seq.to(device)
         c0_seq=c0_seq.to(device)
- 
+
         out_smile, (hn_smile, cn_smile) = self.lstm_smile(x1, (h0_smile, c0_smile))
         out_seq, (hn_seq, cn_seq) = self.lstm_seq(x2, (h0_seq, c0_seq))
 
@@ -144,7 +144,7 @@ def prediction(model, x_input_smile, x_input_seq):
 
     prob=torch.exp(scores)
     prob=prob.tolist()
-    
+
     return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
 
@@ -165,7 +165,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     x_user_seq.to(device)
     model.to(device)
     model.eval()
-    scores = model(x_user_smile.cuda(), x_user_seq.cuda())
+    scores = model(x_user_smile.to(device), x_user_seq.to(device))
     print("scores", scores)
     _, predictions = scores.max(1)
     pred_ind = predictions.item()
@@ -281,7 +281,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     fp = open(f"{path}/{count}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-    
+
 
 #     Sequence Interpretability
     ax = plt.figure()
