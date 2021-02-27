@@ -362,26 +362,32 @@ class CPU_Unpickler(pickle.Unpickler):
             return lambda b: torch.load(io.BytesIO(b), map_location='cpu')
         else: return super().find_class(module, name)
 f=open(filename, 'rb')
-# loaded_model = CPU_Unpickler(f).load()
-loaded_model=pickle.load(f)
+loaded_model = CPU_Unpickler(f).load()
+# loaded_model=pickle.load(f)
 loaded_model.to(device)
 # In[17]:
 
-path = sys.argv[1]
-f = pd.read_csv(f"{path}/temp.csv")
-input_seq= f["seq"][0]
-input_k=f["k"][0]
+# path = sys.argv[1]
+# f = pd.read_csv(f"{path}/temp.csv")
+# input_seq= f["seq"][0]
+# input_k=f["k"][0]
+path = 'try'
+# f = pd.read_csv(f"{path}/temp.csv")
+# input_seq= f["seq"][0]
+input_k=5
+input_seq = 'MARENSTFNSDFILLGIFNHSPTHTFLFFLVLAIFSVAFMGNSVMVLLIYLDTQLHTPMYLLLSQLSLMDLMLICTTVPKMAFNYLSGSKSISMAGCATQIFFYTSLLGSECFLLAVMAYDRYTAICHPLRYTNLMSPKICGLMTAFSWILGSTDGIIDVVATFSFSYCGSREIAHFFCDFPSLLILSCSDTSIFEKILFICCIVMIVFPVAIIIASYARVILAVIHMGSGEGRRKAFTTCSSHLLVVGMYYGAALFMYIRPTSDRSPTQDKMVSVFYTILTPMLNPLIYSLRNKEVTRAFMKILGKGKSGE'
 
 # In[18]:
-
+test_df=pd.DataFrame(columns=['Smiles','Prediction','Probability'])
 df_topk=pd.DataFrame(columns=['Smiles','Probability'])
 k=0
 for smile in unique_smiles:
     prob,pred=prediction(loaded_model, smile, input_seq )
+    test_df=test_df.append([smile, pred,prob])
     if(pred==1):
         df_topk.loc[k]=[smile,prob]
         k+=1
-
+test_df.to_csv(f"{path}/test.csv", index=False)
 
 # In[23]:
 
@@ -399,8 +405,8 @@ min_k = min(input_k,len(df_topk))
 df_topk=df_topk.head(min_k)
 
 
-for just in range(min_k):
-    combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1),path)
+# for just in range(min_k):
+#     combined_user_predict(loaded_model, input_seq,df_topk["Smiles"].tolist()[just], str(just+1),path)
 
 if(len(df_topk)==0):
     df_topk.loc[0]=['Empty','Empty']
