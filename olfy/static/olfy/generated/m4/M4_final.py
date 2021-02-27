@@ -147,10 +147,7 @@ def prediction(model, x_input_smile, x_input_seq):
 
     return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
-<<<<<<< HEAD
 
-=======
->>>>>>> af47f881ee5c36631ef3c2930d6bbec855c38872
 def user_predict(model, x_input_smile, x_input_seq, count, path):
     mol = Chem.MolFromSmiles(x_input_smile)
     # Chem.Kekulize(mol)
@@ -170,16 +167,11 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     model.eval()
     scores = model(x_user_smile.to(device), x_user_seq.to(device))
     print("scores", scores)
-    print("0 score", scores[0][0])
-    print("1 score", scores[0][1])
     _, predictions = scores.max(1)
     pred_ind = predictions.item()
     prob = torch.exp(scores)
     prob = prob.tolist()
-    print("prob 0", prob[0][0])
-    print("prob 1", prob[0][1])
     z = [predictions.item(), float(str(prob[0][predictions.item()])[:5])]
-    print("z", z)
 
     ig = IntegratedGradients(model)
     # baseline = torch.zeros(1, 80, 77)
@@ -235,7 +227,7 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     # ax.close()
     impacts = np.array(impacts)
     # print(impacts)
-    '''
+
 #     molecule structure interpretability
     mol = x_input_smile
     m = Chem.MolFromSmiles(mol)
@@ -289,17 +281,14 @@ def user_predict(model, x_input_smile, x_input_seq, count, path):
     fp = open(f"{path}/{count}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-<<<<<<< HEAD
 
-=======
-    '''
->>>>>>> af47f881ee5c36631ef3c2930d6bbec855c38872
 
 #     Sequence Interpretability
     ax = plt.figure()
     baseline = torch.zeros(2, seq_l, 27)
     ig = IntegratedGradients(model)
-    attr, delta = ig.attribute((x_user_smile.to(device), x_user_seq.to(device)), target=1, return_convergence_delta=True)
+    attr, delta = ig.attribute(
+        (x_user_smile.to(device), x_user_seq.to(device)), target=1, return_convergence_delta=True)
     smile_attr = attr[0].view(smile_l, 77)
     seq_attr = attr[1].view(seq_l, 27)
     maxattr, _ = torch.max(seq_attr, dim=1)
@@ -358,29 +347,13 @@ class CPU_Unpickler(pickle.Unpickler):
 
 filename = '42_model_1.sav'
 f=open(filename, 'rb')
-loaded_model = CPU_Unpickler(f).load()
+loaded_model=pickle.load(f)
+# loaded_model = CPU_Unpickler(f).load()
 loaded_model.to(device)
 
-# path = sys.argv[1]
-# data = pd.read_csv(f"{path}/input.csv")
-# output = []
-# index = data.index
-# number_of_rows = len(index)
-# for i in range(number_of_rows):
-#     temp = []
-#     user_smile = str(data["smiles"][i])
-#     user_seq = str(data["seq"][i])
-#     z = user_predict(loaded_model, user_smile, user_seq, i + 1, path)
-#     temp.append(user_smile)
-#     temp.append(user_seq)
-#     temp.append(z[0])
-#     temp.append(z[1])
-#     output.append(temp)
-i=2
-path = 'try'
-# data = pd.read_csv(f"{path}/input.csv")
+path = sys.argv[1]
+data = pd.read_csv(f"{path}/input.csv")
 output = []
-<<<<<<< HEAD
 index = data.index
 number_of_rows = len(index)
 for i in range(number_of_rows):
@@ -394,27 +367,8 @@ for i in range(number_of_rows):
     temp.append(pred)
     temp.append(prob)
     output.append(temp)
-=======
-# index = data.index
-# number_of_rows = len(index)
-# for i in range(number_of_rows):
-temp = []
-user_smile = 'CC(CO)C(CCCC)S'
-user_seq = 'MARENSTFNSDFILLGIFNHSPTHTFLFFLVLAIFSVAFMGNSVMVLLIYLDTQLHTPMYLLLSQLSLMDLMLICTTVPKMAFNYLSGSKSISMAGCATQIFFYTSLLGSECFLLAVMAYDRYTAICHPLRYTNLMSPKICGLMTAFSWILGSTDGIIDVVATFSFSYCGSREIAHFFCDFPSLLILSCSDTSIFEKILFICCIVMIVFPVAIIIASYARVILAVIHMGSGEGRRKAFTTCSSHLLVVGMYYGAALFMYIRPTSDRSPTQDKMVSVFYTILTPMLNPLIYSLRNKEVTRAFMKILGKGKSGE'
-
-prob,pred=prediction(loaded_model, user_smile, user_seq)
-print("preb", pred, "prob", prob)
-# user_predict(loaded_model, user_smile, user_seq, i + 1, path)
-temp.append(user_smile)
-temp.append(user_seq)
-temp.append(pred)
-temp.append(prob)
-output.append(temp)
->>>>>>> af47f881ee5c36631ef3c2930d6bbec855c38872
 
 
 df = pd.DataFrame(output, columns=['smiles', 'seq', 'status', 'prob'])
 df.to_csv(f"{path}/output.csv", index=False)
 
-
-# In[ ]:
