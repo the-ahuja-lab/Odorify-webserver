@@ -406,9 +406,9 @@ def results(request):
                     b.prob = "NA"
                 b.sno = i + 1
                 b.seq = data["Sequence"][i]
-                if data["status"][i] == "0":
+                if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                elif data['status'][i] == "1":
+                elif data['status'][i] == 1:
                     b.status = "Binding"
                 else:
                     b.status = data['status'][i]
@@ -535,7 +535,7 @@ def result_queue(request, job_name, model, count, flag):
                 b.seq = data["Sequence"][i]
                 if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                elif data["status"][i] == 1:
+                elif data['status'][i] == 1:
                     b.status = "Binding"
                 else:
                     b.status = data['status'][i]
