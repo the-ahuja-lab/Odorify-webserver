@@ -4,5 +4,22 @@
 			"path": ".."
 		}
 	],
-	"settings": {}
+    "settings": {
+        "python.pythonPath": "/home/sushant/anaconda3/envs/my-rdkit-env/bin/python"
+    },
+    "launch": {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Python: Django",
+                "type": "python",
+                "request": "launch",
+                "program": "${workspaceFolder}/django_project/manage.py",
+                "args": [
+                    "runserver"
+                ],
+                "django": true
+            }
+        ]
+    }
 }
