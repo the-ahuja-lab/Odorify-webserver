@@ -8,9 +8,8 @@
 OdoriFy is an open-source web server with Deep Neural Network-based prediction models coupled with explainable Artificial Intelligence functionalities, developed in an effort to provide the users with a one-stop destination for all their problems pertaining to olfaction. OdoriFy is highly versatile, capable of deorphanizing human olfactory receptors (Odor Finder), odorant prediction (Odorant Predictor), identification of Responsive Olfactory Receptors for a given ligand/s (OR Finder), and Odorant-OR Pair Analysis. With OdoriFy, we aim to provide a simplified and hassle-free environment for users.
 
 **Webserver is freely available at [https://odorify.ahujalab.iiitd.edu.in/](http://odorify.ahujalab.iiitd.edu.in/olfy/)**
+The source code of the embeddings needed to train the model is available at [https://github.com/the-ahuja-lab/Odorify](https://github.com/the-ahuja-lab/Odorify)
 
-
-## Index
 
 
 ## Prediction Engines:
@@ -44,22 +43,4 @@ OdoriFy is an open-source web server with Deep Neural Network-based prediction m
  2. Make the installer an executable file via: chmod u+x installer
  3. Run the installer via: ./installer
 
-## How to train my own model 
-Write a config.cfg file in the format specified below with your own data. 
-To build your own model, Run `python build-model.py config.cfg`
-Config.cfg file ->input data, paramters, model name-> 
-Output-> Model.sav file,
-config.cfg->odorants.csv, result folder, model.sav
-To use the trained model to use the below functionalities:
-Run `python odorant-finder.py config.cfg`	->Output: 
-Run `python or-finder.py config.cfg`
-Run `python odorant-or.py config.cfg`
 
-## Architecture and Performance 
-
-
-## Functionalities
-1.  Webserver
-2. Adding optional email 
-
-## Citing
