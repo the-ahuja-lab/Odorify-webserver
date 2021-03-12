@@ -28,7 +28,7 @@ The source code of the embeddings needed to train the model is available at [htt
  <u>Input:</u> Chemical (SMILES) and Protein sequences (FASTA Format).
 
 <div align="center">
-<img src="https://imgur.com/lEmN6Mi.png" alt="Architecture" width="650" height="480"></div>
+<img src="https://imgur.com/a/T3fkHUT.png" alt="Architecture" width="650" height="480"></div>
 
 ## Dependencies
 1.  Python v.3.4.6 or higher
