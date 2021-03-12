@@ -8,6 +8,7 @@
 OdoriFy is an open-source web server with Deep Neural Network-based prediction models coupled with explainable Artificial Intelligence functionalities, developed in an effort to provide the users with a one-stop destination for all their problems pertaining to olfaction. OdoriFy is highly versatile, capable of deorphanizing human olfactory receptors (Odor Finder), odorant prediction (Odorant Predictor), identification of Responsive Olfactory Receptors for a given ligand/s (OR Finder), and Odorant-OR Pair Analysis. With OdoriFy, we aim to provide a simplified and hassle-free environment for users.
 
 **Webserver is freely available at [https://odorify.ahujalab.iiitd.edu.in/](http://odorify.ahujalab.iiitd.edu.in/olfy/)**
+
 The source code of the embeddings needed to train the model is available at [https://github.com/the-ahuja-lab/Odorify](https://github.com/the-ahuja-lab/Odorify)
 
 
