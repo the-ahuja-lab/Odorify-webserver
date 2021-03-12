@@ -44,11 +44,11 @@ class BLSTM(nn.Module):
         self.seq_len = seq_l
         self.num_smile_dir=2
         self.num_seq_dir=2
-        
+
         self.lstm_smile = nn.LSTM(input_smile_dim, hidden_smile_dim, layer_smile_dim,bidirectional=True)
         self.lstm_seq = nn.LSTM(input_seq_dim, hidden_seq_dim, layer_seq_dim,bidirectional=True)
         self.dropout = nn.Dropout(0.5)
-        
+
         self.fc_seq= nn.Linear(self.seq_len*hidden_seq_dim*self.num_seq_dir,smile_o)
         self.fc_smile= nn.Linear(self.smile_len*hidden_smile_dim*self.num_smile_dir,seq_o)
         self.batch_norm_combined = nn.BatchNorm1d(smile_o+seq_o, affine = False)
@@ -56,39 +56,39 @@ class BLSTM(nn.Module):
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.BatchNorm1d(100, affine = False),nn.Dropout(.5),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
         # self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,10),nn.ReLU(),nn.Linear(10,output_dim))
         self.fc_combined = nn.Sequential(nn.Linear(smile_o+seq_o,100),nn.ReLU(),nn.Linear(100,10),nn.ReLU(),nn.Linear(10,output_dim))
-        
+
     def forward(self, x1,x2):
         h0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
         c0_smile = torch.zeros(self.layer_smile_dim*self.num_smile_dir, x1.size(1), self.hidden_smile_dim).requires_grad_()
         h0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
         c0_seq = torch.zeros(self.layer_seq_dim*self.num_seq_dir, x2.size(1), self.hidden_seq_dim).requires_grad_()
- 
+
         h0_smile=h0_smile.to(device)
         c0_smile=c0_smile.to(device)
         h0_seq=h0_seq.to(device)
         c0_seq=c0_seq.to(device)
- 
+
         out_smile, (hn_smile, cn_smile) = self.lstm_smile(x1, (h0_smile, c0_smile))
         out_seq, (hn_seq, cn_seq) = self.lstm_seq(x2, (h0_seq, c0_seq))
- 
- 
- 
+
+
+
         out_smile = self.dropout(out_smile)
         out_seq = self.dropout(out_seq)
         out_seq=self.fc_seq(out_seq.view(-1,self.seq_len*self.hidden_seq_dim*self.num_seq_dir))
         out_seq = self.dropout(out_seq)
         out_smile=self.fc_smile(out_smile.view(-1,self.smile_len*self.hidden_smile_dim*self.num_smile_dir))
         out_smile = self.dropout(out_smile)
- 
+
         out_combined=torch.cat((out_smile,out_seq), dim=1)
         out_combined = self.batch_norm_combined(out_combined)
         out_combined=self.fc_combined(out_combined)
- 
+
         prob=nn.Softmax(dim=1)(out_combined)
         pred=nn.LogSoftmax(dim=1)(out_combined)
- 
- 
- 
+
+
+
         return pred
 
 # In[3]:
@@ -152,7 +152,7 @@ def prediction(model, x_input_smile, x_input_seq):
     prob=torch.exp(scores)
     prob=prob.tolist()
 
-    
+
     return float(str(prob[0][predictions.item()])[:5]), predictions.item()
 
 
@@ -168,13 +168,13 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     x_user_seq=list(x_user_seq)
     x_user_seq=torch.stack(x_user_seq)
     x_user_seq=x_user_seq.view(1,seq_l,27)
-    
+
     x_user_smile=one_hot_smile(x_input_smile)
     x_user_smile=list(x_user_smile)
     x_user_smile=torch.stack(x_user_smile)
     x_user_smile=x_user_smile.view(1,smile_l,77)
     model.eval()
-    
+
     ax=plt.figure()
     torch.backends.cudnn.enabled=False
     ig = IntegratedGradients(model)
@@ -197,7 +197,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     x_smile_labels=pd.Series(list(x_input_smile[:len_smile]))
     cropped_smile_relevance['smile_char']=x_smile_labels
     impacts=[]
-    
+
     cropped_smile_relevance['positive']=['']*len_smile
     cropped_smile_relevance['negative']=['']*len_smile
     for row in range(len_smile):
@@ -216,7 +216,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
                 cropped_smile_relevance['positive'][row]=0
                 cropped_smile_relevance['negative'][row]=0
             impacts.append(cropped_smile_relevance['values'][row])
-            
+
     # print(cropped_smile_relevance)
     ax=cropped_smile_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(25,15))
     ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'],prop={'size': 16})
@@ -225,7 +225,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     ax.set_ylabel("Relevance", fontsize=15)
     ax.figure.savefig(f"{path}/{filename}_SmileInterpretability.pdf")
     #ax.close()
-    
+
     # Structural Interpretability
     mol=x_input_smile
     m = Chem.MolFromSmiles(mol)
@@ -242,10 +242,10 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
         n = ""
         if c.upper() not in "CBONSPFIK":
             print(mol[i], 0.0, "0xFFFFFF")
-        else:       
+        else:
             if i + 1 < len(mol):
                 n = mol[i+1]
-            sym = c + n    
+            sym = c + n
             sym = sym.strip()
             com = sym.upper()
             if com == "BR" or com == "CL" or com == "NA":
@@ -266,7 +266,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
                     triple[0] = y / 255.0
                 colors[k]= tuple(triple)
                 print(sym, impacts[k], color)
-                k = k + 1   
+                k = k + 1
         i = i + 1
     drawer = rdMolDraw2D.MolDraw2DSVG(400, 400)
 
@@ -277,7 +277,7 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
     fp = open(f"{path}/{filename}_mol.svg", "w")
     print(svg, file=fp)
     fp.close()
-    
+
     # Sequence Interpretability
     ax=plt.figure()
     baseline = torch.zeros(2, seq_l, 27)
@@ -298,10 +298,10 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
 
     x_seq_labels=pd.Series(list(x_input_seq))
     cropped_seq_relevance['seq_char']=x_seq_labels
-    
+
     cropped_seq_relevance['positive']=['']*len_seq
     cropped_seq_relevance['negative']=['']*len_seq
-    
+
     for row in range(len_seq):
         if (ord(cropped_seq_relevance['seq_char'][row])<65 or ord(cropped_seq_relevance['seq_char'][row])>90):
             cropped_seq_relevance['values'][row]=0
@@ -317,17 +317,17 @@ def combined_user_predict(model, x_input_seq, x_input_smile, filename,path):
             else:
                 cropped_seq_relevance['positive'][row]=0
                 cropped_seq_relevance['negative'][row]=0
-             
-             
+
+
     # print(cropped_seq_relevance)
 
     ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="bar", figsize=(35, 15) )
     ax.legend(['Contribution to Binding', 'Contribution to Non-Binding'])
-    
+
 #     for row in range(len_seq):
 #         if (ord(cropped_seq_relevance['seq_char'][row])<65 or ord(cropped_seq_relevance['seq_char'][row])>90):
 #             cropped_seq_relevance['values'][row]=0
-    
+
 #     ax = cropped_seq_relevance['values'].plot(kind='bar',figsize=(50,25) ,color=(data_relevance['values'] > 0).map({True: 'g',False: 'r'}))
     ax=cropped_seq_relevance.plot( y=["positive", "negative"], color=['green', 'red'], kind="barh", figsize=(20, 70) )
     ax.legend(['Contribution to Binding', 'Contribution to non binding'],prop={'size': 16})
@@ -383,18 +383,8 @@ for smile in unique_smiles:
         k+=1
 
 
-# In[23]:
 
-
-# k=0
-# df_topk=pd.DataFrame(columns=['smiles','probability'])
-# for i,j in sorted(smiles_seq_pred.items(),key=lambda item: item[1], reverse=True):
-#     if(k==input_k):
-#         break
-#     df_topk.loc[k]=[i,j]
-#     k+=1   
 df_topk=df_topk.sort_values("Probability", ascending=False)
-# value_k = min(input_k,len(df_topk))
 min_k = min(input_k,len(df_topk))
 df_topk=df_topk.head(min_k)
 
@@ -406,7 +396,6 @@ if(len(df_topk)==0):
     df_topk.loc[0]=['Empty','Empty']
 
 df_topk.to_csv(f"{path}/output.csv", index=False)
-
 
 
 

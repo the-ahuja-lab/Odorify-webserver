@@ -406,9 +406,9 @@ def results(request):
                     b.prob = "NA"
                 b.sno = i + 1
                 b.seq = data["Sequence"][i]
-                if data["status"][i] == "0":
+                if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                elif data['status'][i] == "1":
+                elif data['status'][i] == 1:
                     b.status = "Binding"
                 else:
                     b.status = data['status'][i]
@@ -535,7 +535,7 @@ def result_queue(request, job_name, model, count, flag):
                 b.seq = data["Sequence"][i]
                 if data["status"][i] == 0:
                     b.status = "Non-Binding"
-                elif data["status"][i] == 1:
+                elif data['status'][i] == 1:
                     b.status = "Binding"
                 else:
                     b.status = data['status'][i]
@@ -684,9 +684,9 @@ def odor_Or(request):
                     resultdf["prob"][i] = data["prob"][count]
                     resultdf["status"][i] = data["status"][count]
                     count += 1
-
             resultdf.drop("odorant", axis=1, inplace=True)
             resultdf.drop(0, inplace=True)
+            resultdf["header"] = header
             resultdf.to_csv(f"{path}/output.csv", index=False)
             os.remove(f"{path}/input.csv")
             os.remove(f"{path}/input1.csv")
@@ -1044,15 +1044,18 @@ def makezip4(a, request, flag="0"):
     file_path = []
     os.chdir(f"olfy/static/olfy/generated/{id}/m4")
     f = pd.read_csv(f"{a.job_name}/output.csv")
+    count = 0
     for i in range(a.count):
         if not str(f["prob"][i]) == "nan":
-            file_path.append(f"{a.job_name}/{i+1}_SmileInterpretability.pdf")
+            file_path.append(f"{a.job_name}/{count+1}_SmileInterpretability.pdf")
             file_path.append(
-                f"{a.job_name}/{i+1}_SequenceInterpretability.pdf")
-            file_path.append(f"{a.job_name}/{i+1}_mol.svg")
+                f"{a.job_name}/{count+1}_SequenceInterpretability.pdf")
+            file_path.append(f"{a.job_name}/{count+1}_mol.svg")
+            count+=1
         else:
             continue
     file_path.append(f"{a.job_name}/output.csv")
+    print(file_path)
     zip = ZipFile(f"{a.job_name}/data.zip", 'w')
     for file in file_path:
         zip.write(file)
