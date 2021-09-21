@@ -1,0 +1,16 @@
+pre_computed_job_odor_or_finder
+3
+4
+precomputed
+pre_computed_job_odor_finder
+3
+3
+precomputed
+pre_computed_job_or_finder
+3
+2
+precomputed
+pre_computed_job_odorant_prediction
+3
+1
+precomputed

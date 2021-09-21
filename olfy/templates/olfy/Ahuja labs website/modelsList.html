@@ -1,0 +1,79 @@
+{% extends "olfy/Ahuja labs website/base.html" %}
+{% load static %}
+{% block loadhead %} 
+{% endblock %}
+{% block content %}
+	<div class="mt-5 loadFade container text-white text-center">
+		<h1 class="d-none d-md-block">
+			What is OdoriFy?
+		</h1>
+		<h2 class="d-block d-md-none">
+			What is OdoriFy?
+		</h2>
+		<h5 style="line-height: 30px;" class="mt-3 text-gra">
+			OdoriFy is an open-source web server with Deep Neural Network-based prediction models coupled with explainable Artificial Intelligence functionalities, developed in an effort to provide the users with a one-stop destination for all their problems pertaining to olfaction. OdoriFy is highly versatile, capable of deorphanizing human olfactory receptors (Odor Finder), odorant prediction (Odorant Predictor), identification of Responsive Olfactory Receptors for a given ligand/s (OR Finder), and Odorant-OR Pair Analysis. With OdoriFy, we aim to provide a simplified and hassle-free environment for users.
+		</h5>
+	</div>
+	<div class="mt-5 loadFade container-fluid text-white text-center">
+		<h1 class="d-none d-md-block">
+			Prediction Engines
+		</h1>
+		<h2 class="d-block d-md-none">
+			Prediction Engines
+		</h2>
+		<div class="my-5 row" style="height: calc(100vh - 77px);">
+			<div class="p-5 col-md-6 rounded-lg border border-dark" style="background-image: linear-gradient(#00000070, #00000070), url('https://images.unsplash.com/photo-1605478185737-99ae313e940c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=700&q=80'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+				<h2 class="font-weight-bold">
+					Odorant Predictor
+				</h2>
+				<h4 class="text-white mt-3">
+					For when you ask yourself- Does my chemical smell?
+				</h4>
+				<a href="{% url 'olfy-odor' %}">
+					<button style="width: 150px;" class="mt-5 btn btn-light shadow-lg">
+						Try It Now →
+					</button>
+				</a>
+			</div>
+			<div class="p-5 col-md-6 rounded-lg shadow-lg border border-dark" style="background-image: linear-gradient(#00000070, #00000070), url('https://i2.wp.com/files.123freevectors.com/wp-content/original/108320-yellow-wave.jpg?w=800&q=95'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+				<h2 class="font-weight-bold">
+					OR Finder
+				</h2>
+				<h4 class="text-white mt-3">
+					Ever wondered which part of your nose would detect your chemical's smell?
+				</h4>
+				<a href="{% url 'olfy-odor2' %}">
+					<button style="width: 150px;" class="mt-5 btn btn-light shadow-lg">
+						Try It Now →
+					</button>
+				</a>
+			</div>
+			<div class="p-5 col-md-6 rounded-lg shadow-lg border border-dark" style="background-image: linear-gradient(#00000070, #00000070), url('/static/olfy/images/Model3.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+				<h2 class="font-weight-bold">
+					Odor Finder
+				</h2>
+				<h4 class="text-white mt-3">
+					To find out, what else can your nose smell?
+				</h4>
+				<a href="{% url 'olfy-or' %}">
+					<button style="width: 150px;" class="mt-5 btn btn-light shadow-lg">
+						Try It Now →
+					</button>
+				</a>
+			</div>
+			<div class="p-5 col-md-6 rounded-lg shadow-lg border border-dark" style="background-image: linear-gradient(#00000070, #00000070), url('/static/olfy/images/Model4.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat;">
+				<h2 class="font-weight-bold">
+					Odorant-OR Pair Analysis
+				</h2>
+				<h4 class="text-white mt-3">
+					We'll help you verify your Odor-OR pairs!
+				</h4>
+				<a href="{% url 'olfy-odor_or' %}">
+					<button style="width: 150px;" class="mt-5 btn btn-light shadow-lg">
+						Try It Now →
+					</button>
+				</a>
+			</div>
+		</div>
+	</div>
+{% endblock %}

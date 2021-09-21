@@ -1,0 +1,4 @@
+S.No,SMILES,prob,pred_odor
+1,CC(CC)C1=C(C(=CC(=C1)[N+](=O)[O-])[N+](=O)[O-])O,0.94,1.0
+2,P(=O)(OCCCC)(OCCCC)O,0.965,0.0
+3,CCCC,0.996,1.0
